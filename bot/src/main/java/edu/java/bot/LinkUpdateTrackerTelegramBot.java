@@ -4,11 +4,9 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.DeleteMyCommands;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.BaseResponse;
-import com.pengrad.telegrambot.response.SendResponse;
 import edu.java.configuration.ApplicationConfig;
+import edu.java.handler.UserInputHandler;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +17,12 @@ import org.springframework.stereotype.Component;
 public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
     private TelegramBot telegramBot;
     private final ApplicationConfig applicationConfig;
+    private final UserInputHandler inputHandler;
 
     @Autowired
-    public LinkUpdateTrackerTelegramBot(ApplicationConfig applicationConfig) {
+    public LinkUpdateTrackerTelegramBot(ApplicationConfig applicationConfig, UserInputHandler inputHandler) {
         this.applicationConfig = applicationConfig;
+        this.inputHandler = inputHandler;
     }
 
     @Override
@@ -38,23 +38,15 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             log.info("Process update: {}", update);
-
-            String messageText = update.message().text();
-            Long chatId = update.message().chat().id();
-
-            if (messageText != null && messageText.equals("/start")) {
-                sendMessage(chatId, "Было введено /start");
-            } else {
-                sendMessage(chatId, "Было введено: " + messageText);
-            }
+            sendMessage(inputHandler.handle(update));
         });
 
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
-    void sendMessage(Long chatId, String text) {
-        log.info("Sending message with text: '" + text + "' to charId: " + chatId);
-        telegramBot.execute(new SendMessage(chatId, text));
+    private void sendMessage(SendMessage message) {
+        log.info("Sending message...");
+        telegramBot.execute(message);
     }
 
     @Override

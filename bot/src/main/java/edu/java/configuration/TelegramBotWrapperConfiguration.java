@@ -10,16 +10,21 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Slf4j
 public class TelegramBotWrapperConfiguration {
-    private final ApplicationConfig applicationConfig;
+//    private final ApplicationConfig applicationConfig;
+    private final TelegramBotWrapper telegramBotWrapper;
 
     @Autowired
-    public TelegramBotWrapperConfiguration(ApplicationConfig applicationConfig) {
-        this.applicationConfig = applicationConfig;
+    public TelegramBotWrapperConfiguration(
+//        ApplicationConfig applicationConfig,
+        LinkUpdateTrackerTelegramBot linkUpdateTrackerTelegramBot
+    ) {
+//        this.applicationConfig = applicationConfig;
+        telegramBotWrapper = linkUpdateTrackerTelegramBot;
     }
 
     @Bean
     public TelegramBotWrapper telegramBotWrapper() {
-        TelegramBotWrapper telegramBotWrapper = new LinkUpdateTrackerTelegramBot(applicationConfig);
+//        TelegramBotWrapper telegramBotWrapper = new LinkUpdateTrackerTelegramBot(applicationConfig);
         telegramBotWrapper.start();
         return telegramBotWrapper;
     }
