@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
-    private TelegramBot telegramBot;
     private final ApplicationConfig applicationConfig;
     private final UserInputHandler inputHandler;
+    private TelegramBot telegramBot;
 
     @Autowired
     public LinkUpdateTrackerTelegramBot(ApplicationConfig applicationConfig, UserInputHandler inputHandler) {
