@@ -13,6 +13,7 @@ public final class TelegramBotTrackCommand implements TelegramBotCommand {
     @Autowired
     public TelegramBotTrackCommand(TelegramBotCommandConfiguration commandConfiguration) {
         this.commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.HELP);
+
     }
 
     @Override
@@ -27,6 +28,6 @@ public final class TelegramBotTrackCommand implements TelegramBotCommand {
 
     @Override
     public SendMessage execute(Message message) {
-        return null;
+        return new SendMessage(message.chat().id(), commandInfo.successfulResponse());
     }
 }

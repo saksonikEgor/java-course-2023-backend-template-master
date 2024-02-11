@@ -27,6 +27,6 @@ public final class TelegramBotHelpCommand implements TelegramBotCommand {
 
     @Override
     public SendMessage execute(Message message) {
-        return null;
+        return new SendMessage(message.chat().id(), commandInfo.successfulResponse());
     }
 }
