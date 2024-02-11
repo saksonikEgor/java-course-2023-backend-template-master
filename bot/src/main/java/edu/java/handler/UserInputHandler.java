@@ -38,9 +38,13 @@ public class UserInputHandler implements InputHandler {
             TelegramBotCommand command = commandByType.get(type);
 
             log.info("CommandType: " + type);
-            log.info("Command: " + command);
 
-            return command.execute(message);
+            String textMessage = command.execute(message);
+            long chatId = message.chat().id();
+
+            log.info("Sending message with text: '" + textMessage + "' and charId: " + message.chat().id());
+
+            return new SendMessage(chatId, textMessage);
         } catch (NullPointerException e) {
             return getWrongSendMessage(message);
         }

@@ -45,7 +45,6 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
     }
 
     private void sendMessage(SendMessage message) {
-        log.info("Sending message...");
         telegramBot.execute(message);
     }
 

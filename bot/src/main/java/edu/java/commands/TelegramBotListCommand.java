@@ -26,7 +26,7 @@ public final class TelegramBotListCommand implements TelegramBotCommand {
     }
 
     @Override
-    public SendMessage execute(Message message) {
-        return new SendMessage(message.chat().id(), commandInfo.unSuccessfulResponse());
+    public String execute(Message message) {
+        return commandInfo.unSuccessfulResponse();
     }
 }

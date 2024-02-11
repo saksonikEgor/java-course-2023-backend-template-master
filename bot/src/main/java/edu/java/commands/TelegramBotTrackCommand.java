@@ -27,7 +27,7 @@ public final class TelegramBotTrackCommand implements TelegramBotCommand {
     }
 
     @Override
-    public SendMessage execute(Message message) {
-        return new SendMessage(message.chat().id(), commandInfo.successfulResponse());
+    public String execute(Message message) {
+        return commandInfo.successfulResponse();
     }
 }

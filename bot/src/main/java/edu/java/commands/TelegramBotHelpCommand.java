@@ -1,6 +1,7 @@
 package edu.java.commands;
 
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.configuration.TelegramBotCommandConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public final class TelegramBotHelpCommand implements TelegramBotCommand {
     }
 
     @Override
-    public SendMessage execute(Message message) {
-        return new SendMessage(message.chat().id(), commandInfo.successfulResponse());
+    public String execute(Message message) {
+        return commandInfo.successfulResponse();
     }
 }

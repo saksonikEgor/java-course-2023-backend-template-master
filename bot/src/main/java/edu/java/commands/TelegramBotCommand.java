@@ -11,5 +11,5 @@ public sealed interface TelegramBotCommand
 
     String getDescription();
 
-    SendMessage execute(Message message);
+    String execute(Message message);
 }
