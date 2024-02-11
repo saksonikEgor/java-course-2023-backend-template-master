@@ -32,25 +32,23 @@ public class UserInputHandler implements InputHandler {
     @Override
     public SendMessage handle(Update update) {
         Message message = update.message();
+        long chatId = message.chat().id();
+        String textMessage;
 
         try {
             TelegramBotCommandType type = typeByName.get(message.text());
             TelegramBotCommand command = commandByType.get(type);
 
-            log.info("CommandType: " + type);
+            log.info("Command type: " + type);
 
-            String textMessage = command.execute(message);
-            long chatId = message.chat().id();
-
-            log.info("Sending message with text: '" + textMessage + "' and charId: " + message.chat().id());
-
-            return new SendMessage(chatId, textMessage);
+            textMessage = command.execute(message);
         } catch (NullPointerException e) {
-            return getWrongSendMessage(message);
-        }
-    }
+            log.info("Wrong command type");
 
-    private SendMessage getWrongSendMessage(Message message) {
-        return new SendMessage(message.chat().id(), wrongInputMessage);
+            textMessage = wrongInputMessage;
+        }
+
+        log.info("Sending message with text: '" + textMessage + "' and chatId: " + message.chat().id());
+        return new SendMessage(chatId, textMessage);
     }
 }
