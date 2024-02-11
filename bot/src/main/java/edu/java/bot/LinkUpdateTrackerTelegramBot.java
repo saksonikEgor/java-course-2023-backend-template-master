@@ -4,7 +4,9 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.DeleteMyCommands;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.BaseResponse;
 import com.pengrad.telegrambot.response.SendResponse;
 import edu.java.configuration.ApplicationConfig;
 import java.util.List;
@@ -52,12 +54,7 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
 
     void sendMessage(Long chatId, String text) {
         log.info("Sending message with text: '" + text + "' to charId: " + chatId);
-
-        SendMessage message = new SendMessage(chatId, text);
-        SendResponse response = telegramBot.execute(message);
-
-        log.info("Response: {}", response.isOk());
-        log.info("Error code: {}", response.errorCode());
+        telegramBot.execute(new SendMessage(chatId, text));
     }
 
     @Override
