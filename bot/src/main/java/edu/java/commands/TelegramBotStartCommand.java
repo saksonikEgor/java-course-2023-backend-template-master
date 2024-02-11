@@ -12,7 +12,7 @@ public final class TelegramBotStartCommand implements TelegramBotCommand {
 
     @Autowired
     public TelegramBotStartCommand(TelegramBotCommandConfiguration commandConfiguration) {
-        this.commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.HELP);
+        this.commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.START);
     }
 
     @Override

@@ -12,7 +12,7 @@ public final class TelegramBotListCommand implements TelegramBotCommand {
 
     @Autowired
     public TelegramBotListCommand(TelegramBotCommandConfiguration commandConfiguration) {
-        this.commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.HELP);
+        this.commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.LIST);
     }
 
     @Override
@@ -27,6 +27,6 @@ public final class TelegramBotListCommand implements TelegramBotCommand {
 
     @Override
     public SendMessage execute(Message message) {
-        return new SendMessage(message.chat().id(), commandInfo.successfulResponse());
+        return new SendMessage(message.chat().id(), commandInfo.unSuccessfulResponse());
     }
 }

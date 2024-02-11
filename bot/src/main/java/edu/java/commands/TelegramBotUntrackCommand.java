@@ -12,7 +12,7 @@ public final class TelegramBotUntrackCommand implements TelegramBotCommand {
 
     @Autowired
     public TelegramBotUntrackCommand(TelegramBotCommandConfiguration commandConfiguration) {
-        this.commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.HELP);
+        this.commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.UNTRACK);
     }
 
     @Override

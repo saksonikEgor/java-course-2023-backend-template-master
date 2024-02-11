@@ -12,7 +12,7 @@ public final class TelegramBotTrackCommand implements TelegramBotCommand {
 
     @Autowired
     public TelegramBotTrackCommand(TelegramBotCommandConfiguration commandConfiguration) {
-        this.commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.HELP);
+        this.commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.TRACK);
 
     }
 
