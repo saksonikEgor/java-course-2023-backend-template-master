@@ -9,90 +9,93 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Configuration
 public class TelegramBotCommandConfiguration {
-    private static final String HELP_COMMAND_NAME = "/help";
+    private final String helpCommandName = "/help";
+    private final String listCommandName = "/list";
+    private final String startCommandName = "/start";
+    private final String trackCommandName = "/track";
+    private final String untrackCommandName = "/untrack";
+
     private static final String HELP_COMMAND_DEFINITION = " -> показать все доступные команды";
-    private static final String LIST_COMMAND_NAME = "/list";
     private static final String LIST_COMMAND_DEFINITION = " -> показать список отслеживаемые ссылок";
-    private static final String START_COMMAND_NAME = "/start";
     private static final String START_COMMAND_DEFINITION = " -> зарегестрировать пользователя";
-    private static final String TRACK_COMMAND_NAME = "/track";
     private static final String TRACK_COMMAND_DEFINITION = " -> начать отслеживать ссылки";
-    private static final String UNTRACK_COMMAND_NAME = "/untrack";
     private static final String UNTRACK_COMMAND_DEFINITION = " -> прекратить отслеживать ссылки";
 
     private static final String TICK = "✅";
     private static final String CROSS = "❌";
-    private static final String HELP_COMMAND_SUCCESSFUL_RESPONSE = HELP_COMMAND_NAME + HELP_COMMAND_DEFINITION + "\n" +
-        LIST_COMMAND_NAME + LIST_COMMAND_DEFINITION + "\n" +
-        START_COMMAND_NAME + START_COMMAND_DEFINITION + "\n" +
-        TRACK_COMMAND_NAME + TRACK_COMMAND_DEFINITION + "\n" +
-        UNTRACK_COMMAND_NAME + UNTRACK_COMMAND_DEFINITION;
-    private static final String HELP_COMMAND_UNSUCCESSFUL_RESPONSE = "Не получилось вывести все доступные команды";
-    private static final String LIST_COMMAND_SUCCESSFUL_RESPONSE = "Список отслеживаемых ссылок:\n";
-    private static final String LIST_COMMAND_UNSUCCESSFUL_RESPONSE = "Список отслеживаемых ссылок пуст, добавьте " +
-        "отслеживаемые ссылки командой " + TRACK_COMMAND_NAME;
-    private static final String START_COMMAND_SUCCESSFUL_RESPONSE = TICK + "Вы успешно зарегестрировались, для просмотра " +
-        "всех доступных команд введите " + HELP_COMMAND_NAME;
-    private static final String START_COMMAND_UNSUCCESSFUL_RESPONSE = CROSS + "Не получилось вас зарегестрировать";
-    private static final String TRACK_COMMAND_SUCCESSFUL_RESPONSE = "Введите ссылку которую хотите начать отслеживать";
-    private static final String TRACK_COMMAND_UNSUCCESSFUL_RESPONSE = CROSS + "Не получилось добавить ссылку для отслеживания";
-    private static final String UNTRACK_COMMAND_SUCCESSFUL_RESPONSE =
+
+    private final String helpCommandSuccessfulResponse = helpCommandName + HELP_COMMAND_DEFINITION + "\n" +
+        listCommandName + LIST_COMMAND_DEFINITION + "\n" +
+        startCommandName + START_COMMAND_DEFINITION + "\n" +
+        trackCommandName + TRACK_COMMAND_DEFINITION + "\n" +
+        untrackCommandName + UNTRACK_COMMAND_DEFINITION;
+    private final String helpCommandUnsuccessfulResponse = "Не получилось вывести все доступные команды";
+    private final String listCommandSuccessfulResponse = "Список отслеживаемых ссылок:\n";
+    private final String listCommandUnsuccessfulResponse = "Список отслеживаемых ссылок пуст, добавьте " +
+        "отслеживаемые ссылки командой " + trackCommandName;
+    private final String startCommandSuccessfulResponse = TICK + "Вы успешно зарегестрировались, для просмотра " +
+        "всех доступных команд введите " + helpCommandName;
+    private final String startCommandUnsuccessfulResponse = CROSS + "Не получилось вас зарегестрировать";
+    private final String trackCommandSuccessfulResponse = "Введите ссылку которую хотите начать отслеживать";
+    private final String trackCommandUnsuccessfulResponse = CROSS + "Не получилось добавить ссылку для отслеживания";
+    private final String untrackCommandSuccessfulResponse =
         "Введите ссылку которую хотите прекратить отслеживать";
-    private static final String UNTRACK_COMMAND_UNSUCCESSFUL_RESPONSE = CROSS + "Не получилось прекратить отслеживание ссылки";
+    private final String untrackCommandUnsuccessfulResponse = CROSS + "Не получилось прекратить отслеживание ссылки";
 
     private final String wrongInputMessage =
-        CROSS + "Некорректная команда, для просморта доступных команд введите " + HELP_COMMAND_NAME;
+        CROSS + "Некорректная команда, для просморта доступных команд введите " + helpCommandName;
     private final String notAuthenticatedErrorMessage =
-        CROSS + "Вы не зарегестрированы. Для регистрации введите " + START_COMMAND_NAME;
+        CROSS + "Вы не зарегестрированы. Для регистрации введите " + startCommandName;
     private final String wrongLinkFormatMessage = CROSS + "Некорректный формат ссылки, попробуйте еще раз";
     private final String successfulTrackingMessage =
         TICK + "Введенная вами ссылка теперь отслеживается. Для просмотра всех отслеживаемых ссылок введите " +
-            LIST_COMMAND_NAME;
+            listCommandName;
     private final String successfulUntrackingMessage =
         TICK + "Введенная вами ссылка перестала быть отслеживаемой. Для просмотра всех отслеживаемых ссылок введите " +
-            LIST_COMMAND_NAME;
+            listCommandName;
     private final String linkIsAlreadyTrackedMessage =
         CROSS + "Введенная вами ссылка уже была добавлена ранее. Для просмотра всех отслеживаемых ссылок введите " +
-            LIST_COMMAND_NAME;
+            listCommandName;
     private final String linkIsNotTrackingMessage =
-        CROSS + "Введенная вами ссылка не отслеживалась. Для просмотра всех отслеживаемых ссылок введите " + LIST_COMMAND_NAME;
+        CROSS + "Введенная вами ссылка не отслеживалась. Для просмотра всех отслеживаемых ссылок введите " +
+            listCommandName;
     private final Map<TelegramBotCommandType, TelegramBotCommandInfo> infoByType = Map.of(
         TelegramBotCommandType.HELP, new TelegramBotCommandInfo(
-            HELP_COMMAND_NAME,
+            helpCommandName,
             HELP_COMMAND_DEFINITION,
-            HELP_COMMAND_SUCCESSFUL_RESPONSE,
-            HELP_COMMAND_SUCCESSFUL_RESPONSE
+            helpCommandSuccessfulResponse,
+            helpCommandSuccessfulResponse
         ),
         TelegramBotCommandType.LIST, new TelegramBotCommandInfo(
-            LIST_COMMAND_NAME,
+            listCommandName,
             LIST_COMMAND_DEFINITION,
-            LIST_COMMAND_SUCCESSFUL_RESPONSE,
-            LIST_COMMAND_UNSUCCESSFUL_RESPONSE
+            listCommandSuccessfulResponse,
+            listCommandUnsuccessfulResponse
         ),
         TelegramBotCommandType.START, new TelegramBotCommandInfo(
-            START_COMMAND_NAME,
+            startCommandName,
             START_COMMAND_DEFINITION,
-            START_COMMAND_SUCCESSFUL_RESPONSE,
-            START_COMMAND_UNSUCCESSFUL_RESPONSE
+            startCommandSuccessfulResponse,
+            startCommandUnsuccessfulResponse
         ),
         TelegramBotCommandType.TRACK, new TelegramBotCommandInfo(
-            TRACK_COMMAND_NAME,
+            trackCommandName,
             TRACK_COMMAND_DEFINITION,
-            TRACK_COMMAND_SUCCESSFUL_RESPONSE,
-            TRACK_COMMAND_UNSUCCESSFUL_RESPONSE
+            trackCommandSuccessfulResponse,
+            trackCommandUnsuccessfulResponse
         ),
         TelegramBotCommandType.UNTRACK, new TelegramBotCommandInfo(
-            UNTRACK_COMMAND_NAME,
+            untrackCommandName,
             UNTRACK_COMMAND_DEFINITION,
-            UNTRACK_COMMAND_SUCCESSFUL_RESPONSE,
-            UNTRACK_COMMAND_UNSUCCESSFUL_RESPONSE
+            untrackCommandSuccessfulResponse,
+            untrackCommandUnsuccessfulResponse
         )
     );
     private final Map<String, TelegramBotCommandType> typeByName = Map.of(
-        HELP_COMMAND_NAME, TelegramBotCommandType.HELP,
-        LIST_COMMAND_NAME, TelegramBotCommandType.LIST,
-        START_COMMAND_NAME, TelegramBotCommandType.START,
-        TRACK_COMMAND_NAME, TelegramBotCommandType.TRACK,
-        UNTRACK_COMMAND_NAME, TelegramBotCommandType.UNTRACK
+        helpCommandName, TelegramBotCommandType.HELP,
+        listCommandName, TelegramBotCommandType.LIST,
+        startCommandName, TelegramBotCommandType.START,
+        trackCommandName, TelegramBotCommandType.TRACK,
+        untrackCommandName, TelegramBotCommandType.UNTRACK
     );
 }

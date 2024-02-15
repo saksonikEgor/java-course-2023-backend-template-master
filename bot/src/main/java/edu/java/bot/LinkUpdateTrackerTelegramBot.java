@@ -4,8 +4,10 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.DeleteMyCommands;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.configuration.ApplicationConfig;
+import edu.java.configuration.TelegramBotCommandConfiguration;
 import edu.java.handler.UserInputHandler;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +20,22 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
     private final ApplicationConfig applicationConfig;
     private final UserInputHandler inputHandler;
     private TelegramBot telegramBot;
+    private final String trackCommandName;
+    private final String untrackCommandName;
+    private final String listCommandName;
+    private final String helpCommandName;
 
     @Autowired
-    public LinkUpdateTrackerTelegramBot(ApplicationConfig applicationConfig, UserInputHandler inputHandler) {
+    public LinkUpdateTrackerTelegramBot(
+        ApplicationConfig applicationConfig, UserInputHandler inputHandler,
+        TelegramBotCommandConfiguration commandConfiguration
+    ) {
         this.applicationConfig = applicationConfig;
         this.inputHandler = inputHandler;
+        trackCommandName = commandConfiguration.getTrackCommandName();
+        untrackCommandName = commandConfiguration.getUntrackCommandName();
+        listCommandName = commandConfiguration.getListCommandName();
+        helpCommandName = commandConfiguration.getHelpCommandName();
     }
 
     @Override
@@ -45,6 +58,10 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
     }
 
     private void sendMessage(SendMessage message) {
+        message.replyMarkup(new ReplyKeyboardMarkup(new String[][] {
+            {trackCommandName, untrackCommandName},
+            {listCommandName, helpCommandName}
+        }).resizeKeyboard(true));
         telegramBot.execute(message);
     }
 
