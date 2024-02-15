@@ -37,6 +37,7 @@ public final class TelegramBotListCommand implements TelegramBotCommand {
 
     @Override
     public String execute(Message message) {
+        userDAO.refuseWaitingIfAuthenticated(message.chat().id());
         List<URI> refs;
 
         try {

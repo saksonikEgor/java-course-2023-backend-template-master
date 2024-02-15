@@ -8,7 +8,9 @@ import edu.java.model.Link;
 import edu.java.model.User;
 import edu.java.model.UserState;
 import edu.java.util.URIUtils;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,9 +81,11 @@ public class UserDAO {
 
     public void handleURIForUser(long userId, String stringURI) throws WrongLinkFormatException,
         LinkIsAlreadyTrackedException, LinkIsNotTrackingException {
-        URI uri = URIUtils.castStringToURI(stringURI);
+        URI uri;
 
-        if (uri == null) {
+        try {
+            uri = URIUtils.castStringToURI(stringURI);
+        } catch (MalformedURLException | URISyntaxException e) {
             throw new WrongLinkFormatException("Cant cast string '" + stringURI + "' to URI");
         }
 
