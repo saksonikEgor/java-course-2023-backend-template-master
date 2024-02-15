@@ -1,5 +1,7 @@
 package edu.java.repository;
 
+import edu.java.exception.LinkIsAlreadyTrackedException;
+import edu.java.exception.LinkIsNotTrackingException;
 import edu.java.exception.UserIsUnauthenticatedException;
 import edu.java.exception.WrongLinkFormatException;
 import edu.java.model.Link;
@@ -10,7 +12,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -76,7 +77,8 @@ public class UserDAO {
         }
     }
 
-    public void handleURIForUser(long userId, String stringURI) throws WrongLinkFormatException {
+    public void handleURIForUser(long userId, String stringURI) throws WrongLinkFormatException,
+        LinkIsAlreadyTrackedException, LinkIsNotTrackingException {
         URI uri = URIUtils.castStringToURI(stringURI);
 
         if (uri == null) {
@@ -95,10 +97,13 @@ public class UserDAO {
             user.addLink(link);
             link.addUser(user);
         } else {
-            if (link != null) {
-                user.removeLink(link);
-                link.removeUser(user);
+            if (link == null) {
+                throw new LinkIsNotTrackingException(
+                    "User with id '" + userId + "' is not tracking uri '" + stringURI + "'"
+                );
             }
+            user.removeLink(link);
+            link.removeUser(user);
         }
         refuseWaiting(userId);
     }

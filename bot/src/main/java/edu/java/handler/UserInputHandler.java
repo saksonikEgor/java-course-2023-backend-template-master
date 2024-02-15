@@ -7,6 +7,8 @@ import edu.java.commands.TelegramBotCommand;
 import edu.java.commands.TelegramBotCommandType;
 import edu.java.configuration.TelegramBotCommandConfiguration;
 import edu.java.configuration.UserInputHandlerConfiguration;
+import edu.java.exception.LinkIsAlreadyTrackedException;
+import edu.java.exception.LinkIsNotTrackingException;
 import edu.java.exception.WrongLinkFormatException;
 import edu.java.model.UserState;
 import edu.java.repository.UserDAO;
@@ -24,6 +26,8 @@ public class UserInputHandler implements InputHandler {
     private final String wrongLinkFormatMassage;
     private final String successfulTrackingMessage;
     private final String successfulUntrackingMessage;
+    private final String linkIsAlreadyTrackedMessage;
+    private final String linkIsNotTrackingMessage;
     private final UserDAO userDAO;
 
     @Autowired
@@ -37,6 +41,8 @@ public class UserInputHandler implements InputHandler {
         wrongLinkFormatMassage = commandConfiguration.getWrongLinkFormatMessage();
         successfulTrackingMessage = commandConfiguration.getSuccessfulTrackingMessage();
         successfulUntrackingMessage = commandConfiguration.getSuccessfulUntrackingMessage();
+        linkIsAlreadyTrackedMessage = commandConfiguration.getLinkIsAlreadyTrackedMessage();
+        linkIsNotTrackingMessage = commandConfiguration.getLinkIsNotTrackingMessage();
         this.userDAO = userDAO;
     }
 
@@ -56,30 +62,36 @@ public class UserInputHandler implements InputHandler {
         } catch (NullPointerException nullPointerException) {
             if (userDAO.isUserWaiting(userId)) {
                 log.info("Message is parsing like a link");
-
-                try {
-                    UserState state = userDAO.getStateOfUser(userId);
-                    userDAO.handleURIForUser(userId, message.text());
-
-                    textMessage = switch (state) {
-                        case WAITING_FOR_TRACK -> successfulTrackingMessage;
-                        case WAITING_FOR_UNTRACK -> successfulUntrackingMessage;
-                        default -> throw new IllegalStateException("Unexpected value: " + state);
-                    };
-                } catch (WrongLinkFormatException wrongLinkFormatException) {
-                    log.error(wrongLinkFormatException.getMessage());
-                    textMessage = wrongLinkFormatMassage;
-                }
-//                TelegramBotCommand command = commandByType.get(TelegramBotCommandType.LINK);
-//                textMessage = command.execute(message);
+                textMessage = getResultOfLinkProcessing(userId, message.text());
             } else {
                 log.info("Wrong command type");
                 textMessage = wrongInputMessage;
             }
-
         }
 
         log.info("Sending message with text: '" + textMessage + "' and userId: " + message.chat().id());
         return new SendMessage(userId, textMessage);
+    }
+
+    private String getResultOfLinkProcessing(long userId, String text) {
+        try {
+            UserState state = userDAO.getStateOfUser(userId);
+            userDAO.handleURIForUser(userId, text);
+
+            return switch (state) {
+                case WAITING_FOR_TRACK -> successfulTrackingMessage;
+                case WAITING_FOR_UNTRACK -> successfulUntrackingMessage;
+                default -> throw new IllegalStateException("Unexpected value: " + state);
+            };
+        } catch (WrongLinkFormatException wrongLinkFormatException) {
+            log.error(wrongLinkFormatException.getMessage());
+            return wrongLinkFormatMassage;
+        } catch (LinkIsAlreadyTrackedException alreadyTrackedException) {
+            log.error(alreadyTrackedException.getMessage());
+            return linkIsAlreadyTrackedMessage;
+        } catch (LinkIsNotTrackingException notTrackingException) {
+            log.error(notTrackingException.getMessage());
+            return linkIsNotTrackingMessage;
+        }
     }
 }

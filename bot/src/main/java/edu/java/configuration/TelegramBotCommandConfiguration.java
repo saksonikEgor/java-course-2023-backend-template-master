@@ -20,6 +20,8 @@ public class TelegramBotCommandConfiguration {
     private static final String UNTRACK_COMMAND_NAME = "/untrack";
     private static final String UNTRACK_COMMAND_DEFINITION = " -> прекратить отслеживать ссылки";
 
+    private static final String TICK = "✅";
+    private static final String CROSS = "❌";
     private static final String HELP_COMMAND_SUCCESSFUL_RESPONSE = HELP_COMMAND_NAME + HELP_COMMAND_DEFINITION + "\n" +
         LIST_COMMAND_NAME + LIST_COMMAND_DEFINITION + "\n" +
         START_COMMAND_NAME + START_COMMAND_DEFINITION + "\n" +
@@ -29,22 +31,31 @@ public class TelegramBotCommandConfiguration {
     private static final String LIST_COMMAND_SUCCESSFUL_RESPONSE = "Список отслеживаемых ссылок:\n";
     private static final String LIST_COMMAND_UNSUCCESSFUL_RESPONSE = "Список отслеживаемых ссылок пуст, добавьте " +
         "отслеживаемые ссылки командой " + TRACK_COMMAND_NAME;
-    private static final String START_COMMAND_SUCCESSFUL_RESPONSE = "Вы успешно зарегестрировались, для просмотра " +
+    private static final String START_COMMAND_SUCCESSFUL_RESPONSE = TICK + "Вы успешно зарегестрировались, для просмотра " +
         "всех доступных команд введите " + HELP_COMMAND_NAME;
-    private static final String START_COMMAND_UNSUCCESSFUL_RESPONSE = "Не получилось вас зарегестрировать";
+    private static final String START_COMMAND_UNSUCCESSFUL_RESPONSE = CROSS + "Не получилось вас зарегестрировать";
     private static final String TRACK_COMMAND_SUCCESSFUL_RESPONSE = "Введите ссылку которую хотите начать отслеживать";
-    private static final String TRACK_COMMAND_UNSUCCESSFUL_RESPONSE = "Не получилось добавить ссылку для отслеживания";
+    private static final String TRACK_COMMAND_UNSUCCESSFUL_RESPONSE = CROSS + "Не получилось добавить ссылку для отслеживания";
     private static final String UNTRACK_COMMAND_SUCCESSFUL_RESPONSE =
         "Введите ссылку которую хотите прекратить отслеживать";
-    private static final String UNTRACK_COMMAND_UNSUCCESSFUL_RESPONSE = "Не получилось прекратить отслеживание ссылки";
+    private static final String UNTRACK_COMMAND_UNSUCCESSFUL_RESPONSE = CROSS + "Не получилось прекратить отслеживание ссылки";
 
     private final String wrongInputMessage =
-        "Некорректная команда, для просморта доступных команд введите " + HELP_COMMAND_NAME;
+        CROSS + "Некорректная команда, для просморта доступных команд введите " + HELP_COMMAND_NAME;
     private final String notAuthenticatedErrorMessage =
-        "Вы не зарегестрированы. Для регистрации введите " + START_COMMAND_NAME;
-    private final String wrongLinkFormatMessage = "Некорректный формат ссылки, попробуйте еще раз";
-    private final String successfulTrackingMessage = "Введенная вами ссылка теперь отслеживается";
-    private final String successfulUntrackingMessage = "Введенная вами ссылка перестала быть отслеживаемой";
+        CROSS + "Вы не зарегестрированы. Для регистрации введите " + START_COMMAND_NAME;
+    private final String wrongLinkFormatMessage = CROSS + "Некорректный формат ссылки, попробуйте еще раз";
+    private final String successfulTrackingMessage =
+        TICK + "Введенная вами ссылка теперь отслеживается. Для просмотра всех отслеживаемых ссылок введите " +
+            LIST_COMMAND_NAME;
+    private final String successfulUntrackingMessage =
+        TICK + "Введенная вами ссылка перестала быть отслеживаемой. Для просмотра всех отслеживаемых ссылок введите " +
+            LIST_COMMAND_NAME;
+    private final String linkIsAlreadyTrackedMessage =
+        CROSS + "Введенная вами ссылка уже была добавлена ранее. Для просмотра всех отслеживаемых ссылок введите " +
+            LIST_COMMAND_NAME;
+    private final String linkIsNotTrackingMessage =
+        CROSS + "Введенная вами ссылка не отслеживалась. Для просмотра всех отслеживаемых ссылок введите " + LIST_COMMAND_NAME;
     private final Map<TelegramBotCommandType, TelegramBotCommandInfo> infoByType = Map.of(
         TelegramBotCommandType.HELP, new TelegramBotCommandInfo(
             HELP_COMMAND_NAME,
