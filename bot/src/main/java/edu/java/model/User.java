@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 public class User {
     private final long userId;
-    @Setter private UserState state = UserState.UNAUTHENTICATED;
+    @Setter private UserState state = UserState.AUTHENTICATED;
     private final List<Link> links = new ArrayList<>();
 
     public User(long userId) {

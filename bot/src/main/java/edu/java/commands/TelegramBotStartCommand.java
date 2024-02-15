@@ -2,16 +2,19 @@ package edu.java.commands;
 
 import com.pengrad.telegrambot.model.Message;
 import edu.java.configuration.TelegramBotCommandConfiguration;
+import edu.java.repository.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public final class TelegramBotStartCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
+    private final UserDAO userDAO;
 
     @Autowired
-    public TelegramBotStartCommand(TelegramBotCommandConfiguration commandConfiguration) {
-        this.commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.START);
+    public TelegramBotStartCommand(TelegramBotCommandConfiguration commandConfiguration, UserDAO userDAO) {
+        commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.START);
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -26,6 +29,24 @@ public final class TelegramBotStartCommand implements TelegramBotCommand {
 
     @Override
     public String execute(Message message) {
+        userDAO.addUser(message.chat().id());
         return commandInfo.successfulResponse();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
