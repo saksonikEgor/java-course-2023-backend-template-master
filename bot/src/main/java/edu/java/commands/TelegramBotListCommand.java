@@ -52,6 +52,6 @@ public final class TelegramBotListCommand implements TelegramBotCommand {
         }
         return commandInfo.successfulResponse() + refs.stream()
             .map(URI::toString)
-            .collect(Collectors.joining("\n"));
+            .collect(Collectors.joining("\n----------------\n", "----------------\n", "\n----------------"));
     }
 }
