@@ -46,10 +46,22 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
 
     private SetMyCommands getAllTelegramBotCommands() {
         return new SetMyCommands(
-            infoByType.values()
-                .stream()
-                .map(info -> new BotCommand(info.commandName(), info.commandDefinition()))
-                .toArray(BotCommand[]::new)
+            new BotCommand(
+                infoByType.get(TelegramBotCommandType.TRACK).commandName(),
+                infoByType.get(TelegramBotCommandType.TRACK).commandDefinition()
+            ),
+            new BotCommand(
+                infoByType.get(TelegramBotCommandType.UNTRACK).commandName(),
+                infoByType.get(TelegramBotCommandType.UNTRACK).commandDefinition()
+            ),
+            new BotCommand(
+                infoByType.get(TelegramBotCommandType.LIST).commandName(),
+                infoByType.get(TelegramBotCommandType.LIST).commandDefinition()
+            ),
+            new BotCommand(
+                infoByType.get(TelegramBotCommandType.HELP).commandName(),
+                infoByType.get(TelegramBotCommandType.HELP).commandDefinition()
+            )
         );
     }
 
