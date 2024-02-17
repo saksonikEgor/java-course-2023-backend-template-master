@@ -1,11 +1,9 @@
 package edu.java.model;
 
-import lombok.Getter;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import lombok.Getter;
 
 @Getter
 public class Link {

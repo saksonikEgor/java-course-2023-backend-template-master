@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 public class User {
     private final long userId;
-    @Setter private UserState state = UserState.AUTHENTICATED;
     private final Set<Link> links = new HashSet<>();
+    @Setter private UserState state = UserState.AUTHENTICATED;
 
     public User(long userId) {
         this.userId = userId;
