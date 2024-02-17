@@ -17,6 +17,7 @@ public class User {
         this.userId = userId;
     }
 
+    @SuppressWarnings("MultipleStringLiterals")
     public void addLink(Link link) throws LinkIsAlreadyTrackedException {
         if (!links.add(link)) {
             throw new LinkIsAlreadyTrackedException(
@@ -25,6 +26,7 @@ public class User {
         }
     }
 
+    @SuppressWarnings("MultipleStringLiterals")
     public void removeLink(Link link) throws LinkIsNotTrackingException {
         if (!links.remove(link)) {
             throw new LinkIsNotTrackingException(
