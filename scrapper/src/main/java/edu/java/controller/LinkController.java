@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 @RequestMapping("/links")
 public class LinkController {
+    @SuppressWarnings("MultipleStringLiterals")
     @GetMapping
     @Operation(summary = "Получить все отслеживаемые ссылки")
     @ApiResponses(value = {
@@ -49,6 +50,7 @@ public class LinkController {
         return ResponseEntity.ok(response);
     }
 
+    @SuppressWarnings("MultipleStringLiterals")
     @PostMapping
     @Operation(summary = "Добавить отслеживание ссылки")
     @ApiResponses(value = {

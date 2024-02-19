@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @RequiredArgsConstructor
 public class ScrapperClient {
+    private static final String TG_CHAT_ID_HEADER_NAME = "Tg-Chat-Id";
     private final WebClient webClient;
 
     public void registerChat(long chatId) {
@@ -28,29 +29,32 @@ public class ScrapperClient {
             .block();
     }
 
+    @SuppressWarnings("MultipleStringLiterals")
     public ListLinksResponse getLinks(long chatId) {
         return webClient.get()
             .uri("/links")
-            .header("Tg-Chat-Id", String.valueOf(chatId))
+            .header(TG_CHAT_ID_HEADER_NAME, String.valueOf(chatId))
             .retrieve()
             .bodyToMono(ListLinksResponse.class)
             .block();
     }
 
+    @SuppressWarnings("MultipleStringLiterals")
     public LinkResponse addLink(long chatId, AddLinkRequest request) {
         return webClient.post()
             .uri("/links")
-            .header("Tg-Chat-Id", String.valueOf(chatId))
+            .header(TG_CHAT_ID_HEADER_NAME, String.valueOf(chatId))
             .bodyValue(request)
             .retrieve()
             .bodyToMono(LinkResponse.class)
             .block();
     }
 
+    @SuppressWarnings("MultipleStringLiterals")
     public LinkResponse deleteLink(long chatId, RemoveLinkRequest request) {
         return webClient.method(HttpMethod.DELETE)
             .uri("/links")
-            .header("Tg-Chat-Id", String.valueOf(chatId))
+            .header(TG_CHAT_ID_HEADER_NAME, String.valueOf(chatId))
             .bodyValue(request)
             .retrieve()
             .bodyToMono(LinkResponse.class)
