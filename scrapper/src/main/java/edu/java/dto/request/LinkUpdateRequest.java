@@ -1,8 +1,8 @@
-package edu.java.dto;
+package edu.java.dto.request;
 
 import java.util.List;
 
-public record LinkUpdate(
+public record LinkUpdateRequest(
     int id,
     String url,
     String description,
