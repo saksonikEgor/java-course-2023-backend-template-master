@@ -22,6 +22,9 @@ public class LinkController {
         @ApiResponse(responseCode = "200", description = "Обновление обработано"),
         @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
                      content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
+                                        mediaType = "application/json")),
+        @ApiResponse(responseCode = "404", description = "Ссылка не существует",
+                     content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
                                         mediaType = "application/json"))
     })
     public ResponseEntity<?> updateLink(@RequestBody LinkUpdateRequest request) {

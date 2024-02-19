@@ -33,6 +33,9 @@ public class LinkController {
                                         mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
                      content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
+                                        mediaType = "application/json")),
+        @ApiResponse(responseCode = "404", description = "Чат отсутствует",
+                     content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
                                         mediaType = "application/json"))
     })
     public ResponseEntity<ListLinksResponse> getLinks(@RequestHeader("Tg-Chat-Id") long chatId) {
@@ -53,6 +56,9 @@ public class LinkController {
                      content = @Content(schema = @Schema(implementation = LinkResponse.class),
                                         mediaType = "application/json")),
         @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
+                     content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
+                                        mediaType = "application/json")),
+        @ApiResponse(responseCode = "406", description = "Ссылка уже отслеживается",
                      content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
                                         mediaType = "application/json"))
     })
@@ -80,6 +86,9 @@ public class LinkController {
                      content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
                                         mediaType = "application/json")),
         @ApiResponse(responseCode = "404", description = "Ссылка не найдена",
+                     content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
+                                        mediaType = "application/json")),
+        @ApiResponse(responseCode = "406", description = "Ссылка уже удалена",
                      content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
                                         mediaType = "application/json"))
     })

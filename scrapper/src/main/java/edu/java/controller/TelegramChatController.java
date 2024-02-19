@@ -25,6 +25,9 @@ public class TelegramChatController {
                      content = @Content),
         @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
                      content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
+                                        mediaType = "application/json")),
+        @ApiResponse(responseCode = "406", description = "Пользователь уже зарегестрирован",
+                     content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
                                         mediaType = "application/json"))
     })
     public ResponseEntity<?> registerChat(@PathVariable("id") long chatId) {
