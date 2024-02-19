@@ -1,11 +1,11 @@
-package edu.java.dto.request;
+package edu.java.bot.dto.request;
 
 import java.util.List;
 
 public record LinkUpdateRequest(
-    int id,
+    long id,
     String url,
     String description,
-    List<Integer> tgChatIds
+    List<Long> tgChatIds
 ) {
 }
