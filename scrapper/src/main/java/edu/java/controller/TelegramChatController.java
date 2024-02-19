@@ -31,7 +31,7 @@ public class TelegramChatController {
                                         mediaType = "application/json"))
     })
     public ResponseEntity<?> registerChat(@PathVariable("id") long chatId) {
-        log.info("Registering for charId: " + chatId);
+        log.info("Registering for chatId: " + chatId);
         return ResponseEntity.ok().build();
     }
 
