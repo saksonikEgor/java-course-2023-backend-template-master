@@ -25,7 +25,7 @@ public class LinkController {
                                         mediaType = "application/json"))
     })
     public ResponseEntity<?> updateLink(@RequestBody LinkUpdateRequest request) {
-        log.info("Got request: {}", request);
+        log.info("Got request: " + request);
         return ResponseEntity.ok().build();
     }
 }
