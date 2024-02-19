@@ -1,6 +1,6 @@
 package edu.java.client;
 
-import edu.java.client.dto.response.StackOverflowResponse;
+import edu.java.dto.response.StackOverflowResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.reactive.function.client.WebClient;
 
