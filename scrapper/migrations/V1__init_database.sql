@@ -20,8 +20,9 @@ CREATE TABLE chats
 
 CREATE TABLE links_chats
 (
-    chat_id BIGINT PRIMARY KEY,
-    link_id BIGINT PRIMARY KEY,
+    chat_id BIGINT NOT NULL,
+    link_id BIGINT NOT NULL,
+    PRIMARY KEY (chat_id, link_id),
     CONSTRAINT chat_fkey FOREIGN KEY (chat_id)
         REFERENCES chats (chat_id) MATCH SIMPLE
         ON UPDATE CASCADE
