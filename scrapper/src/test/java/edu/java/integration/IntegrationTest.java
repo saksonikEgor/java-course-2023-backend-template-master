@@ -1,4 +1,4 @@
-package edu.java.scrapper;
+package edu.java.integration;
 
 import java.nio.file.Path;
 import java.sql.DriverManager;
