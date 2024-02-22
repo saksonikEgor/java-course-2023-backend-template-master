@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserInputHandlerTest {
     private static final long USER_ID = 123456L;
     private static final String VALID_URI = "https://github.com/saksonikEgor/java-course-2023-backend-template-master";
-    private static final String INVALID_URI = "invalid_uri";
+    private static final String INVALID_URI = "invalid uri";
     private static final String WRONG_INPUT = "wrong_input";
     private final TelegramBotCommandConfiguration commandConfiguration = new TelegramBotCommandConfiguration();
     private UserInputHandler handler;
