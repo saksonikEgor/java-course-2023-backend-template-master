@@ -14,7 +14,6 @@ import edu.java.model.UserState;
 import edu.java.repository.UserDAO;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

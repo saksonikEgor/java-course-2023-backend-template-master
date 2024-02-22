@@ -9,7 +9,6 @@ import edu.java.commands.TelegramBotTrackCommand;
 import edu.java.commands.TelegramBotUntrackCommand;
 import java.util.Map;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Getter

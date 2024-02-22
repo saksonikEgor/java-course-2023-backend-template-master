@@ -3,7 +3,6 @@ package edu.java.commands;
 import com.pengrad.telegrambot.model.Message;
 import edu.java.configuration.TelegramBotCommandConfiguration;
 import edu.java.repository.UserDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
