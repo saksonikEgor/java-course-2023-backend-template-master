@@ -62,7 +62,7 @@ public class TelegramBotCommandConfiguration {
     private final String linkIsNotTrackingMessage =
         CROSS + "Введенная вами ссылка не отслеживалась. Для просмотра всех отслеживаемых ссылок введите "
             + LIST_COMMAND_NAME;
-    private final Map<TelegramBotCommandType, TelegramBotCommandInfo> infoByType = Map.of(
+    private final Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo = Map.of(
         TelegramBotCommandType.HELP, new TelegramBotCommandInfo(
             HELP_COMMAND_NAME,
             HELP_COMMAND_DEFINITION,
@@ -94,7 +94,7 @@ public class TelegramBotCommandConfiguration {
             UNTRACK_COMMAND_UNSUCCESSFUL_RESPONSE
         )
     );
-    private final Map<String, TelegramBotCommandType> typeByName = Map.of(
+    private final Map<String, TelegramBotCommandType> nameToType = Map.of(
         HELP_COMMAND_NAME, TelegramBotCommandType.HELP,
         LIST_COMMAND_NAME, TelegramBotCommandType.LIST,
         START_COMMAND_NAME, TelegramBotCommandType.START,

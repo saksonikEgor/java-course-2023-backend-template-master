@@ -2,9 +2,7 @@ package edu.java.commands;
 
 import com.pengrad.telegrambot.model.Message;
 
-public sealed interface TelegramBotCommand
-    permits TelegramBotHelpCommand, TelegramBotListCommand, TelegramBotStartCommand,
-    TelegramBotTrackCommand, TelegramBotUntrackCommand {
+public interface TelegramBotCommand {
     String getName();
 
     String getDescription();

@@ -24,7 +24,7 @@ public class TelegramBotHelpCommandTest {
 
     @BeforeEach
     void setCommandInfo() {
-        helpCommandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.HELP);
+        helpCommandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.HELP);
     }
 
     @Test

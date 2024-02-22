@@ -13,14 +13,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public final class TelegramBotListCommand implements TelegramBotCommand {
+public class TelegramBotListCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
     private final UserDAO userDAO;
     private final String notAuthenticatedErrorMessage;
 
-    @Autowired
     public TelegramBotListCommand(TelegramBotCommandConfiguration commandConfiguration, UserDAO userDAO) {
-        commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.LIST);
+        commandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.LIST);
         this.userDAO = userDAO;
         notAuthenticatedErrorMessage = commandConfiguration.getNotAuthenticatedErrorMessage();
     }

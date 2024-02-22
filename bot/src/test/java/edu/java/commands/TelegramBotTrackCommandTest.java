@@ -24,7 +24,7 @@ public class TelegramBotTrackCommandTest {
 
     @BeforeEach
     void setCommandInfo() {
-        trackCommandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.TRACK);
+        trackCommandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.TRACK);
     }
 
     @Test

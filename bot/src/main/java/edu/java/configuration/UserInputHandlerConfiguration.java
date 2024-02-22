@@ -15,9 +15,8 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Configuration
 public class UserInputHandlerConfiguration {
-    private final Map<TelegramBotCommandType, TelegramBotCommand> commandByType;
+    private final Map<TelegramBotCommandType, TelegramBotCommand> typeToCommand;
 
-    @Autowired
     public UserInputHandlerConfiguration(
         TelegramBotHelpCommand helpCommand,
         TelegramBotListCommand listCommand,
@@ -25,7 +24,7 @@ public class UserInputHandlerConfiguration {
         TelegramBotTrackCommand trackCommand,
         TelegramBotUntrackCommand untrackCommand
     ) {
-        commandByType = Map.of(
+        typeToCommand = Map.of(
             TelegramBotCommandType.HELP, helpCommand,
             TelegramBotCommandType.LIST, listCommand,
             TelegramBotCommandType.START, startCommand,

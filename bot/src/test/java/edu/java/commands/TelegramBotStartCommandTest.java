@@ -24,7 +24,7 @@ public class TelegramBotStartCommandTest {
 
     @BeforeEach
     void setCommandInfo() {
-        startCommandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.START);
+        startCommandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.START);
     }
 
     @Test

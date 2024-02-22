@@ -32,7 +32,7 @@ public class TelegramBotListCommandTest {
 
     @BeforeEach
     void setCommandInfo() {
-        listCommandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.LIST);
+        listCommandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.LIST);
     }
 
     @Test

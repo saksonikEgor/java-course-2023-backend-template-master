@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class TelegramBotStartCommand implements TelegramBotCommand {
+public class TelegramBotStartCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
     private final UserDAO userDAO;
 
-    @Autowired
     public TelegramBotStartCommand(TelegramBotCommandConfiguration commandConfiguration, UserDAO userDAO) {
-        commandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.START);
+        commandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.START);
         this.userDAO = userDAO;
     }
 

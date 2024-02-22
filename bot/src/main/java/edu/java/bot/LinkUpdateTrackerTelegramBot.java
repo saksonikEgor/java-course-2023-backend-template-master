@@ -22,17 +22,16 @@ import org.springframework.stereotype.Component;
 public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
     private final ApplicationConfig applicationConfig;
     private final UserInputHandler inputHandler;
-    private final Map<TelegramBotCommandType, TelegramBotCommandInfo> infoByType;
+    private final Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo;
     private TelegramBot telegramBot;
 
-    @Autowired
     public LinkUpdateTrackerTelegramBot(
         ApplicationConfig applicationConfig, UserInputHandler inputHandler,
         TelegramBotCommandConfiguration commandConfiguration
     ) {
         this.applicationConfig = applicationConfig;
         this.inputHandler = inputHandler;
-        infoByType = commandConfiguration.getInfoByType();
+        typeToInfo = commandConfiguration.getTypeToInfo();
     }
 
     @Override
@@ -47,20 +46,20 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
     private SetMyCommands getAllTelegramBotCommands() {
         return new SetMyCommands(
             new BotCommand(
-                infoByType.get(TelegramBotCommandType.TRACK).commandName(),
-                infoByType.get(TelegramBotCommandType.TRACK).commandDefinition()
+                typeToInfo.get(TelegramBotCommandType.TRACK).commandName(),
+                typeToInfo.get(TelegramBotCommandType.TRACK).commandDefinition()
             ),
             new BotCommand(
-                infoByType.get(TelegramBotCommandType.UNTRACK).commandName(),
-                infoByType.get(TelegramBotCommandType.UNTRACK).commandDefinition()
+                typeToInfo.get(TelegramBotCommandType.UNTRACK).commandName(),
+                typeToInfo.get(TelegramBotCommandType.UNTRACK).commandDefinition()
             ),
             new BotCommand(
-                infoByType.get(TelegramBotCommandType.LIST).commandName(),
-                infoByType.get(TelegramBotCommandType.LIST).commandDefinition()
+                typeToInfo.get(TelegramBotCommandType.LIST).commandName(),
+                typeToInfo.get(TelegramBotCommandType.LIST).commandDefinition()
             ),
             new BotCommand(
-                infoByType.get(TelegramBotCommandType.HELP).commandName(),
-                infoByType.get(TelegramBotCommandType.HELP).commandDefinition()
+                typeToInfo.get(TelegramBotCommandType.HELP).commandName(),
+                typeToInfo.get(TelegramBotCommandType.HELP).commandDefinition()
             )
         );
     }

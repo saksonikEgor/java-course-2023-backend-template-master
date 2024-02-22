@@ -7,10 +7,7 @@ import edu.java.exception.WrongLinkFormatException;
 import edu.java.model.Link;
 import edu.java.model.User;
 import edu.java.model.UserState;
-import edu.java.util.URIUtils;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,29 +15,29 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserDAO {
-    private final Map<Long, User> userById = new HashMap<>();
-    private final Map<URI, Link> linkByURI = new HashMap<>();
+    private final Map<Long, User> idToUser = new HashMap<>();
+    private final Map<URI, Link> uriToLink = new HashMap<>();
 
     public void addUser(long userId) {
-        if (userById.containsKey(userId)) {
+        if (idToUser.containsKey(userId)) {
             refuseWaiting(userId);
             return;
         }
-        userById.put(userId, new User(userId));
+        idToUser.put(userId, new User(userId));
     }
 
     private void refuseWaiting(long userId) {
-        userById.get(userId).setState(UserState.AUTHENTICATED);
+        idToUser.get(userId).setState(UserState.AUTHENTICATED);
     }
 
     public void refuseWaitingIfAuthenticated(long userId) {
-        if (userById.get(userId) != null) {
+        if (idToUser.get(userId) != null) {
             refuseWaiting(userId);
         }
     }
 
     public List<URI> getAllURIOfUser(long userId) throws UserIsUnauthenticatedException {
-        User user = userById.get(userId);
+        User user = idToUser.get(userId);
         checkForAuthenticate(user, "Cant get all URIs of user because user is unauthenticated");
 
         return user.getLinks()
@@ -50,21 +47,21 @@ public class UserDAO {
     }
 
     public void makeTheUserWaitForTrack(long userId) throws UserIsUnauthenticatedException {
-        User user = userById.get(userId);
+        User user = idToUser.get(userId);
         checkForAuthenticate(user, "Cant make the user wait for track because user is unauthenticated");
 
         user.setState(UserState.WAITING_FOR_TRACK);
     }
 
     public void makeTheUserWaitForUntrack(long userId) throws UserIsUnauthenticatedException {
-        User user = userById.get(userId);
+        User user = idToUser.get(userId);
         checkForAuthenticate(user, "Cant make the user wait for untrack because user is unauthenticated");
 
         user.setState(UserState.WAITING_FOR_UNTRACK);
     }
 
     public boolean isUserWaiting(long userId) {
-        User user = userById.get(userId);
+        User user = idToUser.get(userId);
 
         if (user == null) {
             return false;
@@ -84,19 +81,19 @@ public class UserDAO {
         URI uri;
 
         try {
-            uri = URIUtils.castStringToURI(stringURI);
-        } catch (MalformedURLException | URISyntaxException e) {
+            uri = castStringToURI(stringURI);
+        } catch (IllegalArgumentException | NullPointerException e) {
             throw new WrongLinkFormatException("Cant cast string '" + stringURI + "' to URI");
         }
 
-        User user = userById.get(userId);
-        Link link = linkByURI.get(uri);
+        User user = idToUser.get(userId);
+        Link link = uriToLink.get(uri);
 
         if (user.getState() == UserState.WAITING_FOR_TRACK) {
             if (link == null) {
                 link = new Link(uri);
             }
-            linkByURI.put(uri, link);
+            uriToLink.put(uri, link);
 
             user.addLink(link);
             link.addUser(user);
@@ -113,6 +110,10 @@ public class UserDAO {
     }
 
     public UserState getStateOfUser(long userId) {
-        return userById.get(userId).getState();
+        return idToUser.get(userId).getState();
+    }
+
+    private URI castStringToURI(String uri) throws IllegalArgumentException, NullPointerException {
+        return URI.create(uri);
     }
 }

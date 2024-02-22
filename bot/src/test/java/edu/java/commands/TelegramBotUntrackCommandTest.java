@@ -24,7 +24,7 @@ public class TelegramBotUntrackCommandTest {
 
     @BeforeEach
     void setCommandInfo() {
-        untrackCommandInfo = commandConfiguration.getInfoByType().get(TelegramBotCommandType.UNTRACK);
+        untrackCommandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.UNTRACK);
     }
 
     @Test

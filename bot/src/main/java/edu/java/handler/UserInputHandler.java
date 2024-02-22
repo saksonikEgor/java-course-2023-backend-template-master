@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class UserInputHandler implements InputHandler {
-    private final Map<String, TelegramBotCommandType> typeByName;
-    private final Map<TelegramBotCommandType, TelegramBotCommand> commandByType;
+    private final Map<String, TelegramBotCommandType> nameToType;
+    private final Map<TelegramBotCommandType, TelegramBotCommand> typeToCommand;
     private final String wrongInputMessage;
     private final String wrongLinkFormatMassage;
     private final String successfulTrackingMessage;
@@ -30,13 +30,12 @@ public class UserInputHandler implements InputHandler {
     private final String linkIsNotTrackingMessage;
     private final UserDAO userDAO;
 
-    @Autowired
     public UserInputHandler(
         TelegramBotCommandConfiguration commandConfiguration,
         UserInputHandlerConfiguration handlerConfiguration, UserDAO userDAO
     ) {
-        typeByName = commandConfiguration.getTypeByName();
-        commandByType = handlerConfiguration.getCommandByType();
+        nameToType = commandConfiguration.getNameToType();
+        typeToCommand = handlerConfiguration.getTypeToCommand();
         wrongInputMessage = commandConfiguration.getWrongInputMessage();
         wrongLinkFormatMassage = commandConfiguration.getWrongLinkFormatMessage();
         successfulTrackingMessage = commandConfiguration.getSuccessfulTrackingMessage();
@@ -53,8 +52,8 @@ public class UserInputHandler implements InputHandler {
         String textMessage;
 
         try {
-            TelegramBotCommandType type = typeByName.get(message.text());
-            TelegramBotCommand command = commandByType.get(type);
+            TelegramBotCommandType type = nameToType.get(message.text());
+            TelegramBotCommand command = typeToCommand.get(type);
 
             log.info("Command type: " + type);
 
