@@ -17,9 +17,10 @@ public class ChatJDBCRepository {
     @Transactional
     public void add(Chat chat) {
         jdbcTemplate.update(
-            "INSERT INTO chats(created_date, state) VALUES (?, ?)",
+            "INSERT INTO chats(chat_id, created_at, state) VALUES (?, ?, ?::chat_state)",
+            chat.getChatId(),
             chat.getCreatedAt(),
-            chat.getState()
+            chat.getState().name()
         );
     }
 
