@@ -4,6 +4,13 @@ app:
     interval: 10s
     force-check-delay: 10s
 
+db:
+  database:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/scrapper
+    username: postgres
+    password: postgres
+
 spring:
   application:
     name: scrapper
@@ -13,6 +20,9 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+
+bot:
+  base-url: "http://localhost:8090"
 
 github:
   base-url: "https://api.github.com"

@@ -1,5 +1,6 @@
 package edu.java.configuration;
 
+import edu.java.client.BotClient;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
 import lombok.Setter;
@@ -16,6 +17,8 @@ public class ClientConfiguration {
     private String gitHubBaseURL;
     @Value("${stackoverflow.base-url:https://api.stackexchange.com}")
     private String stackOverflowBaseURL;
+    @Value("${bot.base-url:http://localhost:8090}")
+    private String botBaseURL;
 
     @Bean
     public GitHubClient gitHubClient() {
@@ -25,6 +28,11 @@ public class ClientConfiguration {
     @Bean
     public StackOverflowClient stackOverflowClient() {
         return new StackOverflowClient(buildClientByBaseURL(stackOverflowBaseURL));
+    }
+
+    @Bean
+    public BotClient botClient() {
+        return new BotClient(buildClientByBaseURL(botBaseURL));
     }
 
     private @NotNull WebClient buildClientByBaseURL(String baseURL) {
