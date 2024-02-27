@@ -3,14 +3,16 @@ package edu.java.service.jdbc;
 import edu.java.dto.model.Chat;
 import edu.java.dto.model.Link;
 import edu.java.exception.chat.ChatIsNotExistException;
+import edu.java.exception.link.LinkIsNotTrackingException;
 import edu.java.respository.jdbc.ChatJDBCRepository;
 import edu.java.respository.jdbc.LinkJDBCRepository;
 import edu.java.service.LinkService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -19,20 +21,20 @@ public class LinkJDBCService implements LinkService {
     private final LinkJDBCRepository linkRepository;
 
     @Override
-    public void addLinkToChat(long chatId, URI url) throws ChatIsNotExistException {
+    public void addLinkToChat(long chatId, Link link) throws ChatIsNotExistException {
         if (chatRepository.getChatById(chatId).isEmpty()) {
             throw new ChatIsNotExistException("Chat with id:" + chatId + " is not exist");
         }
 
-        long linkId = linkRepository.getLinkByURI(url.toString())
-            .map(Link::getLinkId)
-            .orElse(linkRepository.add(new Link(url.toString())));
+        long linkId = linkRepository.getLinkByURI(link.getUrl())
+                .map(Link::getLinkId)
+                .orElse(linkRepository.add(link));
 
         linkRepository.addLinkToChat(linkId, chatId);
     }
 
     @Override
-    public void removeLinkFromChat(long chatId, URI url) {
+    public void removeLinkFromChat(long chatId, URI url) throws ChatIsNotExistException {
         String stringURL = url.toString();
 
         if (chatRepository.getChatById(chatId).isEmpty()) {
@@ -40,8 +42,8 @@ public class LinkJDBCService implements LinkService {
         }
 
         long linkId = linkRepository.getLinkByURI(stringURL)
-            .map(Link::getLinkId)
-            .orElse(linkRepository.add(new Link(stringURL)));
+                .map(Link::getLinkId)
+                .orElseThrow(() -> new LinkIsNotTrackingException("Link with url:" + url + " is not tracking"));
 
         linkRepository.removeLinkFromChat(linkId, chatId);
 
