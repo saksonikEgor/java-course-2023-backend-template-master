@@ -64,7 +64,7 @@ public class LinkJDBCService implements LinkService {
     }
 
     @Override
-    public void update(Link link) {
+    public void updateAllLinks() {
         //TODO
 //        linkRepository.getLinkByURI(link.getUrl())
 //            .orElse(new Link(url.toString()));

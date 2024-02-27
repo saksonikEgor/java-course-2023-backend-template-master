@@ -11,5 +11,5 @@ public interface LinkService {
 
     Collection<Link> listAll(long chatId);
 
-    void update(Link link);
+    void updateAllLinks();
 }
