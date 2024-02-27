@@ -14,11 +14,15 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 @Valid
 public class Chat {
-    private Long chatId;
+    private long chatId;
     @NotNull
-    private OffsetDateTime createdAt;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
     @NotNull
-    private ChatState state;
+    private ChatState state = ChatState.REGISTERED;
     @NotNull
     private List<Link> links = new ArrayList<>();
+
+    public Chat(long chatId) {
+        this.chatId = chatId;
+    }
 }
