@@ -3,7 +3,7 @@ package edu.java.integration.jdbc;
 import edu.java.dto.model.Link;
 import edu.java.integration.IntegrationTest;
 import edu.java.integration.configuration.JDBCConfiguration;
-import edu.java.respository.LinkJDBCRepository;
+import edu.java.respository.jdbc.LinkJDBCRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -32,14 +32,11 @@ public class LinkJDBCRepositoryTest extends IntegrationTest {
         link.setLastUpdate(dateTime);
         link.setLastCheck(dateTime);
 
-        linkRepository.add(link);
+        link.setLinkId(linkRepository.add(link));
         List<Link> links = linkRepository.findAll();
 
-        Link addedLink = links.getFirst();
-        link.setLinkId(addedLink.getLinkId());
-
         assertEquals(1, links.size());
-        assertEquals(link, addedLink);
+        assertEquals(link, links.getFirst());
     }
 
     @Test
@@ -53,9 +50,8 @@ public class LinkJDBCRepositoryTest extends IntegrationTest {
         link.setLastUpdate(dateTime);
         link.setLastCheck(dateTime);
 
-        linkRepository.add(link);
-        link.setLinkId(linkRepository.findAll().getFirst().getLinkId());
-        linkRepository.remove(link);
+        link.setLinkId(linkRepository.add(link));
+        linkRepository.remove(link.getUrl());
 
         assertTrue(linkRepository.findAll().isEmpty());
     }

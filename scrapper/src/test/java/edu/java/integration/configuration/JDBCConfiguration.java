@@ -1,8 +1,8 @@
 package edu.java.integration.configuration;
 
 import edu.java.integration.IntegrationTest;
-import edu.java.respository.ChatJDBCRepository;
-import edu.java.respository.LinkJDBCRepository;
+import edu.java.respository.jdbc.ChatJDBCRepository;
+import edu.java.respository.jdbc.LinkJDBCRepository;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

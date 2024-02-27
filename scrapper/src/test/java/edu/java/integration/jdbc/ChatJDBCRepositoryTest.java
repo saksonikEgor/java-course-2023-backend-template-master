@@ -4,7 +4,7 @@ import edu.java.dto.model.Chat;
 import edu.java.dto.model.ChatState;
 import edu.java.integration.IntegrationTest;
 import edu.java.integration.configuration.JDBCConfiguration;
-import edu.java.respository.ChatJDBCRepository;
+import edu.java.respository.jdbc.ChatJDBCRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class ChatJDBCRepositoryTest extends IntegrationTest {
     void addChat() {
         Chat chat = new Chat();
         chat.setChatId(579324L);
-        chat.setState(ChatState.registered);
+        chat.setState(ChatState.REGISTERED);
         chat.setCreatedAt(OffsetDateTime.parse("2023-02-05T18:38:39Z"));
 
         chatRepository.add(chat);
@@ -44,11 +44,11 @@ public class ChatJDBCRepositoryTest extends IntegrationTest {
     void removeChat() {
         Chat chat = new Chat();
         chat.setChatId(579324L);
-        chat.setState(ChatState.registered);
+        chat.setState(ChatState.REGISTERED);
         chat.setCreatedAt(OffsetDateTime.parse("2023-02-05T18:38:39Z"));
 
         chatRepository.add(chat);
-        chatRepository.remove(chat);
+        chatRepository.remove(chat.getChatId());
 
         assertTrue(chatRepository.findAll().isEmpty());
     }
