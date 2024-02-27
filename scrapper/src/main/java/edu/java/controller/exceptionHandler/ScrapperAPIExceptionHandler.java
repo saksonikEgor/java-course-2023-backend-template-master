@@ -1,10 +1,10 @@
 package edu.java.controller.exceptionHandler;
 
 import edu.java.dto.response.APIErrorResponse;
-import edu.java.exception.ChatIsNotExistException;
-import edu.java.exception.LinkIsAlreadyTrackedException;
-import edu.java.exception.LinkIsNotTrackingException;
-import edu.java.exception.UserIsAlreadyRegisteredException;
+import edu.java.exception.chat.ChatIsNotExistException;
+import edu.java.exception.link.LinkIsAlreadyTrackedException;
+import edu.java.exception.link.LinkIsNotTrackingException;
+import edu.java.exception.chat.ChatIsAlreadyRegisteredException;
 import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -41,8 +41,8 @@ public class ScrapperAPIExceptionHandler {
         return handleException(exception, HttpStatus.NOT_ACCEPTABLE, "Link is not tracking");
     }
 
-    @ExceptionHandler(UserIsAlreadyRegisteredException.class)
-    public ResponseEntity<APIErrorResponse> userIsAlreadyRegistered(UserIsAlreadyRegisteredException exception) {
+    @ExceptionHandler(ChatIsAlreadyRegisteredException.class)
+    public ResponseEntity<APIErrorResponse> userIsAlreadyRegistered(ChatIsAlreadyRegisteredException exception) {
         return handleException(exception, HttpStatus.NOT_ACCEPTABLE, "User is already registered");
     }
 
