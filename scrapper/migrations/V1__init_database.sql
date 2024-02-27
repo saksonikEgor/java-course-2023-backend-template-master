@@ -1,9 +1,9 @@
-CREATE TYPE chat_state AS ENUM ('registered', 'waiting_for_track', 'waiting_for_untrack');
+CREATE TYPE chat_state AS ENUM ('REGISTERED', 'WAITING_FOR_TRACK', 'WAITING_FOR_UNTRACK');
 
 
 CREATE TABLE links
 (
-    link_id     SERIAL PRIMARY KEY,
+    link_id     BIGSERIAL PRIMARY KEY,
     url         VARCHAR(2048) UNIQUE                   NOT NULL,
     last_update TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     last_check  TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
@@ -14,7 +14,7 @@ CREATE TABLE chats
 (
     chat_id    BIGINT PRIMARY KEY,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT now()        NOT NULL,
-    state      chat_state               DEFAULT 'registered' NOT NULL
+    state      chat_state               DEFAULT 'REGISTERED' NOT NULL
 );
 
 
