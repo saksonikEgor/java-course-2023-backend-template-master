@@ -61,15 +61,12 @@ public class LinkJDBCService implements LinkService {
     }
 
     @Override
-    public Collection<Link> listAll(long chatId) {
-        return linkRepository.findAll();
+    public List<Link> listAll(long chatId) {
+        return linkRepository.getAllLinksForChat(chatId);
     }
 
     @Override
-    public void updateAllLinks() {
-        //TODO
-//        linkRepository.getLinkByURI(link.getUrl())
-//            .orElse(new Link(url.toString()));
-
+    public List<Link> listAll() {
+        return linkRepository.findAll();
     }
 }

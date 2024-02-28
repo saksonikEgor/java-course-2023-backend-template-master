@@ -7,6 +7,8 @@ import edu.java.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ChatJDBCService implements ChatService {
@@ -15,14 +17,19 @@ public class ChatJDBCService implements ChatService {
     @Override
     public void register(long chatId) {
         chatRepository.getChatById(chatId)
-            .ifPresentOrElse(
-                chat -> chatRepository.changeState(chatId, ChatState.REGISTERED),
-                () -> chatRepository.add(new Chat(chatId))
-            );
+                .ifPresentOrElse(
+                        chat -> chatRepository.changeState(chatId, ChatState.REGISTERED),
+                        () -> chatRepository.add(new Chat(chatId))
+                );
     }
 
     @Override
     public void unregister(long chatId) {
         chatRepository.remove(chatId);
+    }
+
+    @Override
+    public List<Chat> getTrackingChatsForLink(long linkId) {
+        return chatRepository.getAllChatsForLink(linkId);
     }
 }

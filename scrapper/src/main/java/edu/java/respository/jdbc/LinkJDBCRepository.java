@@ -32,7 +32,6 @@ public class LinkJDBCRepository {
         new Timestamp(rs.getTimestamp(4).getTime()).toInstant().atOffset(ZoneOffset.UTC),
         new ArrayList<>(),
         BaseURL.valueOf(rs.getString(5)),
-//        rs.getObject(5, BaseURL.class),
         Map2JsonConverter.json2Map((PGobject) rs.getObject(6))
     );
 
@@ -63,7 +62,6 @@ public class LinkJDBCRepository {
 
     public List<Link> findAll() {
         return jdbcTemplate.query("SELECT * FROM links", rowMapper);
-//        return jdbcTemplate.query("SELECT * FROM links", new BeanPropertyRowMapper<>(Link.class));
     }
 
     public Optional<Link> getLinkByURI(String url) {
@@ -72,11 +70,6 @@ public class LinkJDBCRepository {
             rowMapper,
             url
         ));
-//        return Optional.ofNullable(jdbcTemplate.queryForObject(
-//            "SELECT * FROM links WHERE url = ?",
-//            new BeanPropertyRowMapper<>(Link.class),
-//            url
-//        ));
     }
 
     @Transactional
@@ -103,10 +96,5 @@ public class LinkJDBCRepository {
             rowMapper,
             chatId
         );
-//        return jdbcTemplate.query(
-//            "SELECT * FROM links l JOIN links_chats lc ON l.link_id = lc.link_id WHERE lc.chat_id = ?",
-//            new BeanPropertyRowMapper<>(Link.class),
-//            chatId
-//        );
     }
 }
