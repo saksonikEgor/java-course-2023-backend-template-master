@@ -1,5 +1,6 @@
 package edu.java.integration.jdbc;
 
+import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.integration.IntegrationTest;
 import edu.java.integration.configuration.JDBCConfiguration;
@@ -26,11 +27,7 @@ public class LinkJDBCRepositoryTest extends IntegrationTest {
     @Rollback
     void addLink() {
         OffsetDateTime dateTime = OffsetDateTime.parse("2023-02-05T18:38:39Z");
-
-        Link link = new Link();
-        link.setUrl("https://github.com/saksonikEgor/Checkers");
-        link.setLastUpdate(dateTime);
-        link.setLastCheck(dateTime);
+        Link link = new Link("https://github.com/saksonikEgor/Checkers", dateTime, dateTime, BaseURL.GITHUB);
 
         link.setLinkId(linkRepository.add(link));
         List<Link> links = linkRepository.findAll();
@@ -44,11 +41,7 @@ public class LinkJDBCRepositoryTest extends IntegrationTest {
     @Rollback
     void removeLink() {
         OffsetDateTime dateTime = OffsetDateTime.parse("2023-02-05T18:38:39Z");
-
-        Link link = new Link();
-        link.setUrl("https://github.com/saksonikEgor/Checkers");
-        link.setLastUpdate(dateTime);
-        link.setLastCheck(dateTime);
+        Link link = new Link("https://github.com/saksonikEgor/Checkers", dateTime, dateTime, BaseURL.GITHUB);
 
         link.setLinkId(linkRepository.add(link));
         linkRepository.remove(link.getUrl());

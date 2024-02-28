@@ -1,12 +1,16 @@
 CREATE TYPE chat_state AS ENUM ('REGISTERED', 'WAITING_FOR_TRACK', 'WAITING_FOR_UNTRACK');
 
+CREATE TYPE base_url_type AS ENUM ('GITHUB', 'STACKOVERFLOW');
+
 
 CREATE TABLE links
 (
     link_id     BIGSERIAL PRIMARY KEY,
     url         VARCHAR(2048) UNIQUE                   NOT NULL,
     last_update TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
-    last_check  TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
+    last_check  TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    base_url    base_url_type                          NOT NULL,
+    info        JSON                                   NOT NULL
 );
 
 
