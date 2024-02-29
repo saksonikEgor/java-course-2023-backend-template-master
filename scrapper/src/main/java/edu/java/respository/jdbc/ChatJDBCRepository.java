@@ -1,10 +1,11 @@
 package edu.java.respository.jdbc;
 
 import edu.java.dto.model.Chat;
+import edu.java.dto.model.ChatState;
 import java.util.List;
 import java.util.Optional;
-import edu.java.dto.model.ChatState;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -45,11 +46,15 @@ public class ChatJDBCRepository {
     }
 
     public Optional<Chat> getChatById(long chatId) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(
-            "SELECT * FROM chats WHERE chat_id = ?",
-            new BeanPropertyRowMapper<>(Chat.class),
-            chatId
-        ));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(
+                "SELECT * FROM chats WHERE chat_id = ?",
+                new BeanPropertyRowMapper<>(Chat.class),
+                chatId
+            ));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public List<Chat> getAllChatsForLink(long linkId) {

@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.postgresql.util.PGobject;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -67,11 +68,15 @@ public class LinkJDBCRepository {
     }
 
     public Optional<Link> getLinkByURI(String url) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(
-            "SELECT * FROM links WHERE url = ?",
-            rowMapper,
-            url
-        ));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(
+                "SELECT * FROM links WHERE url = ?",
+                rowMapper,
+                url
+            ));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Transactional
