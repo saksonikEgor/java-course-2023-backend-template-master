@@ -75,7 +75,7 @@ public class LinkUpdaterScheduler {
                     log.error(e.getMessage());
                     return new Update(link, null);
                 } catch (Exception e) {
-                    log.error("Some fatal error while getting a response", e);
+                    log.error("Fatal error while getting a response", e);
                     return new Update(link, null);
                 }
             })
