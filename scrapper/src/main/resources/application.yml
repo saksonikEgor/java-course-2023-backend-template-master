@@ -2,6 +2,7 @@ app:
   scheduler:
     enable: true
     interval: 10s
+    link-check-interval: 60s
     force-check-delay: 10s
 
 db:
@@ -22,13 +23,13 @@ logging:
   config: classpath:log4j2-plain.xml
 
 bot:
-  base-url: "http://localhost:8090"
+  base-url: http://localhost:8090
 
 github:
-  base-url: "https://api.github.com"
+  base-url: https://api.github.com
 
 stackoverflow:
-  base-url: "https://api.stackexchange.com"
+  base-url: https://api.stackexchange.com
 
 springdoc:
   swagger-ui:
