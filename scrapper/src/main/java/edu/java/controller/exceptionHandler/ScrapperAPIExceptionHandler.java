@@ -1,10 +1,10 @@
 package edu.java.controller.exceptionHandler;
 
 import edu.java.dto.response.APIErrorResponse;
+import edu.java.exception.chat.ChatIsAlreadyRegisteredException;
 import edu.java.exception.chat.ChatIsNotExistException;
 import edu.java.exception.link.LinkIsAlreadyTrackedException;
 import edu.java.exception.link.LinkIsNotTrackingException;
-import edu.java.exception.chat.ChatIsAlreadyRegisteredException;
 import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,11 @@ import org.springframework.web.client.HttpClientErrorException;
 public class ScrapperAPIExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<APIErrorResponse> messageNotReadable(HttpMessageNotReadableException exception) {
+        return handleException(exception, HttpStatus.BAD_REQUEST, "Invalid query parameters");
+    }
+
+    @ExceptionHandler(ClassCastException.class)
+    public ResponseEntity<APIErrorResponse> userIsAlreadyRegistered(ClassCastException exception) {
         return handleException(exception, HttpStatus.BAD_REQUEST, "Invalid query parameters");
     }
 
