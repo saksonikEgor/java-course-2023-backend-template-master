@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,9 +102,9 @@ public class LinkJDBCRepository {
 
     public List<Link> getAllLinksWithLastCheckBeforeDuration(Duration duration) {
         return jdbcTemplate.query(
-            "SELECT * FROM links WHERE last_check < now() - interval ? second",
+            "SELECT * FROM links WHERE last_check < ?",
             rowMapper,
-            duration.toSeconds()
+            OffsetDateTime.now().minus(duration)
         );
     }
 }
