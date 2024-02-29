@@ -9,6 +9,7 @@ import edu.java.dto.request.LinkUpdateRequest;
 import edu.java.dto.response.SiteAPIResponse;
 import edu.java.service.ChatService;
 import edu.java.service.LinkService;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class LinkUpdaterScheduler {
     private final BotClient botClient;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
+    private final Duration linkCheckInterval;
 
     @Scheduled(fixedDelayString = "#{@schedulerInterval.toMillis()}")
     public void update() {
@@ -57,7 +59,7 @@ public class LinkUpdaterScheduler {
     }
 
     private List<Update> getUpdates() {
-        return linkService.listAll()
+        return linkService.listAllOldCheckLinks(linkCheckInterval)
             .stream()
             .map(link -> {
                 try {

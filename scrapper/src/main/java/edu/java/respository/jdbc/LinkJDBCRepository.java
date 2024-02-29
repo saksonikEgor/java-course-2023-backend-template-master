@@ -6,6 +6,7 @@ import edu.java.util.Map2JsonConverter;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +96,14 @@ public class LinkJDBCRepository {
             "SELECT * FROM links l JOIN links_chats lc ON l.link_id = lc.link_id WHERE lc.chat_id = ?",
             rowMapper,
             chatId
+        );
+    }
+
+    public List<Link> getAllLinksWithLastCheckBeforeDuration(Duration duration) {
+        return jdbcTemplate.query(
+            "SELECT * FROM links WHERE last_check < now() - interval ? second",
+            rowMapper,
+            duration.toSeconds()
         );
     }
 }

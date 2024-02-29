@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
-import java.util.Collection;
+import java.time.Duration;
 import java.util.List;
 
 @Service
@@ -68,5 +68,10 @@ public class LinkJDBCService implements LinkService {
     @Override
     public List<Link> listAll() {
         return linkRepository.findAll();
+    }
+
+    @Override
+    public List<Link> listAllOldCheckLinks(Duration duration) {
+        return linkRepository.getAllLinksWithLastCheckBeforeDuration(duration);
     }
 }

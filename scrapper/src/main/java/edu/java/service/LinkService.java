@@ -2,7 +2,7 @@ package edu.java.service;
 
 import edu.java.dto.model.Link;
 import java.net.URI;
-import java.util.Collection;
+import java.time.Duration;
 import java.util.List;
 
 public interface LinkService {
@@ -13,4 +13,6 @@ public interface LinkService {
     List<Link> listAll(long chatId);
 
     List<Link> listAll();
+
+    List<Link> listAllOldCheckLinks(Duration duration);
 }
