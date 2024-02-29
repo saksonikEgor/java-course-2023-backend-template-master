@@ -24,9 +24,9 @@ public class Link {
     @NotBlank
     private String url;
     @NotNull
-    private OffsetDateTime lastUpdate;
+    private OffsetDateTime lastUpdate = OffsetDateTime.now();
     @NotNull
-    private OffsetDateTime lastCheck;
+    private OffsetDateTime lastCheck = OffsetDateTime.now();
     @NotNull
     private List<Chat> chats = new ArrayList<>();
     @NotNull
@@ -43,6 +43,14 @@ public class Link {
         this.url = url;
         this.lastUpdate = lastUpdate;
         this.lastCheck = lastCheck;
+        this.baseURL = baseURL;
+    }
+
+    public Link(
+            String url,
+            @NotNull BaseURL baseURL
+    ) {
+        this.url = url;
         this.baseURL = baseURL;
     }
 }
