@@ -2,7 +2,11 @@ package edu.java.configuration;
 
 import edu.java.client.BotClient;
 import edu.java.client.GitHubClient;
+import edu.java.client.SiteAPIClient;
 import edu.java.client.StackOverflowClient;
+import edu.java.dto.model.BaseURL;
+import java.util.Map;
+import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +23,16 @@ public class ClientConfiguration {
     private String stackOverflowBaseURL;
     @Value("${bot.base-url:http://localhost:8090}")
     private String botBaseURL;
+    @Getter
+    private final Map<String, BaseURL> stringToBaseUrl = Map.of(
+        gitHubBaseURL, BaseURL.GITHUB,
+        stackOverflowBaseURL, BaseURL.STACKOVERFLOW
+    );
+    @Getter
+    private final Map<BaseURL, SiteAPIClient> baseUrlToClient = Map.of(
+        BaseURL.GITHUB, gitHubClient(),
+        BaseURL.STACKOVERFLOW, stackOverflowClient()
+    );
 
     @Bean
     public GitHubClient gitHubClient() {
