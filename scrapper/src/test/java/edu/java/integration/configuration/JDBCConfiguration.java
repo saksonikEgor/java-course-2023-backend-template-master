@@ -28,18 +28,18 @@ public class JDBCConfiguration {
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate() {
+    public JdbcTemplate jdbcTemplateForContainer() {
         return new JdbcTemplate(containerDataSource());
     }
 
     @Bean
     public LinkJDBCRepository linkJDBCRepository() {
-        return new LinkJDBCRepository(jdbcTemplate());
+        return new LinkJDBCRepository(jdbcTemplateForContainer());
     }
 
     @Bean
     public ChatJDBCRepository chatJDBCRepository() {
-        return new ChatJDBCRepository(jdbcTemplate());
+        return new ChatJDBCRepository(jdbcTemplateForContainer());
     }
 
     @Bean

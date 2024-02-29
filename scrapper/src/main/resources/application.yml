@@ -5,8 +5,7 @@ app:
     link-check-interval: 60s
     force-check-delay: 10s
 
-db:
-  database:
+datasource:
     driver: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/scrapper
     username: postgres
