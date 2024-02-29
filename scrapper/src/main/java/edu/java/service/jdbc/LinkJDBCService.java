@@ -39,21 +39,19 @@ public class LinkJDBCService implements LinkService {
     }
 
     @Override
-    public void removeLinkFromChat(long chatId, URI url) throws ChatIsNotExistException, LinkIsNotTrackingException {
-        String stringURL = url.toString();
-
+    public void removeLinkFromChat(long chatId, String url) throws ChatIsNotExistException, LinkIsNotTrackingException {
         if (chatRepository.getChatById(chatId).isEmpty()) {
             throw new ChatIsNotExistException("Chat with id:" + chatId + " is not exist");
         }
 
-        long linkId = linkRepository.getLinkByURI(stringURL)
+        long linkId = linkRepository.getLinkByURI(url)
                 .map(Link::getLinkId)
                 .orElseThrow(() -> new LinkIsNotTrackingException("Link with url:" + url + " is not tracking"));
 
         linkRepository.removeLinkFromChat(linkId, chatId);
 
-        if (getChatsForLink(stringURL).isEmpty()) {
-            removeLink(stringURL);
+        if (getChatsForLink(url).isEmpty()) {
+            removeLink(url);
         }
     }
 

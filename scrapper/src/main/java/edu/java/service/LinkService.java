@@ -11,7 +11,7 @@ import java.util.List;
 public interface LinkService {
     void addLinkToChat(long chatId, Link link) throws ChatIsNotExistException, LinkIsAlreadyTrackedException;
 
-    void removeLinkFromChat(long chatId, URI url) throws ChatIsNotExistException, LinkIsNotTrackingException;
+    void removeLinkFromChat(long chatId, String url) throws ChatIsNotExistException, LinkIsNotTrackingException;
 
     List<Link> listAll(long chatId) throws ChatIsNotExistException;
 
