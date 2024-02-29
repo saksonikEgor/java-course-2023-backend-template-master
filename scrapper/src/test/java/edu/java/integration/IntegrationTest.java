@@ -18,7 +18,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 public abstract class IntegrationTest {
-    private static final Path MIGRATIONS_PATH = Path.of(System.getProperty("user.dir"), "migrations");
+    private static final Path MIGRATIONS_PATH =
+        Path.of(System.getProperty("user.dir")).getParent().resolve("migrations");
     public static PostgreSQLContainer<?> POSTGRES;
 
     static {
