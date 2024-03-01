@@ -56,14 +56,15 @@ public class ScrapperAPIExceptionHandler {
         @NotNull HttpStatus status,
         String description
     ) {
-        return ResponseEntity.badRequest().body(new APIErrorResponse(
-            description,
-            String.valueOf(status.value()),
-            exception.getClass().getSimpleName(),
-            exception.getMessage(),
-            Arrays.stream(exception.getStackTrace())
-                .map(StackTraceElement::toString)
-                .toArray(String[]::new)
-        ));
+        return ResponseEntity.status(status)
+            .body(new APIErrorResponse(
+                description,
+                String.valueOf(status.value()),
+                exception.getClass().getSimpleName(),
+                exception.getMessage(),
+                Arrays.stream(exception.getStackTrace())
+                    .map(StackTraceElement::toString)
+                    .toArray(String[]::new)
+            ));
     }
 }
