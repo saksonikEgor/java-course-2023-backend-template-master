@@ -1,11 +1,12 @@
 package edu.java.client;
 
-import edu.java.client.dto.response.GitHubResponse;
+import edu.java.dto.response.GitHubResponse;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @RequiredArgsConstructor
-public class GitHubClient {
+public class GitHubClient implements SiteAPIClient {
     private final WebClient webClient;
 
     public GitHubResponse getInfo(String user, String repo) {
@@ -14,5 +15,10 @@ public class GitHubClient {
             .retrieve()
             .bodyToMono(GitHubResponse.class)
             .block();
+    }
+
+    @Override
+    public void call(Map<String, String> info) throws Exception {
+        getInfo(info.get("user"), info.get("repo"));
     }
 }

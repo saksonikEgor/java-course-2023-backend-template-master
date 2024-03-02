@@ -17,6 +17,16 @@ public record ApplicationConfig(
         return scheduler.interval();
     }
 
-    public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
+    @Bean
+    public Duration linkCheckInterval() {
+        return scheduler.linkCheckInterval();
+    }
+
+    public record Scheduler(
+        boolean enable,
+        @NotNull Duration interval,
+        @NotNull Duration linkCheckInterval,
+        @NotNull Duration forceCheckDelay
+    ) {
     }
 }
