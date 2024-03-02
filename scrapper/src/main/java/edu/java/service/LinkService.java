@@ -4,7 +4,6 @@ import edu.java.dto.model.Link;
 import edu.java.exception.chat.ChatIsNotExistException;
 import edu.java.exception.link.LinkIsAlreadyTrackedException;
 import edu.java.exception.link.LinkIsNotTrackingException;
-import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 

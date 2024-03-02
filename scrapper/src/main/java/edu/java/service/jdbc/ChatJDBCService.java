@@ -1,7 +1,6 @@
 package edu.java.service.jdbc;
 
 import edu.java.dto.model.Chat;
-import edu.java.dto.model.ChatState;
 import edu.java.exception.chat.ChatIsAlreadyRegisteredException;
 import edu.java.exception.chat.ChatIsNotExistException;
 import edu.java.respository.jdbc.ChatJDBCRepository;
@@ -28,7 +27,7 @@ public class ChatJDBCService implements ChatService {
     @Override
     public void unregister(long chatId) throws ChatIsNotExistException {
         chatRepository.getChatById(chatId)
-                .orElseThrow(() -> new ChatIsNotExistException("Chat with id '" + chatId + "' is not exist"));
+            .orElseThrow(() -> new ChatIsNotExistException("Chat with id '" + chatId + "' is not exist"));
 
         chatRepository.remove(chatId);
     }

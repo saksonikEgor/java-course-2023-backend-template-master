@@ -3,7 +3,6 @@ package edu.java.service;
 import edu.java.dto.model.Chat;
 import edu.java.exception.chat.ChatIsAlreadyRegisteredException;
 import edu.java.exception.chat.ChatIsNotExistException;
-import org.apache.catalina.LifecycleState;
 import java.util.List;
 
 public interface ChatService {

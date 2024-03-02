@@ -19,16 +19,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 @Setter
 public class ClientConfiguration {
+    private static final Pattern GITHUB_URL_PATTERN = Pattern.compile("https://github.com/(.+)/(.+)");
+    private static final Pattern STACKOVERFLOW_URL_PATTERN = Pattern.compile(
+        "https://stackoverflow.com/questions/(\\d+)/(.+)"
+    );
     @Value("${github.base-url:https://api.github.com}")
     private String gitHubBaseURL;
     @Value("${stackoverflow.base-url:https://api.stackexchange.com}")
     private String stackOverflowBaseURL;
     @Value("${bot.base-url:http://localhost:8090}")
     private String botBaseURL;
-    private static final Pattern GITHUB_URL_PATTERN = Pattern.compile("https://github.com/(.+)/(.+)");
-    private static final Pattern STACKOVERFLOW_URL_PATTERN = Pattern.compile(
-        "https://stackoverflow.com/questions/(\\d+)/(.+)"
-    );
 
     @Bean
     public GitHubClient gitHubClient() {
