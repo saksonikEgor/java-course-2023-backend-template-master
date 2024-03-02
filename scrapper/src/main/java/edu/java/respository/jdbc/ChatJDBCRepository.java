@@ -40,8 +40,8 @@ public class ChatJDBCRepository {
     public void changeState(long chatId, ChatState state) {
         jdbcTemplate.update(
             "UPDATE chats SET state = ?::chat_state WHERE chat_id = ?",
-            chatId,
-            state.name()
+            state.name(),
+            chatId
         );
     }
 
@@ -65,15 +65,15 @@ public class ChatJDBCRepository {
         );
     }
 
-    public List<Chat> getAllChatsForLink(String url) {
-        return jdbcTemplate.query(
-            """
-                SELECT * FROM chats c
-                    JOIN links_chats lc ON c.chat_id = lc.chat_id
-                    JOIN links l ON lc.link_id = l.link_id
-                WHERE l.url = ?""",
-            new BeanPropertyRowMapper<>(Chat.class),
-            url
-        );
-    }
+//    public List<Chat> getAllChatsForLink(String url) {
+//        return jdbcTemplate.query(
+//            """
+//                SELECT * FROM chats c
+//                    JOIN links_chats lc ON c.chat_id = lc.chat_id
+//                    JOIN links l ON lc.link_id = l.link_id
+//                WHERE l.url = ?""",
+//            new BeanPropertyRowMapper<>(Chat.class),
+//            url
+//        );
+//    }
 }

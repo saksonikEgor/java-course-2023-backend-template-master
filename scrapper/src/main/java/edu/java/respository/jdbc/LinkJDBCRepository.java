@@ -68,7 +68,7 @@ public class LinkJDBCRepository {
         return jdbcTemplate.query("SELECT * FROM links", rowMapper);
     }
 
-    public Optional<Link> getLinkByURI(String url) {
+    public Optional<Link> getLinkByURL(String url) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                 "SELECT * FROM links WHERE url = ?",

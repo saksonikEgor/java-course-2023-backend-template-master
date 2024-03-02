@@ -2,12 +2,13 @@ package edu.java.service.jdbc;
 
 import edu.java.dto.model.Chat;
 import edu.java.dto.model.ChatState;
+import edu.java.exception.chat.ChatIsAlreadyRegisteredException;
+import edu.java.exception.chat.ChatIsNotExistException;
 import edu.java.respository.jdbc.ChatJDBCRepository;
 import edu.java.service.ChatService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,16 +16,20 @@ public class ChatJDBCService implements ChatService {
     private final ChatJDBCRepository chatRepository;
 
     @Override
-    public void register(long chatId) {
-        chatRepository.getChatById(chatId)
-                .ifPresentOrElse(
-                        chat -> chatRepository.changeState(chatId, ChatState.REGISTERED),
-                        () -> chatRepository.add(new Chat(chatId))
-                );
+    public void register(long chatId) throws ChatIsAlreadyRegisteredException {
+        if (chatRepository.getChatById(chatId).isPresent()) {
+            throw new ChatIsAlreadyRegisteredException("Chat with id '" + chatId + "' is already registered");
+        }
+
+        chatRepository.add(new Chat(chatId));
+
     }
 
     @Override
-    public void unregister(long chatId) {
+    public void unregister(long chatId) throws ChatIsNotExistException {
+        chatRepository.getChatById(chatId)
+                .orElseThrow(() -> new ChatIsNotExistException("Chat with id '" + chatId + "' is not exist"));
+
         chatRepository.remove(chatId);
     }
 

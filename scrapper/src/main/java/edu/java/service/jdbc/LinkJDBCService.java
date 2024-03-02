@@ -29,36 +29,30 @@ public class LinkJDBCService implements LinkService {
             throw new LinkIsAlreadyTrackedException("Link with url '" + link.getUrl() + "' is already tracked");
         }
 
-        long linkId = linkRepository.getLinkByURI(link.getUrl())
+        long linkId = linkRepository.getLinkByURL(link.getUrl())
             .map(Link::getLinkId)
-            .orElse(linkRepository.add(link));
+            .orElseGet(() -> linkRepository.add(link));
 
         linkRepository.addLinkToChat(linkId, chatId);
     }
 
     @Override
     public void removeLinkFromChat(long chatId, String url) throws ChatIsNotExistException, LinkIsNotTrackingException {
-        if (chatRepository.getChatById(chatId).isEmpty()) {
-            throw new ChatIsNotExistException("Chat with id:" + chatId + " is not exist");
-        }
-
-        long linkId = linkRepository.getLinkByURI(url)
-            .map(Link::getLinkId)
-            .orElseThrow(() -> new LinkIsNotTrackingException("Link with url:" + url + " is not tracking"));
+        long linkId = listAll(chatId).stream()
+            .filter(l -> Objects.equals(l.getUrl(), url))
+            .findAny()
+            .orElseThrow(() -> new LinkIsNotTrackingException("Link with url:" + url + " is not tracking"))
+            .getLinkId();
 
         linkRepository.removeLinkFromChat(linkId, chatId);
 
-        if (getChatsForLink(url).isEmpty()) {
-            removeLink(url);
+        if (getChatsForLink(linkId).isEmpty()) {
+            linkRepository.remove(url);
         }
     }
 
-    private List<Chat> getChatsForLink(String stringURL) {
-        return chatRepository.getAllChatsForLink(stringURL);
-    }
-
-    private void removeLink(String stringURL) {
-        linkRepository.remove(stringURL);
+    private List<Chat> getChatsForLink(long linkId) {
+        return chatRepository.getAllChatsForLink(linkId);
     }
 
     @Override
