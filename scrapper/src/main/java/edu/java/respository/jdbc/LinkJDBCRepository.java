@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -110,6 +111,21 @@ public class LinkJDBCRepository {
             "SELECT * FROM links WHERE last_check < ?",
             rowMapper,
             OffsetDateTime.now().minus(duration)
+        );
+    }
+
+    @Transactional
+    public void updateCheckedLinks(List<Long> checkedLinkIds) {
+        if (checkedLinkIds.isEmpty()) {
+            return;
+        }
+
+        jdbcTemplate.update(
+            String.format(
+                "UPDATE links SET last_check = now() WHERE link_id IN (%s)",
+                String.join(",", Collections.nCopies(checkedLinkIds.size(), "?"))
+            ),
+            checkedLinkIds.toArray()
         );
     }
 }

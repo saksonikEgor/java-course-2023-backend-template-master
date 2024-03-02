@@ -8,13 +8,11 @@ import edu.java.exception.link.LinkIsNotTrackingException;
 import edu.java.respository.jdbc.ChatJDBCRepository;
 import edu.java.respository.jdbc.LinkJDBCRepository;
 import edu.java.service.LinkService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -25,15 +23,15 @@ public class LinkJDBCService implements LinkService {
     @Override
     public void addLinkToChat(long chatId, Link link) throws ChatIsNotExistException, LinkIsAlreadyTrackedException {
         if (
-                listAll(chatId).stream()
-                        .anyMatch(l -> Objects.equals(l.getUrl(), link.getUrl()))
+            listAll(chatId).stream()
+                .anyMatch(l -> Objects.equals(l.getUrl(), link.getUrl()))
         ) {
             throw new LinkIsAlreadyTrackedException("Link with url '" + link.getUrl() + "' is already tracked");
         }
 
         long linkId = linkRepository.getLinkByURI(link.getUrl())
-                .map(Link::getLinkId)
-                .orElse(linkRepository.add(link));
+            .map(Link::getLinkId)
+            .orElse(linkRepository.add(link));
 
         linkRepository.addLinkToChat(linkId, chatId);
     }
@@ -45,8 +43,8 @@ public class LinkJDBCService implements LinkService {
         }
 
         long linkId = linkRepository.getLinkByURI(url)
-                .map(Link::getLinkId)
-                .orElseThrow(() -> new LinkIsNotTrackingException("Link with url:" + url + " is not tracking"));
+            .map(Link::getLinkId)
+            .orElseThrow(() -> new LinkIsNotTrackingException("Link with url:" + url + " is not tracking"));
 
         linkRepository.removeLinkFromChat(linkId, chatId);
 
@@ -66,7 +64,7 @@ public class LinkJDBCService implements LinkService {
     @Override
     public List<Link> listAll(long chatId) throws ChatIsNotExistException {
         chatRepository.getChatById(chatId)
-                .orElseThrow(() -> new ChatIsNotExistException("Chat with id '" + chatId + "' is not exist"));
+            .orElseThrow(() -> new ChatIsNotExistException("Chat with id '" + chatId + "' is not exist"));
 
         return linkRepository.getAllLinksForChat(chatId);
     }
@@ -78,6 +76,14 @@ public class LinkJDBCService implements LinkService {
 
     @Override
     public List<Link> listAllOldCheckLinks(Duration duration) {
-        return linkRepository.getAllLinksWithLastCheckBeforeDuration(duration);
+        List<Link> checkedLinks = linkRepository.getAllLinksWithLastCheckBeforeDuration(duration);
+
+        linkRepository.updateCheckedLinks(
+            checkedLinks.stream()
+                .map(Link::getLinkId)
+                .toList()
+        );
+
+        return checkedLinks;
     }
 }
