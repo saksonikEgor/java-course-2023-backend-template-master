@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class ChatJDBCService implements ChatService {
     private final ChatJDBCRepository chatRepository;
 
+    @SuppressWarnings("MultipleStringLiterals")
     @Override
     public void register(long chatId) throws ChatIsAlreadyRegisteredException {
         if (chatRepository.getChatById(chatId).isPresent()) {

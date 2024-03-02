@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class LinkJDBCRepository {
     private final JdbcTemplate jdbcTemplate;
+    @SuppressWarnings("MagicNumber")
     private final RowMapper<Link> rowMapper = (rs, rn) -> new Link(
         rs.getLong(1),
         rs.getString(2),
@@ -39,6 +40,7 @@ public class LinkJDBCRepository {
         Map2JsonConverter.json2Map((PGobject) rs.getObject(6))
     );
 
+    @SuppressWarnings("MagicNumber")
     @Transactional
     public long add(Link link) {
         KeyHolder keyHolder = new GeneratedKeyHolder();

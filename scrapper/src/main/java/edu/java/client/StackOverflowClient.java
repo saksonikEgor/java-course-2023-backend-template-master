@@ -21,12 +21,6 @@ public class StackOverflowClient implements SiteAPIClient {
 
     @Override
     public void call(Map<String, String> info) throws Exception {
-        webClient.get()
-            .uri(uri -> uri.path("/questions/{id}")
-                .queryParam("site", "stackoverflow")
-                .build(info.get("question_id")))
-            .retrieve()
-            .bodyToMono(StackOverflowResponse.class)
-            .block();
+        getInfo(Long.parseLong(info.get("question_id")));
     }
 }

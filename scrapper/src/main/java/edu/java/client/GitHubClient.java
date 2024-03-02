@@ -19,10 +19,6 @@ public class GitHubClient implements SiteAPIClient {
 
     @Override
     public void call(Map<String, String> info) throws Exception {
-        webClient.get()
-            .uri("repos/{user}/{repo}", info.get("user"), info.get("repo"))
-            .retrieve()
-            .bodyToMono(GitHubResponse.class)
-            .block();
+        getInfo(info.get("user"), info.get("repo"));
     }
 }

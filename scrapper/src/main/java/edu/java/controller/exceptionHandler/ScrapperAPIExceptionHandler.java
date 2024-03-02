@@ -16,13 +16,8 @@ import org.springframework.web.client.HttpClientErrorException;
 
 @RestControllerAdvice
 public class ScrapperAPIExceptionHandler {
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<APIErrorResponse> messageNotReadable(HttpMessageNotReadableException exception) {
-        return handleException(exception, HttpStatus.BAD_REQUEST, "Invalid query parameters");
-    }
-
-    @ExceptionHandler(ClassCastException.class)
-    public ResponseEntity<APIErrorResponse> userIsAlreadyRegistered(ClassCastException exception) {
+    @ExceptionHandler({HttpMessageNotReadableException.class, ClassCastException.class})
+    public ResponseEntity<APIErrorResponse> messageNotReadable(RuntimeException exception) {
         return handleException(exception, HttpStatus.BAD_REQUEST, "Invalid query parameters");
     }
 
