@@ -48,9 +48,11 @@ public class Link {
 
     public Link(
             String url,
-            @NotNull BaseURL baseURL
+            @NotNull BaseURL baseURL,
+            @NotNull Map<String, String> info
     ) {
         this.url = url;
         this.baseURL = baseURL;
+        this.info = info;
     }
 }

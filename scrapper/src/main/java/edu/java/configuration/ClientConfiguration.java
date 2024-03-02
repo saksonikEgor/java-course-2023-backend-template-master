@@ -6,6 +6,9 @@ import edu.java.client.SiteAPIClient;
 import edu.java.client.StackOverflowClient;
 import edu.java.dto.model.BaseURL;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +25,10 @@ public class ClientConfiguration {
     private String stackOverflowBaseURL;
     @Value("${bot.base-url:http://localhost:8090}")
     private String botBaseURL;
+    private static final Pattern GITHUB_URL_PATTERN = Pattern.compile("https://github.com/(.+)/(.+)");
+    private static final Pattern STACKOVERFLOW_URL_PATTERN = Pattern.compile(
+        "https://stackoverflow.com/questions/(\\d+)/(.+)"
+    );
 
     @Bean
     public GitHubClient gitHubClient() {
@@ -38,11 +45,17 @@ public class ClientConfiguration {
         return new BotClient(buildClientByBaseURL(botBaseURL));
     }
 
+    private @NotNull WebClient buildClientByBaseURL(String baseURL) {
+        return WebClient.builder()
+            .baseUrl(baseURL)
+            .build();
+    }
+
     @Bean
-    public Map<String, BaseURL> stringToBaseUrl() {
+    public Map<String, BaseURL> domainToBaseURL() {
         return Map.of(
-            "https://api.github.com", BaseURL.GITHUB,
-            "https://api.stackexchange.com", BaseURL.STACKOVERFLOW
+            "github.com", BaseURL.GITHUB,
+            "stackoverflow.com", BaseURL.STACKOVERFLOW
         );
     }
 
@@ -54,9 +67,25 @@ public class ClientConfiguration {
         );
     }
 
-    private @NotNull WebClient buildClientByBaseURL(String baseURL) {
-        return WebClient.builder()
-            .baseUrl(baseURL)
-            .build();
+    @Bean
+    public Map<BaseURL, Function<String, Map<String, String>>> baseURLToExtractingInfoFunc() {
+        return Map.of(
+            BaseURL.GITHUB, url -> {
+                Matcher matcher = GITHUB_URL_PATTERN.matcher(url);
+                matcher.find();
+
+                return Map.of(
+                    "user", matcher.group(1),
+                    "repo", matcher.group(2)
+                );
+            },
+            BaseURL.STACKOVERFLOW, url -> {
+                Matcher matcher = STACKOVERFLOW_URL_PATTERN.matcher(url);
+                matcher.find();
+
+                return Map.of("question_id", matcher.group(1));
+            }
+        );
     }
+
 }

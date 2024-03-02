@@ -1,7 +1,7 @@
 package edu.java.client;
 
-public interface SiteAPIClient {
-    boolean matchPath(String path);
+import java.util.Map;
 
-    void call(String path) throws Exception;
+public interface SiteAPIClient {
+    void call(Map<String, String> info) throws Exception;
 }

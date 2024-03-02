@@ -1,13 +1,12 @@
 package edu.java.client;
 
 import edu.java.dto.response.StackOverflowResponse;
-import java.util.regex.Pattern;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @RequiredArgsConstructor
 public class StackOverflowClient implements SiteAPIClient {
-    private static final String PATH_PATTERN = "/questions/\\d+?site=stackoverflow";
     private final WebClient webClient;
 
     public StackOverflowResponse getInfo(long id) {
@@ -21,14 +20,11 @@ public class StackOverflowClient implements SiteAPIClient {
     }
 
     @Override
-    public boolean matchPath(String path) {
-        return Pattern.matches(PATH_PATTERN, path);
-    }
-
-    @Override
-    public void call(String path) throws Exception {
+    public void call(Map<String, String> info) throws Exception {
         webClient.get()
-            .uri(path)
+            .uri(uri -> uri.path("/questions/{id}")
+                .queryParam("site", "stackoverflow")
+                .build(info.get("question_id")))
             .retrieve()
             .bodyToMono(StackOverflowResponse.class)
             .block();
