@@ -1,11 +1,6 @@
 package edu.java.controller.exceptionHandler;
 
 import edu.java.dto.response.APIErrorResponse;
-import edu.java.exception.ChatIsNotExistException;
-import edu.java.exception.LinkIsAlreadyTrackedException;
-import edu.java.exception.LinkIsNotTrackingException;
-import edu.java.exception.UserIsAlreadyRegisteredException;
-import java.util.Arrays;
 import edu.java.exception.chat.ChatIsAlreadyRegisteredException;
 import edu.java.exception.chat.ChatIsNotExistException;
 import edu.java.exception.link.LinkIsAlreadyTrackedException;
