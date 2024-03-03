@@ -1,6 +1,6 @@
 package edu.java.client;
 
-import edu.java.client.dto.response.GitHubResponse;
+import edu.java.dto.response.GitHubResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.reactive.function.client.WebClient;
 

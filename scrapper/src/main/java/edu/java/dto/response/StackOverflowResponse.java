@@ -1,4 +1,4 @@
-package edu.java.client.dto.response;
+package edu.java.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,7 +11,7 @@ public record StackOverflowResponse(
     OffsetDateTime updateAt,
     long id,
     String title
-) implements APIResponse {
+) implements SiteAPIResponse {
     @JsonCreator
     public StackOverflowResponse(@JsonProperty("items") List<Question> items) {
         this(

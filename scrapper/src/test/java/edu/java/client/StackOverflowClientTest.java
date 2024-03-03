@@ -2,7 +2,7 @@ package edu.java.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import edu.java.client.dto.response.StackOverflowResponse;
+import edu.java.dto.response.StackOverflowResponse;
 import edu.java.configuration.ClientConfiguration;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.AfterAll;
