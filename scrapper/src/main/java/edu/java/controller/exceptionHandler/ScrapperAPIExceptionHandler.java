@@ -1,11 +1,15 @@
 package edu.java.controller.exceptionHandler;
 
 import edu.java.dto.response.APIErrorResponse;
+import edu.java.exception.ChatIsNotExistException;
+import edu.java.exception.LinkIsAlreadyTrackedException;
+import edu.java.exception.LinkIsNotTrackingException;
+import edu.java.exception.UserIsAlreadyRegisteredException;
+import java.util.Arrays;
 import edu.java.exception.chat.ChatIsAlreadyRegisteredException;
 import edu.java.exception.chat.ChatIsNotExistException;
 import edu.java.exception.link.LinkIsAlreadyTrackedException;
 import edu.java.exception.link.LinkIsNotTrackingException;
-import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,15 +55,11 @@ public class ScrapperAPIExceptionHandler {
         @NotNull HttpStatus status,
         String description
     ) {
-        return ResponseEntity.status(status)
-            .body(new APIErrorResponse(
-                description,
-                String.valueOf(status.value()),
-                exception.getClass().getSimpleName(),
-                exception.getMessage(),
-                Arrays.stream(exception.getStackTrace())
-                    .map(StackTraceElement::toString)
-                    .toArray(String[]::new)
-            ));
+        return ResponseEntity.badRequest().body(new APIErrorResponse(
+            description,
+            String.valueOf(status.value()),
+            exception.getClass().getSimpleName(),
+            exception.getMessage()
+        ));
     }
 }

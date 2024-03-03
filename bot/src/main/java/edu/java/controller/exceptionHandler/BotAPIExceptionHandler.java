@@ -2,7 +2,6 @@ package edu.java.controller.exceptionHandler;
 
 import edu.java.dto.response.APIErrorResponse;
 import edu.java.exception.LinkIsNotExistException;
-import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +30,7 @@ public class BotAPIExceptionHandler {
             description,
             String.valueOf(status.value()),
             exception.getClass().getSimpleName(),
-            exception.getMessage(),
-            Arrays.stream(exception.getStackTrace())
-                .map(StackTraceElement::toString)
-                .toArray(String[]::new)
+            exception.getMessage()
         ));
     }
 }
