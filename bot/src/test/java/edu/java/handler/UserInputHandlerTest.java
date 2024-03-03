@@ -9,7 +9,7 @@ import edu.java.commands.TelegramBotStartCommand;
 import edu.java.commands.TelegramBotTrackCommand;
 import edu.java.commands.TelegramBotUntrackCommand;
 import edu.java.configuration.TelegramBotCommandConfiguration;
-import edu.java.configuration.UserInputHandlerConfiguration;
+import edu.java.configuration.ChatInputHandlerConfiguration;
 import edu.java.repository.UserDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,22 +21,23 @@ public class UserInputHandlerTest {
     private static final String INVALID_URI = "invalid uri";
     private static final String WRONG_INPUT = "wrong_input";
     private final TelegramBotCommandConfiguration commandConfiguration = new TelegramBotCommandConfiguration();
-    private UserInputHandler handler;
+    private ChatInputHandler handler;
     private UserDAO userDAO;
 
     @BeforeEach
     void createHandler() {
         userDAO = new UserDAO();
 
-        UserInputHandlerConfiguration handlerConfiguration = new UserInputHandlerConfiguration(
+        ChatInputHandlerConfiguration handlerConfiguration = new ChatInputHandlerConfiguration(
             new TelegramBotHelpCommand(commandConfiguration, userDAO),
             new TelegramBotListCommand(commandConfiguration, userDAO),
             new TelegramBotStartCommand(commandConfiguration, userDAO),
             new TelegramBotTrackCommand(commandConfiguration, userDAO),
-            new TelegramBotUntrackCommand(commandConfiguration, userDAO)
+            new TelegramBotUntrackCommand(commandConfiguration, userDAO),
+            commandConfiguration
         );
 
-        handler = new UserInputHandler(commandConfiguration, handlerConfiguration, userDAO);
+        handler = new ChatInputHandler(commandConfiguration, handlerConfiguration, userDAO);
     }
 
     @Test

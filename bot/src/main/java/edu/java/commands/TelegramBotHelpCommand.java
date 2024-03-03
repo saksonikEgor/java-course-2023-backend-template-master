@@ -1,18 +1,15 @@
 package edu.java.commands;
 
-import com.pengrad.telegrambot.model.Message;
-import edu.java.configuration.TelegramBotCommandConfiguration;
 import edu.java.repository.UserDAO;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TelegramBotHelpCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
-    private final UserDAO userDAO;
 
-    public TelegramBotHelpCommand(TelegramBotCommandConfiguration commandConfiguration, UserDAO userDAO) {
-        this.commandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.HELP);
-        this.userDAO = userDAO;
+    public TelegramBotHelpCommand(Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo) {
+        this.commandInfo = typeToInfo.get(TelegramBotCommandType.HELP);
     }
 
     @Override
@@ -26,8 +23,8 @@ public class TelegramBotHelpCommand implements TelegramBotCommand {
     }
 
     @Override
-    public String execute(Message message) {
-        userDAO.refuseWaitingIfAuthenticated(message.chat().id());
+    public String execute(String text, long chatId) {
+        userDAO.refuseWaitingIfAuthenticated(chatId);
         return commandInfo.successfulResponse();
     }
 }

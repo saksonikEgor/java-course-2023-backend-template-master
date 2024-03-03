@@ -1,18 +1,23 @@
 package edu.java.commands;
 
 import com.pengrad.telegrambot.model.Message;
+import edu.java.client.ScrapperClient;
 import edu.java.configuration.TelegramBotCommandConfiguration;
 import edu.java.repository.UserDAO;
 import org.springframework.stereotype.Component;
+import java.util.Map;
 
 @Component
 public class TelegramBotStartCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
-    private final UserDAO userDAO;
+    private final ScrapperClient scrapperClient;
 
-    public TelegramBotStartCommand(TelegramBotCommandConfiguration commandConfiguration, UserDAO userDAO) {
-        commandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.START);
-        this.userDAO = userDAO;
+    public TelegramBotStartCommand(
+        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
+        ScrapperClient scrapperClient
+    ) {
+        commandInfo = typeToInfo.get(TelegramBotCommandType.START);
+        this.scrapperClient = scrapperClient;
     }
 
     @Override
@@ -26,8 +31,8 @@ public class TelegramBotStartCommand implements TelegramBotCommand {
     }
 
     @Override
-    public String execute(Message message) {
-        userDAO.addUser(message.chat().id());
+    public String execute(String text, long chatId) {
+        userDAO.addUser(chatId);
         return commandInfo.successfulResponse();
     }
 }

@@ -8,9 +8,8 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.commands.TelegramBotCommandInfo;
 import edu.java.commands.TelegramBotCommandType;
-import edu.java.configuration.ApplicationConfig;
-import edu.java.configuration.TelegramBotCommandConfiguration;
-import edu.java.handler.UserInputHandler;
+import edu.java.configuration.ApplicationConfiguration;
+import edu.java.handler.ChatInputHandler;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -19,25 +18,26 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
-    private final ApplicationConfig applicationConfig;
-    private final UserInputHandler inputHandler;
+    private final ApplicationConfiguration applicationConfiguration;
+    private final ChatInputHandler inputHandler;
     private final Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo;
     private TelegramBot telegramBot;
 
     public LinkUpdateTrackerTelegramBot(
-        ApplicationConfig applicationConfig, UserInputHandler inputHandler,
-        TelegramBotCommandConfiguration commandConfiguration
+        ApplicationConfiguration applicationConfiguration,
+        ChatInputHandler inputHandler,
+        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo
     ) {
-        this.applicationConfig = applicationConfig;
+        this.applicationConfiguration = applicationConfiguration;
         this.inputHandler = inputHandler;
-        typeToInfo = commandConfiguration.getTypeToInfo();
+        this.typeToInfo = typeToInfo;
     }
 
     @Override
     public void start() {
-        log.info("Starting Telegram bot with token: " + applicationConfig.telegramToken());
+        log.info("Starting Telegram bot with token: " + applicationConfiguration.telegramToken());
 
-        telegramBot = new TelegramBot(applicationConfig.telegramToken());
+        telegramBot = new TelegramBot(applicationConfiguration.telegramToken());
         telegramBot.execute(getAllTelegramBotCommands());
         telegramBot.setUpdatesListener(this);
     }

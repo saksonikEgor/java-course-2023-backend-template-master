@@ -1,11 +1,11 @@
 package edu.java.commands;
 
-import com.pengrad.telegrambot.model.Message;
-import edu.java.configuration.TelegramBotCommandConfiguration;
-import edu.java.exception.UserIsUnauthenticatedException;
+import edu.java.client.ScrapperClient;
+import edu.java.exception.chat.ChatIsNotRegisteredException;
 import edu.java.repository.UserDAO;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,13 +14,17 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class TelegramBotListCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
-    private final UserDAO userDAO;
-    private final String notAuthenticatedErrorMessage;
+    private final String notRegisteredErrorMessage;
+    private final ScrapperClient scrapperClient;
 
-    public TelegramBotListCommand(TelegramBotCommandConfiguration commandConfiguration, UserDAO userDAO) {
-        commandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.LIST);
-        this.userDAO = userDAO;
-        notAuthenticatedErrorMessage = commandConfiguration.getNotAuthenticatedErrorMessage();
+    public TelegramBotListCommand(
+        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
+        ScrapperClient scrapperClient,
+        String notRegisteredErrorMessage
+    ) {
+        commandInfo = typeToInfo.get(TelegramBotCommandType.LIST);
+        this.scrapperClient = scrapperClient;
+        this.notRegisteredErrorMessage = notRegisteredErrorMessage;
     }
 
     @Override
@@ -34,15 +38,15 @@ public class TelegramBotListCommand implements TelegramBotCommand {
     }
 
     @Override
-    public String execute(Message message) {
-        userDAO.refuseWaitingIfAuthenticated(message.chat().id());
+    public String execute(String text, long chatId) {
+        userDAO.refuseWaitingIfAuthenticated(chatId);
         List<URI> refs;
 
         try {
-            refs = userDAO.getAllURIOfUser(message.chat().id());
-        } catch (UserIsUnauthenticatedException e) {
+            refs = userDAO.getAllURIOfUser(chatId);
+        } catch (ChatIsNotRegisteredException e) {
             log.error(e.getMessage());
-            return notAuthenticatedErrorMessage;
+            return notRegisteredErrorMessage;
         }
 
         if (refs.isEmpty()) {

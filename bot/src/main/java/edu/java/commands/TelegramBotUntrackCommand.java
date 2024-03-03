@@ -1,9 +1,8 @@
 package edu.java.commands;
 
-import com.pengrad.telegrambot.model.Message;
-import edu.java.configuration.TelegramBotCommandConfiguration;
-import edu.java.exception.UserIsUnauthenticatedException;
-import edu.java.repository.UserDAO;
+import edu.java.client.ScrapperClient;
+import edu.java.exception.chat.ChatIsNotRegisteredException;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +10,17 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class TelegramBotUntrackCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
-    private final UserDAO userDAO;
-    private final String notAuthenticatedErrorMessage;
+    private final ScrapperClient scrapperClient;
+    private final String notRegisteredErrorMessage;
 
-    public TelegramBotUntrackCommand(TelegramBotCommandConfiguration commandConfiguration, UserDAO userDAO) {
-        commandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.UNTRACK);
-        this.userDAO = userDAO;
-        notAuthenticatedErrorMessage = commandConfiguration.getNotAuthenticatedErrorMessage();
+    public TelegramBotUntrackCommand(
+        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
+        ScrapperClient scrapperClient,
+        String notRegisteredErrorMessage
+    ) {
+        commandInfo = typeToInfo.get(TelegramBotCommandType.UNTRACK);
+        this.scrapperClient = scrapperClient;
+        this.notRegisteredErrorMessage = notRegisteredErrorMessage;
     }
 
     @Override
@@ -31,13 +34,13 @@ public class TelegramBotUntrackCommand implements TelegramBotCommand {
     }
 
     @Override
-    public String execute(Message message) {
+    public String execute(String text, long chatId) {
         try {
-            userDAO.makeTheUserWaitForUntrack(message.chat().id());
+            userDAO.makeTheUserWaitForUntrack(chatId);
             return commandInfo.successfulResponse();
-        } catch (UserIsUnauthenticatedException e) {
+        } catch (ChatIsNotRegisteredException e) {
             log.error(e.getMessage());
-            return notAuthenticatedErrorMessage;
+            return notRegisteredErrorMessage;
         }
     }
 }

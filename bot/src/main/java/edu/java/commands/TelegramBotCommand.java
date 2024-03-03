@@ -7,5 +7,5 @@ public interface TelegramBotCommand {
 
     String getDescription();
 
-    String execute(Message message);
+    String execute(String text, long chatId);
 }

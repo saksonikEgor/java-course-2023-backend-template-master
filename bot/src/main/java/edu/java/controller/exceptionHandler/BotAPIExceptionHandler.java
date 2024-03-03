@@ -1,7 +1,7 @@
 package edu.java.controller.exceptionHandler;
 
 import edu.java.dto.response.APIErrorResponse;
-import edu.java.exception.LinkIsNotExistException;
+import edu.java.exception.link.LinkIsNotExistException;
 import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
