@@ -4,7 +4,6 @@ public record APIErrorResponse(
     String description,
     String code,
     String exceptionName,
-    String exceptionMessage,
-    String[] stacktrace
+    String exceptionMessage
 ) {
 }
