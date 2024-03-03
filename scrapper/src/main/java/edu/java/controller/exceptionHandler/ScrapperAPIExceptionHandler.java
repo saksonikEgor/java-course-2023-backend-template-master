@@ -5,7 +5,6 @@ import edu.java.exception.ChatIsNotExistException;
 import edu.java.exception.LinkIsAlreadyTrackedException;
 import edu.java.exception.LinkIsNotTrackingException;
 import edu.java.exception.UserIsAlreadyRegisteredException;
-import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,10 +54,7 @@ public class ScrapperAPIExceptionHandler {
             description,
             String.valueOf(status.value()),
             exception.getClass().getSimpleName(),
-            exception.getMessage(),
-            Arrays.stream(exception.getStackTrace())
-                .map(StackTraceElement::toString)
-                .toArray(String[]::new)
+            exception.getMessage()
         ));
     }
 }
