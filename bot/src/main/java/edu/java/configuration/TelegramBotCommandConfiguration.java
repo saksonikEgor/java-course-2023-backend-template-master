@@ -36,11 +36,11 @@ public class TelegramBotCommandConfiguration {
         START_COMMAND_SUCCESSFUL_RESPONSE = TICK + "Вы успешно зарегестрировались, для просмотра "
         + "всех доступных команд введите " + HELP_COMMAND_NAME;
     private static final String START_COMMAND_UNSUCCESSFUL_RESPONSE = CROSS + "Не получилось вас зарегестрировать";
-    private static final String TRACK_COMMAND_SUCCESSFUL_RESPONSE = "Введите ссылку которую хотите начать отслеживать";
+    private static final String TRACK_COMMAND_SUCCESSFUL_RESPONSE = TICK + "Введенная вами ссылка теперь отслеживается";
     private static final String
         TRACK_COMMAND_UNSUCCESSFUL_RESPONSE = CROSS + "Не получилось добавить ссылку для отслеживания";
     private static final String UNTRACK_COMMAND_SUCCESSFUL_RESPONSE =
-        "Введите ссылку которую хотите прекратить отслеживать";
+        TICK + "Введенная вами ссылка перестала быть отслеживаемой";
     private static final String
         UNTRACK_COMMAND_UNSUCCESSFUL_RESPONSE = CROSS + "Не получилось прекратить отслеживание ссылки";
 
