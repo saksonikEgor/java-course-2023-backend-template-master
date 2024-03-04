@@ -14,19 +14,19 @@ import java.util.Map;
 public class TelegramBotTrackCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
     private final ScrapperClient scrapperClient;
-    private final String notRegisteredErrorMessage;
     private final String fatalExceptionMessage;
+    private final String cross;
 
     public TelegramBotTrackCommand(
             Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
             ScrapperClient scrapperClient,
-            String notRegisteredErrorMessage,
-            String fatalExceptionMessage
+            String fatalExceptionMessage,
+            String cross
     ) {
         commandInfo = typeToInfo.get(TelegramBotCommandType.TRACK);
         this.scrapperClient = scrapperClient;
-        this.notRegisteredErrorMessage = notRegisteredErrorMessage;
         this.fatalExceptionMessage = fatalExceptionMessage;
+        this.cross = cross;
     }
 
     @Override
@@ -41,15 +41,13 @@ public class TelegramBotTrackCommand implements TelegramBotCommand {
 
     @Override
     public String execute(String url, long chatId) {
-        //TODO: использовать response
-
         try {
-            LinkResponse response = scrapperClient.addLink(chatId, new AddLinkRequest(url));
+            scrapperClient.addLink(chatId, new AddLinkRequest(url));
             return commandInfo.successfulResponse();
         } catch (ScrapperAPIException e) {
-            return e.getMessage();
+            return cross + e.getMessage();
         } catch (Exception e) {
-            return fatalExceptionMessage;
+            return cross + fatalExceptionMessage;
         }
     }
 }

@@ -18,37 +18,37 @@ import org.springframework.web.client.HttpClientErrorException;
 public class ScrapperAPIExceptionHandler {
     @ExceptionHandler({HttpMessageNotReadableException.class, ClassCastException.class})
     public ResponseEntity<APIErrorResponse> messageNotReadable(RuntimeException exception) {
-        return handleException(exception, HttpStatus.BAD_REQUEST, "Invalid query parameters");
+        return handleException(exception, HttpStatus.BAD_REQUEST, "Некорректные праметры запроса");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<APIErrorResponse> messageNotReadable(MethodArgumentNotValidException exception) {
-        return handleException(exception, HttpStatus.BAD_REQUEST, "Wrong link format");
+        return handleException(exception, HttpStatus.BAD_REQUEST, "Некорректный формат ссылки");
     }
 
     @ExceptionHandler(HttpClientErrorException.NotFound.class)
     public ResponseEntity<APIErrorResponse> notFound(HttpClientErrorException.NotFound exception) {
-        return handleException(exception, HttpStatus.NOT_FOUND, "Resource is not found");
+        return handleException(exception, HttpStatus.NOT_FOUND, "Не удалось найти ресурс");
     }
 
     @ExceptionHandler(ChatIsNotExistException.class)
     public ResponseEntity<APIErrorResponse> chatIsNotExist(ChatIsNotExistException exception) {
-        return handleException(exception, HttpStatus.NOT_FOUND, "Chat is not exist");
+        return handleException(exception, HttpStatus.NOT_FOUND, "Чат не существует");
     }
 
     @ExceptionHandler(LinkIsAlreadyTrackedException.class)
     public ResponseEntity<APIErrorResponse> linkIsAlreadyTracked(LinkIsAlreadyTrackedException exception) {
-        return handleException(exception, HttpStatus.NOT_ACCEPTABLE, "Link is already tracked");
+        return handleException(exception, HttpStatus.NOT_ACCEPTABLE, "Ссылка уже была добавлена ранее");
     }
 
     @ExceptionHandler(LinkIsNotTrackingException.class)
     public ResponseEntity<APIErrorResponse> linkIsNotTracking(LinkIsNotTrackingException exception) {
-        return handleException(exception, HttpStatus.NOT_ACCEPTABLE, "Link is not tracking");
+        return handleException(exception, HttpStatus.NOT_ACCEPTABLE, "Ссылка не отслеживается");
     }
 
     @ExceptionHandler(ChatIsAlreadyRegisteredException.class)
     public ResponseEntity<APIErrorResponse> userIsAlreadyRegistered(ChatIsAlreadyRegisteredException exception) {
-        return handleException(exception, HttpStatus.NOT_ACCEPTABLE, "User is already registered");
+        return handleException(exception, HttpStatus.NOT_ACCEPTABLE, "Пользователь уже зарегестрирован");
     }
 
     private @NotNull ResponseEntity<APIErrorResponse> handleException(

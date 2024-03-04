@@ -14,20 +14,21 @@ public class TelegramBotCommandConfiguration {
     private static final String TRACK_COMMAND_NAME = "/track";
     private static final String UNTRACK_COMMAND_NAME = "/untrack";
 
-    private static final String HELP_COMMAND_DEFINITION = " -> показать все доступные команды";
-    private static final String LIST_COMMAND_DEFINITION = " -> показать список отслеживаемые ссылок";
-    private static final String START_COMMAND_DEFINITION = " -> зарегестрировать пользователя";
-    private static final String TRACK_COMMAND_DEFINITION = " -> начать отслеживать ссылки";
-    private static final String UNTRACK_COMMAND_DEFINITION = " -> прекратить отслеживать ссылки";
+    private static final String HELP_COMMAND_DEFINITION = "Показать все доступные команды";
+    private static final String LIST_COMMAND_DEFINITION = "Показать список отслеживаемые ссылок";
+    private static final String START_COMMAND_DEFINITION = "Зарегестрировать пользователя";
+    private static final String TRACK_COMMAND_DEFINITION = "Начать отслеживать ссылки";
+    private static final String UNTRACK_COMMAND_DEFINITION = "Прекратить отслеживать ссылки";
 
     private static final String TICK = "✅";
     private static final String CROSS = "❌";
 
-    private static final String HELP_COMMAND_SUCCESSFUL_RESPONSE = HELP_COMMAND_NAME + HELP_COMMAND_DEFINITION + "\n"
-        + LIST_COMMAND_NAME + LIST_COMMAND_DEFINITION + "\n"
-        + START_COMMAND_NAME + START_COMMAND_DEFINITION + "\n"
-        + TRACK_COMMAND_NAME + TRACK_COMMAND_DEFINITION + "\n"
-        + UNTRACK_COMMAND_NAME + UNTRACK_COMMAND_DEFINITION;
+    private static final String HELP_COMMAND_SUCCESSFUL_RESPONSE
+        = HELP_COMMAND_NAME + " -> " + HELP_COMMAND_DEFINITION + "\n"
+        + LIST_COMMAND_NAME + " -> " + LIST_COMMAND_DEFINITION + "\n"
+        + START_COMMAND_NAME + " -> " + START_COMMAND_DEFINITION + "\n"
+        + TRACK_COMMAND_NAME + " 'your_url' -> " + TRACK_COMMAND_DEFINITION + "\n"
+        + UNTRACK_COMMAND_NAME + " 'your_url' -> " + UNTRACK_COMMAND_DEFINITION;
     private static final String HELP_COMMAND_UNSUCCESSFUL_RESPONSE = "Не получилось вывести все доступные команды";
     private static final String LIST_COMMAND_SUCCESSFUL_RESPONSE = "Список отслеживаемых ссылок:\n";
     private static final String LIST_COMMAND_UNSUCCESSFUL_RESPONSE = "Список отслеживаемых ссылок пуст, добавьте "
@@ -50,44 +51,13 @@ public class TelegramBotCommandConfiguration {
     }
 
     @Bean
-    public String notRegisteredErrorMessage() {
-        return CROSS + "Вы не зарегестрированы. Для регистрации введите " + START_COMMAND_NAME;
-    }
-
-    @Bean
-    public String wrongLinkFormatMessage() {
-        return CROSS + "Некорректный формат ссылки, попробуйте еще раз";
-    }
-
-    @Bean
-    public String successfulTrackingMessage() {
-        return TICK + "Введенная вами ссылка теперь отслеживается. Для просмотра всех отслеживаемых ссылок введите "
-            + LIST_COMMAND_NAME;
-    }
-
-    @Bean
-    public String successfulUntrackingMessage() {
-        return TICK +
-            "Введенная вами ссылка перестала быть отслеживаемой. Для просмотра всех отслеживаемых ссылок введите "
-            + LIST_COMMAND_NAME;
-    }
-
-    @Bean
-    public String linkIsAlreadyTrackedMessage() {
-        return CROSS +
-            "Введенная вами ссылка уже была добавлена ранее. Для просмотра всех отслеживаемых ссылок введите "
-            + LIST_COMMAND_NAME;
-    }
-
-    @Bean
-    public String linkIsNotTrackingMessage() {
-        return CROSS + "Введенная вами ссылка не отслеживалась. Для просмотра всех отслеживаемых ссылок введите "
-            + LIST_COMMAND_NAME;
-    }
-
-    @Bean
     public String fatalExceptionMessage() {
         return CROSS + "Не удалось выполнить запрос. Ошибка на стороне сервера, попробуйте позже.";
+    }
+
+    @Bean
+    public String cross() {
+        return CROSS;
     }
 
     @Bean

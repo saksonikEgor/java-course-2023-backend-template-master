@@ -13,18 +13,18 @@ import java.util.Map;
 public class TelegramBotUntrackCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
     private final ScrapperClient scrapperClient;
-    private final String notRegisteredErrorMessage;
     private final String fatalExceptionMessage;
+    private final String cross;
 
     public TelegramBotUntrackCommand(
             Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
             ScrapperClient scrapperClient,
-            String notRegisteredErrorMessage,
-            String fatalExceptionMessage
+            String fatalExceptionMessage,
+            String cross
     ) {
         commandInfo = typeToInfo.get(TelegramBotCommandType.UNTRACK);
         this.scrapperClient = scrapperClient;
-        this.notRegisteredErrorMessage = notRegisteredErrorMessage;
+        this.cross = cross;
         this.fatalExceptionMessage = fatalExceptionMessage;
     }
 
@@ -44,9 +44,9 @@ public class TelegramBotUntrackCommand implements TelegramBotCommand {
             scrapperClient.deleteLink(chatId, new RemoveLinkRequest(url));
             return commandInfo.successfulResponse();
         } catch (ScrapperAPIException e) {
-            return e.getMessage();
+            return cross + e.getMessage();
         } catch (Exception e) {
-            return fatalExceptionMessage;
+            return cross + fatalExceptionMessage;
         }
     }
 }

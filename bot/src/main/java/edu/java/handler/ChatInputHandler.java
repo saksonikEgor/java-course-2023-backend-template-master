@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ChatInputHandler implements InputHandler {
-    private final Map<String, TelegramBotCommandType> nameToType;
     private final MessageExecutor chainOfParsers;
     private final String wrongInputMessage;
 
