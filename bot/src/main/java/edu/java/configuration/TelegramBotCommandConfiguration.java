@@ -92,7 +92,7 @@ public class TelegramBotCommandConfiguration {
                 HELP_COMMAND_NAME,
                 HELP_COMMAND_DEFINITION,
                 HELP_COMMAND_SUCCESSFUL_RESPONSE,
-                HELP_COMMAND_SUCCESSFUL_RESPONSE
+                HELP_COMMAND_UNSUCCESSFUL_RESPONSE
             ),
             TelegramBotCommandType.LIST, new TelegramBotCommandInfo(
                 LIST_COMMAND_NAME,
