@@ -7,6 +7,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.Keyboard;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.commands.TelegramBotCommandInfo;
@@ -90,7 +91,7 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
     }
 
     public void sendMessage(SendMessage message) {
-        telegramBot.execute(message.replyMarkup(keyboard));
+        telegramBot.execute(message.parseMode(ParseMode.Markdown).replyMarkup(keyboard));
     }
 
     @Override

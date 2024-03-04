@@ -33,7 +33,7 @@ public class ScrapperAPIExceptionHandler {
 
     @ExceptionHandler(ChatIsNotExistException.class)
     public ResponseEntity<APIErrorResponse> chatIsNotExist(ChatIsNotExistException exception) {
-        return handleException(exception, HttpStatus.NOT_FOUND, "Чат не существует");
+        return handleException(exception, HttpStatus.NOT_FOUND, "Пользователь не зарегестрирован");
     }
 
     @ExceptionHandler(LinkIsAlreadyTrackedException.class)

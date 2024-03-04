@@ -23,12 +23,13 @@ public class TelegramBotCommandConfiguration {
     private static final String TICK = "✅";
     private static final String CROSS = "❌";
 
-    private static final String HELP_COMMAND_SUCCESSFUL_RESPONSE
-        = HELP_COMMAND_NAME + " -> " + HELP_COMMAND_DEFINITION + "\n"
-        + LIST_COMMAND_NAME + " -> " + LIST_COMMAND_DEFINITION + "\n"
-        + START_COMMAND_NAME + " -> " + START_COMMAND_DEFINITION + "\n"
-        + TRACK_COMMAND_NAME + " 'your_url' -> " + TRACK_COMMAND_DEFINITION + "\n"
-        + UNTRACK_COMMAND_NAME + " 'your_url' -> " + UNTRACK_COMMAND_DEFINITION;
+    private static final String HELP_COMMAND_SUCCESSFUL_RESPONSE =
+        "**Бот предназначен для отслеживания изменений по ссылкам.**\n"
+            + "На данный момент реализован функционал для сайтов [GitHub](https://github.com/) и "
+            + "[StackOverflow](https://stackoverflow.com/) \n\n"
+            + HELP_COMMAND_NAME + " -> " + HELP_COMMAND_DEFINITION + "\n"
+            + LIST_COMMAND_NAME + " -> " + LIST_COMMAND_DEFINITION + "\n"
+            + START_COMMAND_NAME + " -> " + START_COMMAND_DEFINITION;
     private static final String HELP_COMMAND_UNSUCCESSFUL_RESPONSE = "Не получилось вывести все доступные команды";
     private static final String LIST_COMMAND_SUCCESSFUL_RESPONSE = "Список отслеживаемых ссылок:\n";
     private static final String LIST_COMMAND_UNSUCCESSFUL_RESPONSE = "Список отслеживаемых ссылок пуст, добавьте "
