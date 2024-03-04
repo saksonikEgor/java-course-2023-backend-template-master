@@ -29,7 +29,11 @@ public class TelegramBotStartCommand implements TelegramBotCommand {
 
     @Override
     public String execute(String text, long chatId) {
-        scrapperClient.registerChat(chatId);
+        try {
+            scrapperClient.registerChat(chatId);
+        } catch (RuntimeException e) {
+            String message = e.getMessage();
+        }
 
         //TODO: вернуть response
 

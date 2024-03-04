@@ -2,11 +2,16 @@ package edu.java.client;
 
 import edu.java.dto.request.AddLinkRequest;
 import edu.java.dto.request.RemoveLinkRequest;
+import edu.java.dto.response.APIErrorResponse;
 import edu.java.dto.response.LinkResponse;
 import edu.java.dto.response.ListLinksResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class ScrapperClient {
@@ -19,6 +24,10 @@ public class ScrapperClient {
         webClient.post()
             .uri("/tg-chat{id}", chatId)
             .retrieve()
+            .onStatus(HttpStatusCode::isError, clientResponse -> {
+                APIErrorResponse errorResponse = clientResponse.bodyToMono(APIErrorResponse.class).block();
+                return Mono.error(new RuntimeException(errorResponse.description()));
+            })
             .bodyToMono(Void.class)
             .block();
     }
