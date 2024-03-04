@@ -19,8 +19,6 @@ public class Chat {
     @NotNull
     private OffsetDateTime createdAt = OffsetDateTime.now(ZoneOffset.UTC);
     @NotNull
-    private ChatState state = ChatState.REGISTERED;
-    @NotNull
     private List<Link> links = new ArrayList<>();
 
     public Chat(long chatId) {

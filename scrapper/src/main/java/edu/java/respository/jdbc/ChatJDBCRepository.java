@@ -1,7 +1,6 @@
 package edu.java.respository.jdbc;
 
 import edu.java.dto.model.Chat;
-import edu.java.dto.model.ChatState;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +19,9 @@ public class ChatJDBCRepository {
     @Transactional
     public void add(Chat chat) {
         jdbcTemplate.update(
-            "INSERT INTO chats(chat_id, created_at, state) VALUES (?, ?, ?::chat_state)",
+            "INSERT INTO chats(chat_id, created_at) VALUES (?, ?)",
             chat.getChatId(),
-            chat.getCreatedAt(),
-            chat.getState().name()
+            chat.getCreatedAt()
         );
     }
 
@@ -34,15 +32,6 @@ public class ChatJDBCRepository {
 
     public List<Chat> findAll() {
         return jdbcTemplate.query("SELECT * FROM chats", new BeanPropertyRowMapper<>(Chat.class));
-    }
-
-    @Transactional
-    public void changeState(long chatId, ChatState state) {
-        jdbcTemplate.update(
-            "UPDATE chats SET state = ?::chat_state WHERE chat_id = ?",
-            state.name(),
-            chatId
-        );
     }
 
     public Optional<Chat> getChatById(long chatId) {
@@ -64,16 +53,4 @@ public class ChatJDBCRepository {
             linkId
         );
     }
-
-//    public List<Chat> getAllChatsForLink(String url) {
-//        return jdbcTemplate.query(
-//            """
-//                SELECT * FROM chats c
-//                    JOIN links_chats lc ON c.chat_id = lc.chat_id
-//                    JOIN links l ON lc.link_id = l.link_id
-//                WHERE l.url = ?""",
-//            new BeanPropertyRowMapper<>(Chat.class),
-//            url
-//        );
-//    }
 }

@@ -1,5 +1,3 @@
-CREATE TYPE chat_state AS ENUM ('REGISTERED', 'WAITING_FOR_TRACK', 'WAITING_FOR_UNTRACK');
-
 CREATE TYPE base_url_type AS ENUM ('GITHUB', 'STACKOVERFLOW');
 
 
@@ -17,8 +15,7 @@ CREATE TABLE links
 CREATE TABLE chats
 (
     chat_id    BIGINT PRIMARY KEY,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT now()        NOT NULL,
-    state      chat_state               DEFAULT 'REGISTERED' NOT NULL
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now()        NOT NULL
 );
 
 
