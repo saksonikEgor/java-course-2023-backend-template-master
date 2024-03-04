@@ -16,7 +16,6 @@ public class ScrapperClient {
     private static final String TG_CHAT_ID_HEADER_NAME = "Tg-Chat-Id";
     private final WebClient webClient;
 
-    // TODO: добавить responses + обработку исключений
 
     public void registerChat(long chatId) {
         webClient.post()

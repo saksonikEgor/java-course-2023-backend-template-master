@@ -40,9 +40,11 @@ public class TelegramBotListCommand implements TelegramBotCommand {
     @Override
     public String execute(String text, long chatId) {
         try {
-            //TODO: add empty case
-
             ListLinksResponse response = scrapperClient.getLinks(chatId);
+
+            if (response.size() == 0) {
+                return commandInfo.unSuccessfulResponse();
+            }
 
             return response.links()
                     .stream()
