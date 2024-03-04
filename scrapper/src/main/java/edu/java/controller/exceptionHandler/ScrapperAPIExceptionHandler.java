@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
@@ -18,6 +19,11 @@ public class ScrapperAPIExceptionHandler {
     @ExceptionHandler({HttpMessageNotReadableException.class, ClassCastException.class})
     public ResponseEntity<APIErrorResponse> messageNotReadable(RuntimeException exception) {
         return handleException(exception, HttpStatus.BAD_REQUEST, "Invalid query parameters");
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<APIErrorResponse> messageNotReadable(MethodArgumentNotValidException exception) {
+        return handleException(exception, HttpStatus.BAD_REQUEST, "Wrong link format");
     }
 
     @ExceptionHandler(HttpClientErrorException.NotFound.class)
