@@ -21,6 +21,7 @@ public class ChatInputHandlerConfiguration {
     private final Map<TelegramBotCommandType, TelegramBotCommand> typeToOneWordCommand;
     private final Map<TelegramBotCommandType, TelegramBotCommand> typeToTwoWordCommand;
     private final Map<String, TelegramBotCommandType> nameToType;
+    private final String telegramBotName;
 
     public ChatInputHandlerConfiguration(
         TelegramBotHelpCommand helpCommand,
@@ -28,8 +29,10 @@ public class ChatInputHandlerConfiguration {
         TelegramBotStartCommand startCommand,
         TelegramBotTrackCommand trackCommand,
         TelegramBotUntrackCommand untrackCommand,
-        Map<String, TelegramBotCommandType> nameToType
+        Map<String, TelegramBotCommandType> nameToType,
+        String telegramBotName
     ) {
+        this.telegramBotName = telegramBotName;
         typeToOneWordCommand = Map.of(
             TelegramBotCommandType.HELP, helpCommand,
             TelegramBotCommandType.LIST, listCommand,
@@ -45,7 +48,7 @@ public class ChatInputHandlerConfiguration {
     @Bean
     public MessageExecutor chainOfParsers() {
         return new OneWordMessageExecutor(
-            new TwoWordMessageExecutor(null, nameToType, typeToTwoWordCommand),
+            new TwoWordMessageExecutor(null, nameToType, typeToTwoWordCommand, telegramBotName),
             nameToType,
             typeToOneWordCommand
         );
