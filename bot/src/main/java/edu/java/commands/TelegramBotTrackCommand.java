@@ -15,15 +15,18 @@ public class TelegramBotTrackCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
     private final ScrapperClient scrapperClient;
     private final String notRegisteredErrorMessage;
+    private final String fatalExceptionMessage;
 
     public TelegramBotTrackCommand(
             Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
             ScrapperClient scrapperClient,
-            String notRegisteredErrorMessage
+            String notRegisteredErrorMessage,
+            String fatalExceptionMessage
     ) {
         commandInfo = typeToInfo.get(TelegramBotCommandType.TRACK);
         this.scrapperClient = scrapperClient;
         this.notRegisteredErrorMessage = notRegisteredErrorMessage;
+        this.fatalExceptionMessage = fatalExceptionMessage;
     }
 
     @Override
@@ -45,6 +48,8 @@ public class TelegramBotTrackCommand implements TelegramBotCommand {
             return commandInfo.successfulResponse();
         } catch (ScrapperAPIException e) {
             return e.getMessage();
+        } catch (Exception e) {
+            return fatalExceptionMessage;
         }
     }
 }

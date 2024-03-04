@@ -9,13 +9,15 @@ import org.springframework.stereotype.Component;
 public class TelegramBotStartCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
     private final ScrapperClient scrapperClient;
+    private final String fatalExceptionMessage;
 
     public TelegramBotStartCommand(
-        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
-        ScrapperClient scrapperClient
+            Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
+            ScrapperClient scrapperClient, String fatalExceptionMessage
     ) {
         commandInfo = typeToInfo.get(TelegramBotCommandType.START);
         this.scrapperClient = scrapperClient;
+        this.fatalExceptionMessage = fatalExceptionMessage;
     }
 
     @Override
@@ -35,6 +37,8 @@ public class TelegramBotStartCommand implements TelegramBotCommand {
             return commandInfo.successfulResponse();
         } catch (ScrapperAPIException e) {
             return e.getMessage();
+        } catch (Exception e) {
+            return fatalExceptionMessage;
         }
     }
 }

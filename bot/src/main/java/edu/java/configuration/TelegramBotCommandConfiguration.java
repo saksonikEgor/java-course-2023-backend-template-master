@@ -86,6 +86,11 @@ public class TelegramBotCommandConfiguration {
     }
 
     @Bean
+    public String fatalExceptionMessage() {
+        return CROSS + "Не удалось выполнить запрос. Ошибка на стороне сервера, попробуйте позже.";
+    }
+
+    @Bean
     public Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo() {
         return Map.of(
             TelegramBotCommandType.HELP, new TelegramBotCommandInfo(
