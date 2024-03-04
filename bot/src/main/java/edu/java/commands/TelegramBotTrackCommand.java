@@ -3,6 +3,7 @@ package edu.java.commands;
 import edu.java.client.ScrapperClient;
 import edu.java.dto.request.AddLinkRequest;
 import edu.java.dto.response.LinkResponse;
+import edu.java.exception.ScrapperAPIException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -37,10 +38,13 @@ public class TelegramBotTrackCommand implements TelegramBotCommand {
 
     @Override
     public String execute(String url, long chatId) {
-        LinkResponse response = scrapperClient.addLink(chatId, new AddLinkRequest(url));
+        //TODO: использовать response
 
-        //TODO: вернуть response
-
-        return commandInfo.successfulResponse();
+        try {
+            LinkResponse response = scrapperClient.addLink(chatId, new AddLinkRequest(url));
+            return commandInfo.successfulResponse();
+        } catch (ScrapperAPIException e) {
+            return e.getMessage();
+        }
     }
 }

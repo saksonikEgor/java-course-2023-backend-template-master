@@ -2,6 +2,7 @@ package edu.java.commands;
 
 import edu.java.client.ScrapperClient;
 import edu.java.dto.request.RemoveLinkRequest;
+import edu.java.exception.ScrapperAPIException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -36,10 +37,13 @@ public class TelegramBotUntrackCommand implements TelegramBotCommand {
 
     @Override
     public String execute(String url, long chatId) {
-        scrapperClient.deleteLink(chatId, new RemoveLinkRequest(url));
-
+        try {
+            scrapperClient.deleteLink(chatId, new RemoveLinkRequest(url));
+            return commandInfo.successfulResponse();
+        } catch (ScrapperAPIException e) {
+            return e.getMessage();
+        }
         //TODO: вернуть response
 
-        return commandInfo.successfulResponse();
     }
 }

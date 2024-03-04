@@ -50,7 +50,7 @@ public class ScrapperAPIExceptionHandler {
         @NotNull HttpStatus status,
         String description
     ) {
-        return ResponseEntity.badRequest().body(new APIErrorResponse(
+        return ResponseEntity.status(status).body(new APIErrorResponse(
             description,
             String.valueOf(status.value()),
             exception.getClass().getSimpleName(),

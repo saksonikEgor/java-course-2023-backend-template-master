@@ -3,6 +3,7 @@ package edu.java.commands;
 import edu.java.client.ScrapperClient;
 import edu.java.dto.response.LinkResponse;
 import edu.java.dto.response.ListLinksResponse;
+import edu.java.exception.ScrapperAPIException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -38,11 +39,17 @@ public class TelegramBotListCommand implements TelegramBotCommand {
 
     @Override
     public String execute(String text, long chatId) {
-        ListLinksResponse response = scrapperClient.getLinks(chatId);
+        try {
+            //TODO: add empty case
 
-        return response.links()
-                .stream()
-                .map(LinkResponse::url)
-                .collect(Collectors.joining("\n----------------\n", "----------------\n", "\n----------------"));
+            ListLinksResponse response = scrapperClient.getLinks(chatId);
+
+            return response.links()
+                    .stream()
+                    .map(LinkResponse::url)
+                    .collect(Collectors.joining("\n----------------\n", "----------------\n", "\n----------------"));
+        } catch (ScrapperAPIException e) {
+            return e.getMessage();
+        }
     }
 }

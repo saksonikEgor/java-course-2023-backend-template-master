@@ -1,6 +1,7 @@
 package edu.java.commands;
 
 import edu.java.client.ScrapperClient;
+import edu.java.exception.ScrapperAPIException;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
@@ -31,13 +32,10 @@ public class TelegramBotStartCommand implements TelegramBotCommand {
     public String execute(String text, long chatId) {
         try {
             scrapperClient.registerChat(chatId);
-        } catch (RuntimeException e) {
-            String message = e.getMessage();
+            return commandInfo.successfulResponse();
+        } catch (ScrapperAPIException e) {
+            return e.getMessage();
         }
-
-        //TODO: вернуть response
-
-        return commandInfo.successfulResponse();
     }
 }
 
