@@ -1,11 +1,12 @@
 package edu.java.commands;
 
 import edu.java.client.ScrapperClient;
-import edu.java.exception.chat.ChatIsNotRegisteredException;
-import edu.java.repository.UserDAO;
-import java.util.Map;
+import edu.java.dto.request.AddLinkRequest;
+import edu.java.dto.response.LinkResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -15,9 +16,9 @@ public class TelegramBotTrackCommand implements TelegramBotCommand {
     private final String notRegisteredErrorMessage;
 
     public TelegramBotTrackCommand(
-        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
-        ScrapperClient scrapperClient,
-        String notRegisteredErrorMessage
+            Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
+            ScrapperClient scrapperClient,
+            String notRegisteredErrorMessage
     ) {
         commandInfo = typeToInfo.get(TelegramBotCommandType.TRACK);
         this.scrapperClient = scrapperClient;
@@ -35,13 +36,11 @@ public class TelegramBotTrackCommand implements TelegramBotCommand {
     }
 
     @Override
-    public String execute(String text, long chatId) {
-        try {
-            userDAO.makeTheUserWaitForTrack(chatId);
-            return commandInfo.successfulResponse();
-        } catch (ChatIsNotRegisteredException e) {
-            log.error(e.getMessage());
-            return notRegisteredErrorMessage;
-        }
+    public String execute(String url, long chatId) {
+        LinkResponse response = scrapperClient.addLink(chatId, new AddLinkRequest(url));
+
+        //TODO: вернуть response
+
+        return commandInfo.successfulResponse();
     }
 }

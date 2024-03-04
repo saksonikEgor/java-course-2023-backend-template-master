@@ -1,11 +1,8 @@
 package edu.java.commands;
 
-import com.pengrad.telegrambot.model.Message;
 import edu.java.client.ScrapperClient;
-import edu.java.configuration.TelegramBotCommandConfiguration;
-import edu.java.repository.UserDAO;
-import org.springframework.stereotype.Component;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TelegramBotStartCommand implements TelegramBotCommand {
@@ -32,7 +29,10 @@ public class TelegramBotStartCommand implements TelegramBotCommand {
 
     @Override
     public String execute(String text, long chatId) {
-        userDAO.addUser(chatId);
+        scrapperClient.registerChat(chatId);
+
+        //TODO: вернуть response
+
         return commandInfo.successfulResponse();
     }
 }

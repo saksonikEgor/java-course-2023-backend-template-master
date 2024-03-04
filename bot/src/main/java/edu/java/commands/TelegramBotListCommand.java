@@ -1,14 +1,13 @@
 package edu.java.commands;
 
 import edu.java.client.ScrapperClient;
-import edu.java.exception.chat.ChatIsNotRegisteredException;
-import edu.java.repository.UserDAO;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import edu.java.dto.response.LinkResponse;
+import edu.java.dto.response.ListLinksResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -18,9 +17,9 @@ public class TelegramBotListCommand implements TelegramBotCommand {
     private final ScrapperClient scrapperClient;
 
     public TelegramBotListCommand(
-        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
-        ScrapperClient scrapperClient,
-        String notRegisteredErrorMessage
+            Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
+            ScrapperClient scrapperClient,
+            String notRegisteredErrorMessage
     ) {
         commandInfo = typeToInfo.get(TelegramBotCommandType.LIST);
         this.scrapperClient = scrapperClient;
@@ -39,21 +38,11 @@ public class TelegramBotListCommand implements TelegramBotCommand {
 
     @Override
     public String execute(String text, long chatId) {
-        userDAO.refuseWaitingIfAuthenticated(chatId);
-        List<URI> refs;
+        ListLinksResponse response = scrapperClient.getLinks(chatId);
 
-        try {
-            refs = userDAO.getAllURIOfUser(chatId);
-        } catch (ChatIsNotRegisteredException e) {
-            log.error(e.getMessage());
-            return notRegisteredErrorMessage;
-        }
-
-        if (refs.isEmpty()) {
-            return commandInfo.unSuccessfulResponse();
-        }
-        return commandInfo.successfulResponse() + refs.stream()
-            .map(URI::toString)
-            .collect(Collectors.joining("\n----------------\n", "----------------\n", "\n----------------"));
+        return response.links()
+                .stream()
+                .map(LinkResponse::url)
+                .collect(Collectors.joining("\n----------------\n", "----------------\n", "\n----------------"));
     }
 }

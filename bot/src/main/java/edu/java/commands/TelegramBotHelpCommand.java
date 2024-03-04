@@ -1,6 +1,5 @@
 package edu.java.commands;
 
-import edu.java.repository.UserDAO;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +23,6 @@ public class TelegramBotHelpCommand implements TelegramBotCommand {
 
     @Override
     public String execute(String text, long chatId) {
-        userDAO.refuseWaitingIfAuthenticated(chatId);
         return commandInfo.successfulResponse();
     }
 }
