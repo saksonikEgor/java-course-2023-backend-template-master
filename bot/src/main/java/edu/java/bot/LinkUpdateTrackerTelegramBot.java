@@ -12,6 +12,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.commands.TelegramBotCommandInfo;
 import edu.java.commands.TelegramBotCommandType;
+import edu.java.dto.request.LinkUpdateRequest;
 import edu.java.handler.ChatInputHandler;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,17 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
         telegramBot.setUpdatesListener(this);
     }
 
+    @Override
+    public void sendMessages(LinkUpdateRequest request) {
+        String notification = "Ссылка:\n" + request.url()
+            + "\n----------------\nОписание обновления:" + request.description();
+
+        request.tgChatIds()
+            .stream()
+            .map(chatId -> new SendMessage(chatId, notification))
+            .forEach(this::sendMessage);
+    }
+
     private SetMyCommands getAllTelegramBotCommands() {
         return new SetMyCommands(
             new BotCommand(
@@ -90,7 +102,7 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
-    public void sendMessage(SendMessage message) {
+    private void sendMessage(SendMessage message) {
         telegramBot.execute(message.parseMode(ParseMode.Markdown).replyMarkup(keyboard));
     }
 

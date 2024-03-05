@@ -24,7 +24,7 @@ public class TelegramBotCommandConfiguration {
     private static final String CROSS = "❌";
 
     private static final String HELP_COMMAND_SUCCESSFUL_RESPONSE =
-        "**Бот предназначен для отслеживания изменений по ссылкам.**\n"
+        "Бот предназначен для отслеживания изменений по ссылкам.\n"
             + "На данный момент реализован функционал для сайтов [GitHub](https://github.com/) и "
             + "[StackOverflow](https://stackoverflow.com/) \n\n"
             + HELP_COMMAND_NAME + " -> " + HELP_COMMAND_DEFINITION + "\n"
