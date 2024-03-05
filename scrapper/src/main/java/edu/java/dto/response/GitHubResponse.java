@@ -8,15 +8,15 @@ import java.time.OffsetDateTime;
 public record GitHubResponse(
     @JsonProperty("full_name") String fullName,
     @JsonProperty("created_at") OffsetDateTime createdAt,
-    @JsonProperty("pushed_at") OffsetDateTime updatedAt
+    @JsonProperty("pushed_at") OffsetDateTime pushedAt
 ) implements SiteAPIResponse {
     @Override
     public OffsetDateTime getLastUpdate() {
-        return updatedAt;
+        return pushedAt;
     }
 
     @Override
-    public String getUpdateDescription() {
-        return "Repository with full name '" + fullName + "' has updated";
+    public String getDescriptionOfUpdatesWhichAfter(OffsetDateTime time) {
+        return "Новое изменение в репозитории '" + fullName + "'";
     }
 }

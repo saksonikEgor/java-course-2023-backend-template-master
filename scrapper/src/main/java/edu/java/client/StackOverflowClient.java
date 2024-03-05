@@ -11,7 +11,7 @@ public class StackOverflowClient implements SiteAPIClient {
 
     public StackOverflowResponse getInfo(long id) {
         return webClient.get()
-            .uri(uri -> uri.path("/questions/{id}")
+            .uri(uri -> uri.path("/questions/{id}/answers")
                 .queryParam("site", "stackoverflow")
                 .build(id))
             .retrieve()

@@ -58,7 +58,7 @@ public class LinkUpdaterScheduler {
             botClient.updateLink(new LinkUpdateRequest(
                 link.getLinkId(),
                 link.getUrl(),
-                update.response().getUpdateDescription(),
+                update.response().getDescriptionOfUpdatesWhichAfter(link.getLastUpdate()),
                 trackingChats.stream().map(Chat::getChatId).toList()
             ));
         }
@@ -85,7 +85,9 @@ public class LinkUpdaterScheduler {
                     return new Update(link, null);
                 }
             })
-            .filter(update -> update.response().getLastUpdate().isAfter(update.link().getLastUpdate()))
+            .filter(update -> update.response()
+                .getLastUpdate()
+                .isAfter(update.link().getLastUpdate()))
             .toList();
     }
 

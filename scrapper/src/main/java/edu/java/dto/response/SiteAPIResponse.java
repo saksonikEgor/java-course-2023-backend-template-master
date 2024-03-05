@@ -5,5 +5,5 @@ import java.time.OffsetDateTime;
 public interface SiteAPIResponse {
     OffsetDateTime getLastUpdate();
 
-    String getUpdateDescription();
+    String getDescriptionOfUpdatesWhichAfter(OffsetDateTime time);
 }
