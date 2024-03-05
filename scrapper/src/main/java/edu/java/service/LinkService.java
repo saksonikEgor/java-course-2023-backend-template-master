@@ -17,4 +17,6 @@ public interface LinkService {
     List<Link> listAll();
 
     List<Link> listAllOldCheckLinks(Duration duration);
+
+    void resetLastUpdate(List<Link> updatedLinks);
 }

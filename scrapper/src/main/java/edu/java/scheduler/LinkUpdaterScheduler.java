@@ -45,6 +45,12 @@ public class LinkUpdaterScheduler {
                 .forEach(link -> log.info(String.valueOf(link)));
         }
 
+        linkService.resetLastUpdate(
+            updatedLinks.stream()
+                .map(Update::link)
+                .toList()
+        );
+
         for (Update update : updatedLinks) {
             Link link = update.link();
             List<Chat> trackingChats = chatService.getTrackingChatsForLink(link.getLinkId());

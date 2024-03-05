@@ -130,4 +130,19 @@ public class LinkJDBCRepository {
             checkedLinkIds.toArray()
         );
     }
+
+    @Transactional
+    public void resetLastUpdate(List<Long> updatedLinkIds) {
+        if (updatedLinkIds.isEmpty()) {
+            return;
+        }
+
+        jdbcTemplate.update(
+            String.format(
+                "UPDATE links SET last_update = now() WHERE link_id IN (%s)",
+                String.join(",", Collections.nCopies(updatedLinkIds.size(), "?"))
+            ),
+            updatedLinkIds.toArray()
+        );
+    }
 }
