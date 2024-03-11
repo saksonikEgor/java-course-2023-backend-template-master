@@ -24,12 +24,6 @@ CREATE TABLE links_chats
     chat_id BIGINT NOT NULL,
     link_id BIGINT NOT NULL,
     PRIMARY KEY (chat_id, link_id),
-    CONSTRAINT chat_fkey FOREIGN KEY (chat_id)
-        REFERENCES chats (chat_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT link_fkey FOREIGN KEY (link_id)
-        REFERENCES links (link_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
+    FOREIGN KEY (chat_id) references chats (chat_id),
+    FOREIGN KEY (link_id) REFERENCES links (link_id)
 );
