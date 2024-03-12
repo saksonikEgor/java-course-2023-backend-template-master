@@ -1,20 +1,19 @@
-package edu.java.service.jdbc;
+package edu.java.service.jooq;
 
 import edu.java.dto.model.Chat;
 import edu.java.exception.chat.ChatIsAlreadyRegisteredException;
 import edu.java.exception.chat.ChatIsNotExistException;
-import edu.java.respository.jdbc.ChatJDBCRepository;
+import edu.java.respository.jooq.ChatJOOQRepository;
 import edu.java.service.ChatService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ChatJDBCService implements ChatService {
-    private final ChatJDBCRepository chatRepository;
+public class ChatJOOQService implements ChatService {
+    private final ChatJOOQRepository chatRepository;
 
-    @SuppressWarnings("MultipleStringLiterals")
     @Override
     public void register(long chatId) throws ChatIsAlreadyRegisteredException {
         if (chatRepository.getChatById(chatId).isPresent()) {
