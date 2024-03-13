@@ -96,7 +96,11 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             log.info("Process update: {}", update);
-            sendMessage(inputHandler.handle(update));
+            try {
+                sendMessage(inputHandler.handle(update));
+            } catch (NullPointerException e) {
+                log.error(e.getMessage());
+            }
         });
 
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
