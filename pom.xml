@@ -50,7 +50,6 @@
         <!-- JOOQ -->
         <org.jooq.version>3.19.6</org.jooq.version>
         <spring-boot-starter-jooq.version>3.2.3</spring-boot-starter-jooq.version>
-        <liquibase-core.version>4.26.0</liquibase-core.version>
     </properties>
 
     <modules>
@@ -120,12 +119,6 @@
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-meta-extensions-liquibase</artifactId>
                 <version>${org.jooq.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-core</artifactId>
-                <version>${liquibase-core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
