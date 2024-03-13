@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Valid
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Link {
     private long linkId;
     @NotBlank
