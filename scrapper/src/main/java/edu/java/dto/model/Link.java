@@ -1,6 +1,5 @@
 package edu.java.dto.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import java.time.OffsetDateTime;
@@ -12,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-
 
 @Data
 @NoArgsConstructor
@@ -34,10 +32,10 @@ public class Link {
     private Map<String, String> info = new HashMap<>();
 
     public Link(
-            String url,
-            @NotNull OffsetDateTime lastUpdate,
-            @NotNull OffsetDateTime lastCheck,
-            @NotNull BaseURL baseURL
+        String url,
+        @NotNull OffsetDateTime lastUpdate,
+        @NotNull OffsetDateTime lastCheck,
+        @NotNull BaseURL baseURL
     ) {
         this.url = url;
         this.lastUpdate = lastUpdate;
@@ -46,9 +44,9 @@ public class Link {
     }
 
     public Link(
-            String url,
-            @NotNull BaseURL baseURL,
-            @NotNull Map<String, String> info
+        String url,
+        @NotNull BaseURL baseURL,
+        @NotNull Map<String, String> info
     ) {
         this.url = url;
         this.baseURL = baseURL;
