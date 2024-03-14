@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,7 +26,9 @@ import org.springframework.stereotype.Component;
 @ConditionalOnProperty(value = "app.scheduler.enable", havingValue = "true", matchIfMissing = true)
 @RequiredArgsConstructor
 public class LinkUpdaterScheduler {
+    @Qualifier("chatJDBCService")
     private final ChatService chatService;
+    @Qualifier("linkJDBCService")
     private final LinkService linkService;
     private final BotClient botClient;
     private final GitHubClient gitHubClient;
