@@ -65,12 +65,12 @@ public class Chats extends TableImpl<ChatsRecord> {
     /**
      * The column <code>CHATS.CHAT_ID</code>.
      */
-    public final TableField<ChatsRecord, Long> CHAT_ID = createField(DSL.name("CHAT_ID"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ChatsRecord, Long> CHAT_ID = createField(DSL.name("chat_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>CHATS.CREATED_AT</code>.
      */
-    public final TableField<ChatsRecord, OffsetDateTime> CREATED_AT = createField(DSL.name("CREATED_AT"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false).defaultValue(DSL.field(DSL.raw("LOCALTIMESTAMP"), SQLDataType.TIMESTAMPWITHTIMEZONE)), this, "");
+    public final TableField<ChatsRecord, OffsetDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false).defaultValue(DSL.field(DSL.raw("LOCALTIMESTAMP"), SQLDataType.TIMESTAMPWITHTIMEZONE)), this, "");
 
     private Chats(Name alias, Table<ChatsRecord> aliased) {
         this(alias, aliased, null);
@@ -98,7 +98,7 @@ public class Chats extends TableImpl<ChatsRecord> {
      * Create a <code>CHATS</code> table reference
      */
     public Chats() {
-        this(DSL.name("CHATS"), null);
+        this(DSL.name("chats"), null);
     }
 
     public <O extends Record> Chats(Table<O> child, ForeignKey<O, ChatsRecord> key) {

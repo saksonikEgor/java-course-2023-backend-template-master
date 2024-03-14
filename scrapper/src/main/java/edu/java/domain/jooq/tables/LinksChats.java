@@ -66,12 +66,12 @@ public class LinksChats extends TableImpl<LinksChatsRecord> {
     /**
      * The column <code>LINKS_CHATS.CHAT_ID</code>.
      */
-    public final TableField<LinksChatsRecord, Long> CHAT_ID = createField(DSL.name("CHAT_ID"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<LinksChatsRecord, Long> CHAT_ID = createField(DSL.name("chat_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>LINKS_CHATS.LINK_ID</code>.
      */
-    public final TableField<LinksChatsRecord, Long> LINK_ID = createField(DSL.name("LINK_ID"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<LinksChatsRecord, Long> LINK_ID = createField(DSL.name("link_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     private LinksChats(Name alias, Table<LinksChatsRecord> aliased) {
         this(alias, aliased, null);
@@ -99,7 +99,7 @@ public class LinksChats extends TableImpl<LinksChatsRecord> {
      * Create a <code>LINKS_CHATS</code> table reference
      */
     public LinksChats() {
-        this(DSL.name("LINKS_CHATS"), null);
+        this(DSL.name("links_chats"), null);
     }
 
     public <O extends Record> LinksChats(Table<O> child, ForeignKey<O, LinksChatsRecord> key) {

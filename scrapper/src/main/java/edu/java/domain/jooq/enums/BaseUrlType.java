@@ -48,7 +48,7 @@ public enum BaseUrlType implements EnumType {
 
     @Override
     public String getName() {
-        return "BASE_URL_TYPE";
+        return "base_url_type";
     }
 
     @Override

@@ -70,32 +70,32 @@ public class Links extends TableImpl<LinksRecord> {
     /**
      * The column <code>LINKS.LINK_ID</code>.
      */
-    public final TableField<LinksRecord, Long> LINK_ID = createField(DSL.name("LINK_ID"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<LinksRecord, Long> LINK_ID = createField(DSL.name("link_id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>LINKS.URL</code>.
      */
-    public final TableField<LinksRecord, String> URL = createField(DSL.name("URL"), SQLDataType.VARCHAR(2048).nullable(false), this, "");
+    public final TableField<LinksRecord, String> URL = createField(DSL.name("url"), SQLDataType.VARCHAR(2048).nullable(false), this, "");
 
     /**
      * The column <code>LINKS.LAST_UPDATE</code>.
      */
-    public final TableField<LinksRecord, OffsetDateTime> LAST_UPDATE = createField(DSL.name("LAST_UPDATE"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false).defaultValue(DSL.field(DSL.raw("LOCALTIMESTAMP"), SQLDataType.TIMESTAMPWITHTIMEZONE)), this, "");
+    public final TableField<LinksRecord, OffsetDateTime> LAST_UPDATE = createField(DSL.name("last_update"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false).defaultValue(DSL.field(DSL.raw("LOCALTIMESTAMP"), SQLDataType.TIMESTAMPWITHTIMEZONE)), this, "");
 
     /**
      * The column <code>LINKS.LAST_CHECK</code>.
      */
-    public final TableField<LinksRecord, OffsetDateTime> LAST_CHECK = createField(DSL.name("LAST_CHECK"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false).defaultValue(DSL.field(DSL.raw("LOCALTIMESTAMP"), SQLDataType.TIMESTAMPWITHTIMEZONE)), this, "");
+    public final TableField<LinksRecord, OffsetDateTime> LAST_CHECK = createField(DSL.name("last_check"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false).defaultValue(DSL.field(DSL.raw("LOCALTIMESTAMP"), SQLDataType.TIMESTAMPWITHTIMEZONE)), this, "");
 
     /**
      * The column <code>LINKS.BASE_URL</code>.
      */
-    public final TableField<LinksRecord, BaseUrlType> BASE_URL = createField(DSL.name("BASE_URL"), SQLDataType.VARCHAR.nullable(false).asEnumDataType(edu.java.domain.jooq.enums.BaseUrlType.class), this, "");
+    public final TableField<LinksRecord, BaseUrlType> BASE_URL = createField(DSL.name("base_url"), SQLDataType.VARCHAR.nullable(false).asEnumDataType(edu.java.domain.jooq.enums.BaseUrlType.class), this, "");
 
     /**
      * The column <code>LINKS.INFO</code>.
      */
-    public final TableField<LinksRecord, JSON> INFO = createField(DSL.name("INFO"), SQLDataType.JSON.nullable(false), this, "");
+    public final TableField<LinksRecord, JSON> INFO = createField(DSL.name("info"), SQLDataType.JSON.nullable(false), this, "");
 
     private Links(Name alias, Table<LinksRecord> aliased) {
         this(alias, aliased, null);
@@ -123,7 +123,7 @@ public class Links extends TableImpl<LinksRecord> {
      * Create a <code>LINKS</code> table reference
      */
     public Links() {
-        this(DSL.name("LINKS"), null);
+        this(DSL.name("links"), null);
     }
 
     public <O extends Record> Links(Table<O> child, ForeignKey<O, LinksRecord> key) {
