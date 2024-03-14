@@ -26,9 +26,9 @@ import org.springframework.stereotype.Component;
 @ConditionalOnProperty(value = "app.scheduler.enable", havingValue = "true", matchIfMissing = true)
 @RequiredArgsConstructor
 public class LinkUpdaterScheduler {
-    @Qualifier("chatJDBCService")
+    @Qualifier("chatJOOQService")
     private final ChatService chatService;
-    @Qualifier("linkJDBCService")
+    @Qualifier("linkJOOQService")
     private final LinkService linkService;
     private final BotClient botClient;
     private final GitHubClient gitHubClient;

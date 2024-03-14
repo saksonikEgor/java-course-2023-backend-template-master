@@ -54,4 +54,20 @@ public class Link {
         this.baseURL = baseURL;
         this.info = info;
     }
+
+    public Link(
+        long linkId,
+        String url,
+        @NotNull OffsetDateTime lastUpdate,
+        @NotNull OffsetDateTime lastCheck,
+        @NotNull BaseURL baseURL,
+        @NotNull Map<String, String> info
+    ) {
+        this.linkId = linkId;
+        this.url = url;
+        this.lastUpdate = lastUpdate;
+        this.lastCheck = lastCheck;
+        this.baseURL = baseURL;
+        this.info = info;
+    }
 }

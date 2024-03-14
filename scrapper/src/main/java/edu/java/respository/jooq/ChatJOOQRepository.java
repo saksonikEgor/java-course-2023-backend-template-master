@@ -1,5 +1,6 @@
 package edu.java.respository.jooq;
 
+import edu.java.domain.jooq.tables.records.ChatsRecord;
 import edu.java.dto.model.Chat;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -38,10 +39,15 @@ public class ChatJOOQRepository {
     }
 
     public Optional<Chat> getChatById(long chatId) {
-        return Optional.ofNullable(dslContext.selectFrom(CHATS)
+        Optional<ChatsRecord> chatsOptional = dslContext.selectFrom(CHATS)
                 .where(CHATS.CHAT_ID.eq(chatId))
-                .fetchInto(Chat.class)
-                .getFirst());
+                .fetchOptional();
+
+        if (chatsOptional.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return chatsOptional.map(co -> co.into(Chat.class));
+        }
     }
 
     public List<Chat> getAllChatsForLink(long linkId) {

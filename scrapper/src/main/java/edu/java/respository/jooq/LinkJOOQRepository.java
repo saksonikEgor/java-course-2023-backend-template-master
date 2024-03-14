@@ -1,19 +1,22 @@
 package edu.java.respository.jooq;
 
 import edu.java.domain.jooq.enums.BaseUrlType;
+import edu.java.domain.jooq.tables.records.LinksRecord;
+import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.util.Map2JsonConverter;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.JSON;
+import org.jooq.Record;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static edu.java.domain.jooq.Tables.LINKS;
 import static edu.java.domain.jooq.tables.LinksChats.LINKS_CHATS;
@@ -24,6 +27,14 @@ import static org.jooq.impl.DSL.row;
 @Transactional(readOnly = true)
 public class LinkJOOQRepository {
     private final DSLContext dslContext;
+    private final Function<Record, Link> recordMapper = lr -> new Link(
+            lr.get(LINKS.LINK_ID),
+            lr.get(LINKS.URL),
+            lr.get(LINKS.LAST_UPDATE),
+            lr.get(LINKS.LAST_CHECK),
+            BaseURL.valueOf(lr.get(LINKS.BASE_URL).name()),
+            Map2JsonConverter.json2Map(lr.get(LINKS.INFO).data())
+    );
 
     @SuppressWarnings("MagicNumber")
     @Transactional
@@ -49,14 +60,21 @@ public class LinkJOOQRepository {
 
     public List<Link> findAll() {
         return dslContext.selectFrom(LINKS)
-                .fetchInto(Link.class);
+                .stream()
+                .map(recordMapper)
+                .toList();
     }
 
     public Optional<Link> getLinkByURL(String url) {
-        return Optional.ofNullable(dslContext.selectFrom(LINKS)
+        Optional<LinksRecord> linksOptional = dslContext.selectFrom(LINKS)
                 .where(LINKS.URL.eq(url))
-                .fetchInto(Link.class)
-                .getFirst());
+                .fetchOptional();
+
+        if (linksOptional.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return linksOptional.map(co -> co.into(Link.class));
+        }
     }
 
     @Transactional
@@ -79,14 +97,17 @@ public class LinkJOOQRepository {
                 .from(LINKS)
                 .join(LINKS_CHATS).on(LINKS_CHATS.LINK_ID.eq(LINKS.LINK_ID))
                 .where(LINKS_CHATS.CHAT_ID.eq(chatId))
-                .fetchInto(Link.class);
+                .stream()
+                .map(recordMapper)
+                .toList();
     }
 
     public List<Link> getAllLinksWithLastCheckBeforeDuration(Duration duration) {
-        List<Link> links = dslContext.selectFrom(LINKS)
+        return dslContext.selectFrom(LINKS)
                 .where(LINKS.LAST_CHECK.lessThan(OffsetDateTime.now().minus(duration)))
-                .fetchInto(Link.class);
-        return links;
+                .stream()
+                .map(recordMapper)
+                .toList();
     }
 
     @Transactional
