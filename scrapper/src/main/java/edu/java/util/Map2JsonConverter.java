@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.SneakyThrows;
-import org.postgresql.util.PGobject;
 
 public class Map2JsonConverter {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -14,23 +13,18 @@ public class Map2JsonConverter {
     }
 
     @SneakyThrows
-    public static PGobject map2Json(Map<String, String> map) {
-        PGobject json = new PGobject();
-
-        json.setType("json");
-        json.setValue(OBJECT_MAPPER.writeValueAsString(map));
-
-        return json;
+    public static String map2Json(Map<String, String> map) {
+        return OBJECT_MAPPER.writeValueAsString(map);
     }
 
     @SneakyThrows
-    public static Map<String, String> json2Map(PGobject json) {
-        if (json == null || json.getValue() == null) {
+    public static Map<String, String> json2Map(String json) {
+        if (json == null) {
             return null;
         }
 
         return OBJECT_MAPPER.readValue(
-            json.getValue(),
+            json,
             new TypeReference<HashMap<String, String>>() {
             }
         );

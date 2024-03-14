@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.postgresql.util.PGobject;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -37,7 +36,7 @@ public class LinkJDBCRepository {
         new Timestamp(rs.getTimestamp(4).getTime()).toInstant().atOffset(ZoneOffset.UTC),
         new ArrayList<>(),
         BaseURL.valueOf(rs.getString(5)),
-        Map2JsonConverter.json2Map((PGobject) rs.getObject(6))
+        Map2JsonConverter.json2Map(rs.getString(6))
     );
 
     @SuppressWarnings("MagicNumber")
@@ -47,7 +46,7 @@ public class LinkJDBCRepository {
 
         jdbcTemplate.update(c -> {
             PreparedStatement pst = c.prepareStatement(
-                "INSERT INTO links(url, last_update, last_check, base_url, info) VALUES (?, ?, ?, ?::base_url_type, ?)",
+                "INSERT INTO links(url, last_update, last_check, base_url, info) VALUES (?, ?, ?, ?::base_url_type, ?::JSON)",
                 Statement.RETURN_GENERATED_KEYS
             );
             pst.setString(1, link.getUrl());
