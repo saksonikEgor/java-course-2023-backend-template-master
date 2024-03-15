@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/links")
 @RequiredArgsConstructor
 public class LinkController {
-    @Qualifier("linkJOOQService")
     private final LinkService linkService;
     private final LinkFactory linkFactory;
 

@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tg-chat")
 @RequiredArgsConstructor
 public class TelegramChatController {
-    @Qualifier("chatJOOQService")
     private final ChatService chatService;
 
     @PostMapping("/{id}")
