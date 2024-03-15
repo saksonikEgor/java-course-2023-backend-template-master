@@ -47,6 +47,16 @@ public record GitHubResponse(
         @JsonProperty("html_url") String htmlUrl
     ) {
 
+        @Override
+        public String toString() {
+            return "Автор: _" + commit.author.name + "_\n"
+                + "Сообщение коммита: _" + commit.message + "_\n"
+                + "[Ссылка на коммит](" + htmlUrl + ")";
+//            return "Автор: _" + commit.author.name + "_\n"
+//                + "Сообщение коммита: _" + commit.message + "_\n"
+//                + "[Ссылка на коммит](" + htmlUrl + ")";
+        }
+
         @JsonIgnoreProperties(ignoreUnknown = true)
         public record Commit(
             @JsonProperty("author") Author author,
@@ -63,16 +73,6 @@ public record GitHubResponse(
 
             ) {
             }
-        }
-
-        @Override
-        public String toString() {
-            return "Автор: _" + commit.author.name + "_\n"
-                + "Сообщение коммита: _" + commit.message + "_\n"
-                + "[Ссылка на коммит](" + htmlUrl + ")";
-//            return "Автор: _" + commit.author.name + "_\n"
-//                + "Сообщение коммита: _" + commit.message + "_\n"
-//                + "[Ссылка на коммит](" + htmlUrl + ")";
         }
     }
 }

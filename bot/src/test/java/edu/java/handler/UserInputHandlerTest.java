@@ -31,6 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = TelegramBotCommandConfiguration.class)
 public class UserInputHandlerTest {
+    private static final String VALID_URI = "https://github.com/saksonikEgor/java-course-2023-backend-template-master";
+    private static final long CHAT_ID = 123456L;
+    private static final String WRONG_INPUT = "wrong_input";
     @Autowired
     public Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo;
     @Autowired
@@ -42,16 +45,12 @@ public class UserInputHandlerTest {
     @Autowired
     public String wrongInputMessage;
     public String telegramBotName = "LinkUpdateTrackerBot";
-    private static final String VALID_URI = "https://github.com/saksonikEgor/java-course-2023-backend-template-master";
-    private static final long CHAT_ID = 123456L;
-    private static final String WRONG_INPUT = "wrong_input";
-    private ChatInputHandler handler;
-
     @Mock TelegramBotHelpCommand helpCommand;
     @Mock TelegramBotListCommand listCommand;
     @Mock TelegramBotStartCommand startCommand;
     @Mock TelegramBotTrackCommand trackCommand;
     @Mock TelegramBotUntrackCommand untrackCommand;
+    private ChatInputHandler handler;
 
     @BeforeEach
     void createHandler() {

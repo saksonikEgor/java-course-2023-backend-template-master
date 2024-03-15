@@ -2,12 +2,10 @@ package edu.java.commands;
 
 import edu.java.client.ScrapperClient;
 import edu.java.dto.request.AddLinkRequest;
-import edu.java.dto.response.LinkResponse;
 import edu.java.exception.ScrapperAPIException;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 @Slf4j
@@ -18,10 +16,10 @@ public class TelegramBotTrackCommand implements TelegramBotCommand {
     private final String cross;
 
     public TelegramBotTrackCommand(
-            Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
-            ScrapperClient scrapperClient,
-            String fatalExceptionMessage,
-            String cross
+        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
+        ScrapperClient scrapperClient,
+        String fatalExceptionMessage,
+        String cross
     ) {
         commandInfo = typeToInfo.get(TelegramBotCommandType.TRACK);
         this.scrapperClient = scrapperClient;

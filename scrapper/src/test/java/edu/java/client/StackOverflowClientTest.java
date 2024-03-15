@@ -38,7 +38,7 @@ public class StackOverflowClientTest {
     @Test
     void gettingResponse() throws IOException {
         final long QUESTION_ID = 70452633L;
-        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/stackoverflow-response.txt")));
+        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/stackoverflow-response.json")));
 
         stubFor(get(urlEqualTo("/questions/" + QUESTION_ID + "/answers?site=stackoverflow"))
             .willReturn(aResponse()

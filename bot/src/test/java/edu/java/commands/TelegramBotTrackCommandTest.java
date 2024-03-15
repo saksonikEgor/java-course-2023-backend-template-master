@@ -1,7 +1,5 @@
 package edu.java.commands;
 
-import com.google.gson.Gson;
-import com.pengrad.telegrambot.model.Message;
 import edu.java.client.ScrapperClient;
 import edu.java.configuration.TelegramBotCommandConfiguration;
 import edu.java.dto.request.AddLinkRequest;
@@ -21,15 +19,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = TelegramBotCommandConfiguration.class)
 public class TelegramBotTrackCommandTest {
+    private final static long CHAT_ID = 123456L;
+    private final String link = "https://github.com/saksonikEgor/java-course-2023-backend-template-master";
     @Autowired
     public Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo;
     @Autowired
     public String fatalExceptionMessage;
     @Autowired
     public String cross;
-    private final static long CHAT_ID = 123456L;
     private TelegramBotCommandInfo trackCommandInfo;
-    private final String link = "https://github.com/saksonikEgor/java-course-2023-backend-template-master";
 
     @BeforeEach
     void setCommandInfo() {

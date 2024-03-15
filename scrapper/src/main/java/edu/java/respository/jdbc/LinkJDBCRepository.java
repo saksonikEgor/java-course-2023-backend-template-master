@@ -39,7 +39,6 @@ public class LinkJDBCRepository {
         Map2JsonConverter.json2Map(rs.getString(6))
     );
 
-
     //TODO    add Link entity mapping
     @SuppressWarnings("MagicNumber")
     @Transactional

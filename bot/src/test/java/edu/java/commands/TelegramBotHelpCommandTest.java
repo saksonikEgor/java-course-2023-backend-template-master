@@ -3,20 +3,20 @@ package edu.java.commands;
 import com.google.gson.Gson;
 import com.pengrad.telegrambot.model.Message;
 import edu.java.configuration.TelegramBotCommandConfiguration;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ContextConfiguration(classes = TelegramBotCommandConfiguration.class)
 public class TelegramBotHelpCommandTest {
+    private final static long CHAT_ID = 123456L;
     @Autowired
     public Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo;
-    private final static long CHAT_ID = 123456L;
     private TelegramBotCommandInfo helpCommandInfo;
     private Message message;
 

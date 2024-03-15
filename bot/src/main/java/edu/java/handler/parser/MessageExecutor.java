@@ -1,6 +1,5 @@
 package edu.java.handler.parser;
 
-import edu.java.commands.TelegramBotCommand;
 import edu.java.commands.TelegramBotCommandType;
 import java.util.Map;
 import java.util.Optional;

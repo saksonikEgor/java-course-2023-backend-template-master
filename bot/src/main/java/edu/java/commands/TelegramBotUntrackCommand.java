@@ -3,10 +3,9 @@ package edu.java.commands;
 import edu.java.client.ScrapperClient;
 import edu.java.dto.request.RemoveLinkRequest;
 import edu.java.exception.ScrapperAPIException;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 @Slf4j
@@ -17,10 +16,10 @@ public class TelegramBotUntrackCommand implements TelegramBotCommand {
     private final String cross;
 
     public TelegramBotUntrackCommand(
-            Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
-            ScrapperClient scrapperClient,
-            String fatalExceptionMessage,
-            String cross
+        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
+        ScrapperClient scrapperClient,
+        String fatalExceptionMessage,
+        String cross
     ) {
         commandInfo = typeToInfo.get(TelegramBotCommandType.UNTRACK);
         this.scrapperClient = scrapperClient;

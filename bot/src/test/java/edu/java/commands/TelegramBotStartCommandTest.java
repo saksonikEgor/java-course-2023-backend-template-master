@@ -20,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = TelegramBotCommandConfiguration.class)
 public class TelegramBotStartCommandTest {
+    private final static long CHAT_ID = 123456L;
     @Autowired
     public Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo;
     @Autowired
     public String fatalExceptionMessage;
     @Autowired
     public String cross;
-    private final static long CHAT_ID = 123456L;
     private TelegramBotCommandInfo startCommandInfo;
     private Message message;
 

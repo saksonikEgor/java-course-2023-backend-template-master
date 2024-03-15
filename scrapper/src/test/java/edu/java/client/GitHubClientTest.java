@@ -39,7 +39,7 @@ public class GitHubClientTest {
     void gettingResponse() throws IOException {
         String user = "saksonikEgor";
         String repo = "Checkers";
-        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/github-response.txt")));
+        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/github-response.json")));
 
         stubFor(get(urlEqualTo("/repos/" + user + "/" + repo + "/commits"))
             .willReturn(aResponse()
