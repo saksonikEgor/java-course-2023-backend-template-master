@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "owner": {
+        "account_id": 2204628,
+        "reputation": 993,
+        "user_id": 1948151,
+        "user_type": "registered",
+        "profile_image": "https://www.gravatar.com/avatar/8c308c545159d55ec1f329938aab5ca2?s=256&d=identicon&r=PG",
+        "display_name": "Marek Podyma",
+        "link": "https://stackoverflow.com/users/1948151/marek-podyma"
+      },
+      "is_accepted": false,
+      "score": 0,
+      "last_activity_date": 1709230087,
+      "creation_date": 1709230087,
+      "answer_id": 78083484,
+      "question_id": 70452633,
+      "content_license": "CC BY-SA 4.0"
+    },
+    {
+      "owner": {
+        "account_id": 3342991,
+        "reputation": 1352,
+        "user_id": 2808815,
+        "user_type": "registered",
+        "accept_rate": 82,
+        "profile_image": "https://www.gravatar.com/avatar/378a3db77e6b21e3b6c14499f5e97a86?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name": "Joe Caruso",
+        "link": "https://stackoverflow.com/users/2808815/joe-caruso"
+      },
+      "is_accepted": false,
+      "score": 0,
+      "last_activity_date": 1708025706,
+      "creation_date": 1708025706,
+      "answer_id": 78003514,
+      "question_id": 70452633,
+      "content_license": "CC BY-SA 4.0"
+    },
+    {
+      "owner": {
+        "account_id": 7917427,
+        "reputation": 29,
+        "user_id": 5979439,
+        "user_type": "registered",
+        "profile_image": "https://www.gravatar.com/avatar/6b9a959b30a7fcd5936a5c07e37b4e7f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name": "Yaohui Wu",
+        "link": "https://stackoverflow.com/users/5979439/yaohui-wu"
+      },
+      "is_accepted": false,
+      "score": 0,
+      "last_activity_date": 1706758516,
+      "creation_date": 1706758516,
+      "answer_id": 77917584,
+      "question_id": 70452633,
+      "content_license": "CC BY-SA 4.0"
+    }
+  ]
+}

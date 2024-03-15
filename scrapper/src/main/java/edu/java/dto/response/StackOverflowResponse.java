@@ -49,7 +49,7 @@ public record StackOverflowResponse(
         @JsonProperty("question_id") long questionId
     ) {
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        record Owner(
+        public record Owner(
             @JsonProperty("display_name") String name
         ) {
         }
