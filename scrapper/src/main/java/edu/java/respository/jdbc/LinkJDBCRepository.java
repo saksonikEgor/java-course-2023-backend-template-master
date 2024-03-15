@@ -34,12 +34,10 @@ public class LinkJDBCRepository {
         rs.getString(2),
         new Timestamp(rs.getTimestamp(3).getTime()).toInstant().atOffset(ZoneOffset.UTC),
         new Timestamp(rs.getTimestamp(4).getTime()).toInstant().atOffset(ZoneOffset.UTC),
-        new ArrayList<>(),
         BaseURL.valueOf(rs.getString(5)),
         Map2JsonConverter.json2Map(rs.getString(6))
     );
 
-    //TODO    add Link entity mapping
     @SuppressWarnings("MagicNumber")
     @Transactional
     public long add(Link link) {
