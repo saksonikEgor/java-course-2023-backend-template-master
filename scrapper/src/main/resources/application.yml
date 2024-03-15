@@ -4,6 +4,7 @@ app:
     interval: 10s
     link-check-interval: 10s
     force-check-delay: 10s
+  database-access-type: jpa
 
 datasource:
     driver: org.postgresql.Driver
