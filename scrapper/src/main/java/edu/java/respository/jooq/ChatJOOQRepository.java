@@ -2,14 +2,12 @@ package edu.java.respository.jooq;
 
 import edu.java.domain.jooq.tables.records.ChatsRecord;
 import edu.java.dto.model.Chat;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
 import static edu.java.domain.jooq.tables.Chats.CHATS;
 import static edu.java.domain.jooq.tables.LinksChats.LINKS_CHATS;
 

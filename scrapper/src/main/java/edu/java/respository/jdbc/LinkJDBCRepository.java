@@ -47,7 +47,8 @@ public class LinkJDBCRepository {
 
         jdbcTemplate.update(c -> {
             PreparedStatement pst = c.prepareStatement(
-                "INSERT INTO links(url, last_update, last_check, base_url, info) VALUES (?, ?, ?, ?::base_url_type, ?::JSON)",
+                "INSERT INTO links(url, last_update, last_check, base_url, info) "
+                    + "VALUES (?, ?, ?, ?::base_url_type, ?::JSON)",
                 Statement.RETURN_GENERATED_KEYS
             );
             pst.setString(1, link.getUrl());

@@ -23,6 +23,7 @@ public class TelegramBotCommandConfiguration {
     private static final String TICK = "✅";
     private static final String CROSS = "❌";
 
+    @SuppressWarnings("MultipleStringLiterals")
     private static final String HELP_COMMAND_SUCCESSFUL_RESPONSE =
         "Бот предназначен для отслеживания изменений по ссылкам.\n"
             + "На данный момент реализован функционал для сайтов [GitHub](https://github.com/) и "

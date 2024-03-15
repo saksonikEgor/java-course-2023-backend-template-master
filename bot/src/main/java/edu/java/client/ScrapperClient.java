@@ -18,6 +18,7 @@ public class ScrapperClient {
     private static final Duration GETTING_RESPONSE_TIMEOUT = Duration.ofSeconds(5);
     private final WebClient webClient;
 
+    @SuppressWarnings("MultipleStringLiterals")
     public void registerChat(long chatId) {
         webClient.post()
             .uri("/tg-chat/{id}", chatId)

@@ -19,6 +19,7 @@ public class TwoWordMessageExecutor extends MessageExecutor {
         this.telegramBotName = telegramBotName;
     }
 
+    @SuppressWarnings("MagicNumber")
     @Override
     public Optional<String> parse(String[] words, long chatId) {
         try {

@@ -9,6 +9,10 @@ import org.jooq.meta.jaxb.Property;
 import org.jooq.meta.jaxb.Target;
 
 public class JooqCodegen {
+    private JooqCodegen() {
+    }
+
+    @SuppressWarnings("UncommentedMain")
     public static void main(String[] args) throws Exception {
         Database database = new Database()
             .withName("org.jooq.meta.extensions.liquibase.LiquibaseDatabase")

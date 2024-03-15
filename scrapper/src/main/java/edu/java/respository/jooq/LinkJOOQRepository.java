@@ -5,19 +5,17 @@ import edu.java.domain.jooq.tables.records.LinksRecord;
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.util.parser.Map2JsonConverter;
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.JSON;
 import org.jooq.Record;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
 import static edu.java.domain.jooq.Tables.LINKS;
 import static edu.java.domain.jooq.tables.LinksChats.LINKS_CHATS;
 import static org.jooq.impl.DSL.row;
