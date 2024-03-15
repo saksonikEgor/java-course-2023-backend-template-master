@@ -1,7 +1,12 @@
 package edu.java.dto.model;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,26 +15,36 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import org.hibernate.validator.constraints.URL;
 import org.jetbrains.annotations.NotNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Valid
+@Entity
+@Table(name = "links")
 public class Link {
-    private long linkId;
-    @NotBlank
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "link_id", nullable = false)
+    private Long linkId;
+    @Column(name = "url", nullable = false, unique = true)
+    @URL
     private String url;
-    @NotNull
+    @Column(name = "last_update", nullable = false)
     private OffsetDateTime lastUpdate = OffsetDateTime.now();
-    @NotNull
+    @Column(name = "last_check", nullable = false)
     private OffsetDateTime lastCheck = OffsetDateTime.now();
-    @NotNull
-    private List<Chat> chats = new ArrayList<>();
-    @NotNull
+    @Column(name = "base_url", nullable = false)
     private BaseURL baseURL;
-    @NotNull
+    @Column(name = "info", nullable = false)
+    @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> info = new HashMap<>();
+    @NotNull
+    @ManyToMany(mappedBy = "links")
+    private List<Chat> chats = new ArrayList<>();
 
     public Link(
         String url,
@@ -67,5 +82,17 @@ public class Link {
         this.lastCheck = lastCheck;
         this.baseURL = baseURL;
         this.info = info;
+    }
+
+    @Override public String toString() {
+        return "Link{"
+            + "linkId=" + linkId
+            + ", url='" + url + '\''
+            + ", lastUpdate=" + lastUpdate
+            + ", lastCheck=" + lastCheck
+            + ", baseURL=" + baseURL
+            + ", info=" + info
+            + ", chats=" + chats.stream().map(Chat::getChatId).toList()
+            + '}';
     }
 }
