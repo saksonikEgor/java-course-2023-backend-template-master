@@ -1,40 +1,43 @@
 package edu.java.commands;
 
+import com.google.gson.Gson;
+import com.pengrad.telegrambot.model.Message;
+import edu.java.configuration.TelegramBotCommandConfiguration;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@SpringBootTest
+@ContextConfiguration(classes = TelegramBotCommandConfiguration.class)
 public class TelegramBotHelpCommandTest {
-//    private final static long USER_ID = 123456L;
-//    private final TelegramBotCommandConfiguration commandConfiguration = new TelegramBotCommandConfiguration();
-//    private TelegramBotCommandInfo helpCommandInfo;
-//    private Message message;
-//
-//    @BeforeEach
-//    void createMessage() {
-//        message = new Gson().fromJson(
-//            "{chat={id=" + USER_ID + "}}",
-//            Message.class
-//        );
-//    }
-//
-//    @BeforeEach
-//    void setCommandInfo() {
-//        helpCommandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.HELP);
-//    }
-//
-//    @Test
-//    void callHelpForAuthenticatedUser() {
-//        UserDAO userDAO = new UserDAO();
-//        userDAO.addUser(USER_ID);
-//
-//        TelegramBotHelpCommand helpCommand = new TelegramBotHelpCommand(commandConfiguration, userDAO);
-//        String response = helpCommand.execute(message);
-//
-//        assertEquals(helpCommandInfo.successfulResponse(), response);
-//    }
-//
-//    @Test
-//    void callHelpForUnauthenticatedUser() {
-//        TelegramBotHelpCommand helpCommand = new TelegramBotHelpCommand(commandConfiguration, new UserDAO());
-//        String response = helpCommand.execute(message);
-//
-//        assertEquals(helpCommandInfo.successfulResponse(), response);
-//    }
+    @Autowired
+    public Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo;
+    private final static long CHAT_ID = 123456L;
+    private TelegramBotCommandInfo helpCommandInfo;
+    private Message message;
+
+    @BeforeEach
+    void createMessage() {
+        message = new Gson().fromJson(
+            "{chat={id=" + CHAT_ID + "}}",
+            Message.class
+        );
+    }
+
+    @BeforeEach
+    void setCommandInfo() {
+        helpCommandInfo = typeToInfo.get(TelegramBotCommandType.HELP);
+    }
+
+    @Test
+    void callHelp() {
+        TelegramBotHelpCommand helpCommand = new TelegramBotHelpCommand(typeToInfo);
+        String response = helpCommand.execute(message.text(), CHAT_ID);
+
+        assertEquals(helpCommandInfo.successfulResponse(), response);
+    }
 }
