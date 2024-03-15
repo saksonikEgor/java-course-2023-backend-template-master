@@ -1,4 +1,4 @@
-package edu.java.util;
+package edu.java.util.parser;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

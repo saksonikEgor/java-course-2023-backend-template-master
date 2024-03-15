@@ -4,7 +4,7 @@ import edu.java.domain.jooq.enums.BaseUrlType;
 import edu.java.domain.jooq.tables.records.LinksRecord;
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
-import edu.java.util.Map2JsonConverter;
+import edu.java.util.parser.Map2JsonConverter;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.JSON;

@@ -2,7 +2,7 @@ package edu.java.respository.jdbc;
 
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
-import edu.java.util.Map2JsonConverter;
+import edu.java.util.parser.Map2JsonConverter;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
