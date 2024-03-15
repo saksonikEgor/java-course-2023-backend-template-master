@@ -35,7 +35,7 @@ public record GitHubResponse(
                 .map(CommitInfo::toString)
                 .collect(Collectors.joining(
                     "\n________________\n",
-                    newCommits + " новых коммита.\n________________\n",
+                    newCommits.size() + " новых коммита.\n________________\n",
                     ""
                 ));
         };
@@ -67,9 +67,12 @@ public record GitHubResponse(
 
         @Override
         public String toString() {
-            return "Автор: " + commit.author.name + "\n"
-                + "Сообщение коммита: " + commit.message + "\n"
-                + "Ссылка на коммит: " + htmlUrl;
+            return "Автор: _" + commit.author.name + "_\n"
+                + "Сообщение коммита: _" + commit.message + "_\n"
+                + "[Ссылка на коммит](" + htmlUrl + ")";
+//            return "Автор: _" + commit.author.name + "_\n"
+//                + "Сообщение коммита: _" + commit.message + "_\n"
+//                + "[Ссылка на коммит](" + htmlUrl + ")";
         }
     }
 }

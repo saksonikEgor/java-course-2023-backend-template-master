@@ -70,8 +70,8 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
 
     @Override
     public void sendMessages(LinkUpdateRequest request) {
-        String notification = "Ссылка:\n" + request.url()
-            + "\n----------------\nОписание обновления:\n" + request.description();
+        String notification = "[Обновление контента по ссылке](" + request.url() + ")"
+            + "\n----------------\n*Описание обновления:*\n" + request.description();
 
         request.tgChatIds()
             .stream()
