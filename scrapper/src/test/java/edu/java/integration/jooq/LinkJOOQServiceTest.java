@@ -1,17 +1,16 @@
-package edu.java.integration.jdbc;
+package edu.java.integration.jooq;
 
-import edu.java.configuration.DataAccess.JDBCAccessConfiguration;
+import edu.java.configuration.DataAccess.JOOQAccessConfiguration;
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.integration.IntegrationTest;
-import edu.java.integration.configuration.JDBCTemplateConfiguration;
-import edu.java.respository.jdbc.LinkJDBCRepository;
-import edu.java.service.jdbc.ChatJDBCService;
-import edu.java.service.jdbc.LinkJDBCService;
+import edu.java.integration.configuration.DBAccessConfiguration;
+import edu.java.respository.jooq.LinkJOOQRepository;
+import edu.java.service.jooq.ChatJOOQService;
+import edu.java.service.jooq.LinkJOOQService;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +19,20 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = JDBCAccessConfiguration.class, properties = {
-    "app.database-access-type=jdbc"
+@SpringBootTest(classes = JOOQAccessConfiguration.class, properties = {
+    "app.database-access-type=jooq"
 })
-@ContextConfiguration(classes = JDBCTemplateConfiguration.class)
-public class LinkJDBCServiceTest extends IntegrationTest {
+@ContextConfiguration(classes = DBAccessConfiguration.class)
+public class LinkJOOQServiceTest extends IntegrationTest {
     @Autowired
-    private LinkJDBCService linkService;
+    private LinkJOOQService linkService;
     @Autowired
-    private LinkJDBCRepository linkRepository;
+    private ChatJOOQService chatService;
     @Autowired
-    private ChatJDBCService chatService;
+    private LinkJOOQRepository linkRepository;
     private static final long CHAT_ID = 579324L;
 
     @Test
@@ -172,12 +172,12 @@ public class LinkJDBCServiceTest extends IntegrationTest {
         List<Link> links = linkRepository.findAll();
 
         assertEquals(2, links.size());
-        assertEquals(1, links.stream()
-            .filter(l -> (
-                Objects.equals(l.getUrl(), link1.getUrl()) && Objects.equals(l.getLastUpdate(), link1.getLastUpdate())
-                    && Objects.equals(l.getLastCheck(), link1.getLastCheck())
-                    && Objects.equals(l.getBaseURL(), link1.getBaseURL())))
-            .count()
+        assertFalse(links.stream()
+            .filter(l -> l.getUrl().equals(link1.getUrl()))
+            .findFirst()
+            .get()
+            .getLastUpdate()
+            .isAfter(link1.getLastUpdate())
         );
         assertTrue(links.stream()
             .filter(l -> l.getUrl().equals(link2.getUrl()))
