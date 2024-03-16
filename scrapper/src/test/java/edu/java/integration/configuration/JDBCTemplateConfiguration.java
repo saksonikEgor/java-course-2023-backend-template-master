@@ -1,20 +1,18 @@
 package edu.java.integration.configuration;
 
 import edu.java.integration.IntegrationTest;
-import edu.java.respository.jdbc.ChatJDBCRepository;
-import edu.java.respository.jdbc.LinkJDBCRepository;
-import javax.sql.DataSource;
-import lombok.RequiredArgsConstructor;
+import org.jooq.impl.DataSourceConnectionProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
+import javax.sql.DataSource;
 
 @Configuration
-@RequiredArgsConstructor
-public class JDBCConfiguration {
+public class JDBCTemplateConfiguration {
     @Bean
     public DataSource containerDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -28,18 +26,13 @@ public class JDBCConfiguration {
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplateForContainer() {
+    public DataSourceConnectionProvider connectionProvider() {
+        return new DataSourceConnectionProvider(new TransactionAwareDataSourceProxy(containerDataSource()));
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(containerDataSource());
-    }
-
-    @Bean
-    public LinkJDBCRepository linkJDBCRepository() {
-        return new LinkJDBCRepository(jdbcTemplateForContainer());
-    }
-
-    @Bean
-    public ChatJDBCRepository chatJDBCRepository() {
-        return new ChatJDBCRepository(jdbcTemplateForContainer());
     }
 
     @Bean
