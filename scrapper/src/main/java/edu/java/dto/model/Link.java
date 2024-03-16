@@ -17,6 +17,7 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
@@ -53,6 +54,7 @@ public class Link {
     private Map<String, String> info = new HashMap<>();
 
     @NotNull
+    @ToString.Exclude
     @ManyToMany(mappedBy = "links")
     private List<Chat> chats = new ArrayList<>();
 
@@ -92,17 +94,5 @@ public class Link {
         this.lastCheck = lastCheck;
         this.baseURL = baseURL;
         this.info = info;
-    }
-
-    @Override public String toString() {
-        return "Link{"
-            + "linkId=" + linkId
-            + ", url='" + url + '\''
-            + ", lastUpdate=" + lastUpdate
-            + ", lastCheck=" + lastCheck
-            + ", baseURL=" + baseURL
-            + ", info=" + info
-            + ", chats=" + chats.stream().map(Chat::getChatId).toList()
-            + '}';
     }
 }

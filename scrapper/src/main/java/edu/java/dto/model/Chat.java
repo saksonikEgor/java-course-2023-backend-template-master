@@ -14,6 +14,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 @Data
@@ -30,6 +31,7 @@ public class Chat {
     private OffsetDateTime createdAt = OffsetDateTime.now(ZoneOffset.UTC);
 
     @NotNull
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(
         name = "links_chats",
@@ -40,13 +42,5 @@ public class Chat {
 
     public Chat(long chatId) {
         this.chatId = chatId;
-    }
-
-    @Override public String toString() {
-        return "Chat{"
-            + "chatId=" + chatId
-            + ", createdAt=" + createdAt
-            + ", links=" + links.stream().map(Link::getUrl).toList()
-            + '}';
     }
 }
