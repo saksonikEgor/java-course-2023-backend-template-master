@@ -2,6 +2,8 @@ package edu.java.dto.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.validator.constraints.URL;
 import org.jetbrains.annotations.NotNull;
@@ -30,18 +33,25 @@ public class Link {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "link_id", nullable = false)
     private Long linkId;
+
     @Column(name = "url", nullable = false, unique = true)
     @URL
     private String url;
+
     @Column(name = "last_update", nullable = false)
     private OffsetDateTime lastUpdate = OffsetDateTime.now();
+
     @Column(name = "last_check", nullable = false)
     private OffsetDateTime lastCheck = OffsetDateTime.now();
+
     @Column(name = "base_url", nullable = false)
+    @Enumerated(EnumType.STRING)
     private BaseURL baseURL;
+
     @Column(name = "info", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> info = new HashMap<>();
+
     @NotNull
     @ManyToMany(mappedBy = "links")
     private List<Chat> chats = new ArrayList<>();

@@ -1,8 +1,8 @@
 app:
   scheduler:
     enable: true
-    interval: 10s
-    link-check-interval: 10s
+    interval: 300s
+    link-check-interval: 300s
     force-check-delay: 10s
   database-access-type: jpa
 
