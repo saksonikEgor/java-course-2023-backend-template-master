@@ -1,4 +1,4 @@
-package edu.java.exception.link;
+package edu.java.exception;
 
 public class LinkIsAlreadyTrackedException extends RuntimeException {
     public LinkIsAlreadyTrackedException(String message) {

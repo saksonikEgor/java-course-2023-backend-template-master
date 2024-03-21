@@ -22,16 +22,6 @@ public record StackOverflowResponse(
         );
     }
 
-    @Override
-    public OffsetDateTime getLastUpdate() {
-        return updateAt;
-    }
-
-    @Override
-    public String getUpdateDescription() {
-        return "Post with title '" + title + "' has updated";
-    }
-
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record Question(
         @JsonProperty("creation_date") OffsetDateTime createAt,

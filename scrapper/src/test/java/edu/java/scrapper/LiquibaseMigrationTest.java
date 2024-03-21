@@ -1,4 +1,4 @@
-package edu.java.integration;
+package edu.java.scrapper;
 
 import java.sql.ResultSet;
 import java.util.HashSet;
