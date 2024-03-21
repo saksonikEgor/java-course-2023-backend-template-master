@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.transaction.CannotCreateTransactionException;
+import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
@@ -43,6 +46,12 @@ public class ScrapperAPIExceptionHandler {
     @ExceptionHandler(ChatIsAlreadyRegisteredException.class)
     public ResponseEntity<APIErrorResponse> userIsAlreadyRegistered(ChatIsAlreadyRegisteredException exception) {
         return handleException(exception, HttpStatus.NOT_ACCEPTABLE, "User is already registered");
+    }
+
+    //CannotCreateTransactionException
+    @ExceptionHandler(TransactionException.class)
+    public ResponseEntity<APIErrorResponse> ds(TransactionException exception) {
+        return handleException(exception, HttpStatus.SERVICE_UNAVAILABLE, "Service is unavailable");
     }
 
     private @NotNull ResponseEntity<APIErrorResponse> handleException(
