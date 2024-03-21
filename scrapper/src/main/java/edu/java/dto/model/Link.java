@@ -1,7 +1,7 @@
 package edu.java.dto.model;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,32 +10,30 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Valid
 public class Link {
     private long linkId;
-    @NotBlank
+    @NotBlank(message = "url should not be blank")
     private String url;
-    @NotNull
+    @NotNull(message = "lastUpdate should not be null")
     private OffsetDateTime lastUpdate = OffsetDateTime.now();
-    @NotNull
+    @NotNull(message = "lastCheck should not be null")
     private OffsetDateTime lastCheck = OffsetDateTime.now();
-    @NotNull
+    @NotNull(message = "chats should not be null")
     private List<Chat> chats = new ArrayList<>();
-    @NotNull
+    @NotNull(message = "baseURL should not be null")
     private BaseURL baseURL;
-    @NotNull
+    @NotNull(message = "info should not be null")
     private Map<String, String> info = new HashMap<>();
 
     public Link(
         String url,
-        @NotNull OffsetDateTime lastUpdate,
-        @NotNull OffsetDateTime lastCheck,
-        @NotNull BaseURL baseURL
+        OffsetDateTime lastUpdate,
+        OffsetDateTime lastCheck,
+        BaseURL baseURL
     ) {
         this.url = url;
         this.lastUpdate = lastUpdate;
@@ -45,8 +43,8 @@ public class Link {
 
     public Link(
         String url,
-        @NotNull BaseURL baseURL,
-        @NotNull Map<String, String> info
+        BaseURL baseURL,
+        Map<String, String> info
     ) {
         this.url = url;
         this.baseURL = baseURL;

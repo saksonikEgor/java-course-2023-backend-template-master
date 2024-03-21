@@ -14,6 +14,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,10 +26,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 @RequiredArgsConstructor
 @Component
 @Transactional(readOnly = true)
+@Validated
 public class LinkJDBCRepository {
     private final JdbcTemplate jdbcTemplate;
     @SuppressWarnings("MagicNumber")
@@ -41,7 +47,7 @@ public class LinkJDBCRepository {
 
     @SuppressWarnings("MagicNumber")
     @Transactional
-    public long add(Link link) {
+    public long add(@Valid Link link) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(c -> {
@@ -62,15 +68,15 @@ public class LinkJDBCRepository {
     }
 
     @Transactional
-    public void remove(String url) {
+    public void remove(@NotBlank String url) {
         jdbcTemplate.update("DELETE FROM links WHERE url = ?", url);
     }
 
-    public List<Link> findAll() {
+    public List<@Valid Link> findAll() {
         return jdbcTemplate.query("SELECT * FROM links", rowMapper);
     }
 
-    public Optional<Link> getLinkByURL(String url) {
+    public Optional<@Valid Link> getLinkByURL(@NotBlank String url) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                 "SELECT * FROM links WHERE url = ?",
@@ -100,7 +106,7 @@ public class LinkJDBCRepository {
         );
     }
 
-    public List<Link> getAllLinksForChat(long chatId) {
+    public List<@Valid Link> getAllLinksForChat(long chatId) {
         return jdbcTemplate.query(
             "SELECT * FROM links l JOIN links_chats lc ON l.link_id = lc.link_id WHERE lc.chat_id = ?",
             rowMapper,
@@ -108,7 +114,7 @@ public class LinkJDBCRepository {
         );
     }
 
-    public List<Link> getAllLinksWithLastCheckBeforeDuration(Duration duration) {
+    public List<@Valid Link> getAllLinksWithLastCheckBeforeDuration(Duration duration) {
         return jdbcTemplate.query(
             "SELECT * FROM links WHERE last_check < ?",
             rowMapper,
@@ -117,7 +123,7 @@ public class LinkJDBCRepository {
     }
 
     @Transactional
-    public void updateCheckedLinks(List<Long> checkedLinkIds) {
+    public void updateCheckedLinks(@NotNull List<Long> checkedLinkIds) {
         if (checkedLinkIds.isEmpty()) {
             return;
         }

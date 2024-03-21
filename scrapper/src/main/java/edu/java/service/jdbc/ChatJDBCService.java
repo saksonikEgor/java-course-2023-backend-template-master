@@ -22,7 +22,6 @@ public class ChatJDBCService implements ChatService {
         }
 
         chatRepository.add(new Chat(chatId));
-
     }
 
     @Override
