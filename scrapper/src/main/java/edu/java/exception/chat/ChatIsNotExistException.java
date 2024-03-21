@@ -1,4 +1,4 @@
-package edu.java.exception;
+package edu.java.exception.chat;
 
 public class ChatIsNotExistException extends RuntimeException {
     public ChatIsNotExistException(String message) {

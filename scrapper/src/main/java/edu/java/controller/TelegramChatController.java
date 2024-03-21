@@ -1,11 +1,13 @@
 package edu.java.controller;
 
 import edu.java.dto.response.APIErrorResponse;
+import edu.java.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Log4j2
 @RequestMapping("/tg-chat")
+@RequiredArgsConstructor
 public class TelegramChatController {
+    private final ChatService chatService;
+
     @PostMapping("/{id}")
     @Operation(summary = "Зарегестрировать чат")
     @ApiResponses(value = {
@@ -32,6 +37,9 @@ public class TelegramChatController {
     })
     public ResponseEntity<?> registerChat(@PathVariable("id") long chatId) {
         log.info("Registering for chatId: " + chatId);
+
+        chatService.register(chatId);
+
         return ResponseEntity.ok().build();
     }
 
@@ -49,6 +57,9 @@ public class TelegramChatController {
     })
     public ResponseEntity<?> deleteChat(@PathVariable("id") long chatId) {
         log.info("Deleting chat by id: " + chatId);
+
+        chatService.unregister(chatId);
+
         return ResponseEntity.ok().build();
     }
 }
