@@ -3,7 +3,7 @@ package edu.java.integration.jdbc;
 import edu.java.configuration.DataAccess.JDBCAccessConfiguration;
 import edu.java.dto.model.Chat;
 import edu.java.integration.IntegrationTest;
-import edu.java.integration.configuration.JDBCTemplateConfiguration;
+import edu.java.integration.configuration.DBAccessConfiguration;
 import edu.java.respository.jdbc.ChatJDBCRepository;
 import edu.java.service.jdbc.ChatJDBCService;
 import java.util.List;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(classes = JDBCAccessConfiguration.class, properties = {
     "app.database-access-type=jdbc"
 })
-@ContextConfiguration(classes = JDBCTemplateConfiguration.class)
+@ContextConfiguration(classes = DBAccessConfiguration.class)
 public class ChatJDBCServiceTest extends IntegrationTest {
     @Autowired
     private ChatJDBCService chatService;

@@ -1,13 +1,9 @@
 package edu.java.integration.configuration;
 
-import edu.java.configuration.DataAccess.JDBCAccessConfiguration;
-import edu.java.configuration.DataAccess.JOOQAccessConfiguration;
-import edu.java.configuration.DataAccess.JPAAccessConfiguration;
 import edu.java.integration.IntegrationTest;
-import edu.java.respository.jpa.ChatJPARepository;
-import edu.java.respository.jpa.LinkJPARepository;
 import javax.sql.DataSource;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.conf.RenderNameCase;
@@ -16,31 +12,19 @@ import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
 import org.jooq.impl.DefaultExecuteListenerProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jooq.JooqExceptionTranslator;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-//@RequiredArgsConstructor
-//@SpringBootTest
-//@ContextConfiguration(classes = JooqAutoConfiguration.DslContextConfiguration.class)
-//@ContextConfiguration(classes = {JDBCAccessConfiguration.class, JOOQAccessConfiguration.class,
-//    JPAAccessConfiguration.class})
 public class DBAccessConfiguration {
-    //    @Autowired
-//    public DSLContext dslContext;
-//    @Autowired
-//    public ChatJPARepository chatJPARepository;
-//    @Autowired
-//    public LinkJPARepository linkJPARepository;
-
     @Bean
     public DataSource containerDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -75,15 +59,33 @@ public class DBAccessConfiguration {
         return new DefaultDSLContext(configuration());
     }
 
-//    @Bean
-//    public JdbcTemplate jdbcTemplateForContainer() {
-//        return new JdbcTemplate(containerDataSource());
-//    }
-//
     @Bean
     public PlatformTransactionManager transactionManager() {
         return new DataSourceTransactionManager(containerDataSource());
     }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(containerDataSource());
+    }
+
+//    @Bean
+//    public EntityManagerFactory entityManagerFactory() {
+//        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+//
+//        emf.setDataSource(containerDataSource());
+////        emf.setPackagesToScan("edu.java.dto.model");
+//        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+//        emf.afterPropertiesSet();
+//
+//        return emf.getObject();
+//    }
+//
+//    @Bean
+//    public EntityManager entityManager() {
+//        return entityManagerFactory().createEntityManager();
+//    }
+
 //
 //    @Bean
 //    public LinkJDBCRepository linkJDBCRepository() {

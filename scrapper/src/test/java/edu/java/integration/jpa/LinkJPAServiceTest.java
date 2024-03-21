@@ -1,13 +1,14 @@
-package edu.java.integration.jdbc;
+package edu.java.integration.jpa;
 
-import edu.java.configuration.DataAccess.JDBCAccessConfiguration;
+import edu.java.configuration.DataAccess.JPAAccessConfiguration;
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.integration.IntegrationTest;
 import edu.java.integration.configuration.DBAccessConfiguration;
-import edu.java.respository.jdbc.LinkJDBCRepository;
-import edu.java.service.jdbc.ChatJDBCService;
-import edu.java.service.jdbc.LinkJDBCService;
+import edu.java.respository.jpa.ChatJPARepository;
+import edu.java.respository.jpa.LinkJPARepository;
+import edu.java.service.jpa.ChatJPAService;
+import edu.java.service.jpa.LinkJPAService;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,17 +23,19 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(classes = JDBCAccessConfiguration.class, properties = {
-    "app.database-access-type=jdbc"
+@SpringBootTest(classes = JPAAccessConfiguration.class, properties = {
+    "app.database-access-type=jpa"
 })
 @ContextConfiguration(classes = DBAccessConfiguration.class)
-public class LinkJDBCServiceTest extends IntegrationTest {
+public class LinkJPAServiceTest extends IntegrationTest {
     @Autowired
-    private LinkJDBCService linkService;
+    private LinkJPAService linkService;
     @Autowired
-    private LinkJDBCRepository linkRepository;
+    private ChatJPAService chatService;
     @Autowired
-    private ChatJDBCService chatService;
+    private LinkJPARepository linkRepository;
+    @Autowired
+    private ChatJPARepository chatRepository;
     private static final long CHAT_ID = 579324L;
 
     @Test
@@ -49,7 +52,7 @@ public class LinkJDBCServiceTest extends IntegrationTest {
         chatService.register(CHAT_ID);
         linkService.addLinkToChat(CHAT_ID, link);
 
-        List<Link> links = linkRepository.getAllLinksForChat(CHAT_ID);
+        List<Link> links = chatRepository.findById(CHAT_ID).get().getLinks();
 
         assertEquals(1, links.size());
         assertEquals(link.getUrl(), links.getFirst().getUrl());
@@ -87,7 +90,10 @@ public class LinkJDBCServiceTest extends IntegrationTest {
         chatService.register(CHAT_ID);
         linkService.addLinkToChat(CHAT_ID, link);
 
-        assertEquals(linkRepository.getAllLinksForChat(CHAT_ID), linkService.listAll(CHAT_ID));
+        assertEquals(
+            chatRepository.findById(CHAT_ID).get().getLinks(),
+            linkService.listAll(CHAT_ID)
+        );
     }
 
     @Test
@@ -161,13 +167,7 @@ public class LinkJDBCServiceTest extends IntegrationTest {
         chatService.register(CHAT_ID);
         linkService.addLinkToChat(CHAT_ID, link1);
         linkService.addLinkToChat(CHAT_ID, link2);
-
-        linkService.resetLastUpdate(
-            linkRepository.findAll()
-                .stream()
-                .filter(l -> l.getUrl().equals(link2.getUrl()))
-                .toList()
-        );
+        linkService.resetLastUpdate(List.of(link2));
 
         List<Link> links = linkRepository.findAll();
 
@@ -180,11 +180,9 @@ public class LinkJDBCServiceTest extends IntegrationTest {
             .count()
         );
         assertTrue(links.stream()
-            .filter(l -> l.getUrl().equals(link2.getUrl()))
-            .findFirst()
-            .get()
-            .getLastUpdate()
-            .isAfter(link2.getLastUpdate())
+            .noneMatch(l -> (
+                Objects.equals(l.getUrl(), link2.getUrl()) && l.getLastUpdate() == link2.getLastUpdate()
+                    && l.getLastCheck() == link2.getLastCheck() && l.getBaseURL() == link2.getBaseURL()))
         );
     }
 }
