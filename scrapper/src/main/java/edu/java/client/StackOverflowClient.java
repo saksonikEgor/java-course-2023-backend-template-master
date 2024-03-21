@@ -1,12 +1,11 @@
 package edu.java.client;
 
 import edu.java.dto.response.StackOverflowResponse;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @RequiredArgsConstructor
-public class StackOverflowClient implements SiteAPIClient {
+public class StackOverflowClient {
     private final WebClient webClient;
 
     public StackOverflowResponse getInfo(long id) {
@@ -17,10 +16,5 @@ public class StackOverflowClient implements SiteAPIClient {
             .retrieve()
             .bodyToMono(StackOverflowResponse.class)
             .block();
-    }
-
-    @Override
-    public void call(Map<String, String> info) throws Exception {
-        getInfo(Long.parseLong(info.get("question_id")));
     }
 }

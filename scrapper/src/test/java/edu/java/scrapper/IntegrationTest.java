@@ -1,4 +1,4 @@
-package edu.java.integration;
+package edu.java.scrapper;
 
 import java.nio.file.Path;
 import java.sql.DriverManager;
@@ -18,8 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 public abstract class IntegrationTest {
-    private static final Path MIGRATIONS_PATH =
-        Path.of(System.getProperty("user.dir")).getParent().resolve("migrations");
+    private static final Path MIGRATIONS_PATH = Path.of(System.getProperty("user.dir"), "migrations");
     public static PostgreSQLContainer<?> POSTGRES;
 
     static {

@@ -10,13 +10,4 @@ public record GitHubResponse(
     @JsonProperty("created_at") OffsetDateTime createdAt,
     @JsonProperty("updated_at") OffsetDateTime updatedAt
 ) implements SiteAPIResponse {
-    @Override
-    public OffsetDateTime getLastUpdate() {
-        return updatedAt;
-    }
-
-    @Override
-    public String getUpdateDescription() {
-        return "Repository with full name '" + fullName + "' has updated";
-    }
 }

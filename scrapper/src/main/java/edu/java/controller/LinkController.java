@@ -1,21 +1,16 @@
 package edu.java.controller;
 
-import edu.java.dto.model.Link;
 import edu.java.dto.request.AddLinkRequest;
 import edu.java.dto.request.RemoveLinkRequest;
 import edu.java.dto.response.APIErrorResponse;
 import edu.java.dto.response.LinkResponse;
 import edu.java.dto.response.ListLinksResponse;
-import edu.java.service.LinkService;
-import edu.java.util.LinkFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,11 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Log4j2
 @RequestMapping("/links")
-@RequiredArgsConstructor
 public class LinkController {
-    private final LinkService linkService;
-    private final LinkFactory linkFactory;
-
     @SuppressWarnings("MultipleStringLiterals")
     @GetMapping
     @Operation(summary = "Получить все отслеживаемые ссылки")
@@ -51,14 +42,12 @@ public class LinkController {
     public ResponseEntity<ListLinksResponse> getLinks(@RequestHeader("Tg-Chat-Id") long chatId) {
         log.info("Getting links for chat: " + chatId);
 
-        List<Link> links = linkService.listAll(chatId);
+        ListLinksResponse response = new ListLinksResponse(
+            List.of(new LinkResponse(1, "https://gist.github.com/sanyarnd/52a78a01fa9ec234c8ad50fbc5ecc9e4")),
+            1
+        );
 
-        return ResponseEntity.ok(new ListLinksResponse(
-            links.stream()
-                .map(l -> new LinkResponse(l.getLinkId(), l.getUrl()))
-                .toList(),
-            links.size()
-        ));
+        return ResponseEntity.ok(response);
     }
 
     @SuppressWarnings("MultipleStringLiterals")
@@ -71,23 +60,22 @@ public class LinkController {
         @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
                      content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
                                         mediaType = "application/json")),
-        @ApiResponse(responseCode = "404", description = "Чат не найден",
-                     content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
-                                        mediaType = "application/json")),
         @ApiResponse(responseCode = "406", description = "Ссылка уже отслеживается",
                      content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
                                         mediaType = "application/json"))
     })
     public ResponseEntity<LinkResponse> addLink(
         @RequestHeader("Tg-Chat-Id") long chatId,
-        @Valid @RequestBody AddLinkRequest request
+        @RequestBody AddLinkRequest request
     ) {
         log.info("Adding link for chat: " + chatId + ", and request: " + request);
 
-        String url = request.link();
-        linkService.addLinkToChat(chatId, linkFactory.createLink(url));
+        LinkResponse linkResponse = new LinkResponse(
+            1,
+            "https://gist.github.com/sanyarnd/52a78a01fa9ec234c8ad50fbc5ecc9e4"
+        );
 
-        return ResponseEntity.ok(new LinkResponse(chatId, url));
+        return ResponseEntity.ok(linkResponse);
     }
 
     @DeleteMapping
@@ -99,7 +87,7 @@ public class LinkController {
         @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
                      content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
                                         mediaType = "application/json")),
-        @ApiResponse(responseCode = "404", description = "Чат не найден",
+        @ApiResponse(responseCode = "404", description = "Ссылка не найдена",
                      content = @Content(schema = @Schema(implementation = APIErrorResponse.class),
                                         mediaType = "application/json")),
         @ApiResponse(responseCode = "406", description = "Ссылка уже удалена",
@@ -108,13 +96,15 @@ public class LinkController {
     })
     public ResponseEntity<LinkResponse> deleteLink(
         @RequestHeader("Tg-Chat-Id") long chatId,
-        @Valid @RequestBody RemoveLinkRequest request
+        @RequestBody RemoveLinkRequest request
     ) {
         log.info("Deleting link for chat: " + chatId + ", and request: " + request);
 
-        String url = request.link();
-        linkService.removeLinkFromChat(chatId, url);
+        LinkResponse linkResponse = new LinkResponse(
+            1,
+            "https://gist.github.com/sanyarnd/52a78a01fa9ec234c8ad50fbc5ecc9e4"
+        );
 
-        return ResponseEntity.ok(new LinkResponse(chatId, url));
+        return ResponseEntity.ok(linkResponse);
     }
 }
