@@ -2,9 +2,9 @@ package edu.java.respository.jdbc;
 
 import edu.java.dto.model.Chat;
 import edu.java.dto.model.ChatState;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -63,7 +63,7 @@ public class ChatJDBCRepository {
     public List<@Valid Chat> getAllChatsForLink(long linkId) {
         return jdbcTemplate.query(
             "SELECT * FROM chats c JOIN links_chats lc ON c.chat_id = lc.chat_id WHERE lc.link_id = ?",
-                new BeanPropertyRowMapper<>(Chat.class),
+            new BeanPropertyRowMapper<>(Chat.class),
             linkId
         );
     }
