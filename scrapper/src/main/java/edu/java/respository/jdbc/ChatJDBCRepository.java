@@ -1,7 +1,6 @@
 package edu.java.respository.jdbc;
 
 import edu.java.dto.model.Chat;
-import edu.java.dto.model.ChatState;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -23,10 +22,9 @@ public class ChatJDBCRepository {
     @Transactional
     public void add(@Valid Chat chat) {
         jdbcTemplate.update(
-            "INSERT INTO chats(chat_id, created_at, state) VALUES (?, ?, ?::chat_state)",
+            "INSERT INTO chats(chat_id, created_at) VALUES (?, ?)",
             chat.getChatId(),
-            chat.getCreatedAt(),
-            chat.getState().name()
+            chat.getCreatedAt()
         );
     }
 
@@ -37,15 +35,6 @@ public class ChatJDBCRepository {
 
     public List<@Valid Chat> findAll() {
         return jdbcTemplate.query("SELECT * FROM chats", new BeanPropertyRowMapper<>(Chat.class));
-    }
-
-    @Transactional
-    public void changeState(long chatId, ChatState state) {
-        jdbcTemplate.update(
-            "UPDATE chats SET state = ?::chat_state WHERE chat_id = ?",
-            state.name(),
-            chatId
-        );
     }
 
     public Optional<@Valid Chat> getChatById(long chatId) {

@@ -2,10 +2,8 @@ package edu.java.respository.jdbc;
 
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
-import edu.java.util.Map2JsonConverter;
+import edu.java.util.parser.Map2JsonConverter;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -67,7 +65,7 @@ public class LinkJDBCRepository {
     }
 
     @Transactional
-    public void remove(@NotBlank String url) {
+    public void remove(String url) {
         jdbcTemplate.update("DELETE FROM links WHERE url = ?", url);
     }
 
@@ -75,7 +73,7 @@ public class LinkJDBCRepository {
         return jdbcTemplate.query("SELECT * FROM links", rowMapper);
     }
 
-    public Optional<@Valid Link> getLinkByURL(@NotBlank String url) {
+    public Optional<@Valid Link> getLinkByURL(String url) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                 "SELECT * FROM links WHERE url = ?",
@@ -122,7 +120,7 @@ public class LinkJDBCRepository {
     }
 
     @Transactional
-    public void updateCheckedLinks(@NotNull List<Long> checkedLinkIds) {
+    public void updateCheckedLinks(List<Long> checkedLinkIds) {
         if (checkedLinkIds.isEmpty()) {
             return;
         }
@@ -133,6 +131,21 @@ public class LinkJDBCRepository {
                 String.join(",", Collections.nCopies(checkedLinkIds.size(), "?"))
             ),
             checkedLinkIds.toArray()
+        );
+    }
+
+    @Transactional
+    public void resetLastUpdate(List<Long> updatedLinkIds) {
+        if (updatedLinkIds.isEmpty()) {
+            return;
+        }
+
+        jdbcTemplate.update(
+            String.format(
+                "UPDATE links SET last_update = now() WHERE link_id IN (%s)",
+                String.join(",", Collections.nCopies(updatedLinkIds.size(), "?"))
+            ),
+            updatedLinkIds.toArray()
         );
     }
 }

@@ -11,7 +11,7 @@ public class GitHubClient implements SiteAPIClient {
 
     public GitHubResponse getInfo(String user, String repo) {
         return webClient.get()
-            .uri("repos/{user}/{repo}", user, repo)
+            .uri("repos/{user}/{repo}/commits", user, repo)
             .retrieve()
             .bodyToMono(GitHubResponse.class)
             .block();

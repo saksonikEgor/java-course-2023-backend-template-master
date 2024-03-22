@@ -1,48 +1,62 @@
 package edu.java.commands;
 
-import com.google.gson.Gson;
-import com.pengrad.telegrambot.model.Message;
+import edu.java.client.ScrapperClient;
 import edu.java.configuration.TelegramBotCommandConfiguration;
-import edu.java.repository.UserDAO;
+import edu.java.dto.request.RemoveLinkRequest;
+import edu.java.exception.ScrapperAPIException;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+@ContextConfiguration(classes = TelegramBotCommandConfiguration.class)
 public class TelegramBotUntrackCommandTest {
-    private final static long USER_ID = 123456L;
-    private final TelegramBotCommandConfiguration commandConfiguration = new TelegramBotCommandConfiguration();
+    private final static long CHAT_ID = 123456L;
+    private final String link = "https://github.com/saksonikEgor/java-course-2023-backend-template-master";
+    @Autowired
+    public Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo;
+    @Autowired
+    public String fatalExceptionMessage;
+    @Autowired
+    public String cross;
     private TelegramBotCommandInfo untrackCommandInfo;
-    private Message message;
-
-    @BeforeEach
-    void createMessage() {
-        message = new Gson().fromJson(
-            "{chat={id=" + USER_ID + "}}",
-            Message.class
-        );
-    }
 
     @BeforeEach
     void setCommandInfo() {
-        untrackCommandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.UNTRACK);
+        untrackCommandInfo = typeToInfo.get(TelegramBotCommandType.UNTRACK);
     }
 
     @Test
-    void callTrackForAuthenticatedUser() {
-        UserDAO userDAO = new UserDAO();
-        userDAO.addUser(USER_ID);
+    void callTrackForAuthenticatedChat() {
+        ScrapperClient scrapperClient = Mockito.mock(ScrapperClient.class);
 
-        TelegramBotUntrackCommand untrackCommand = new TelegramBotUntrackCommand(commandConfiguration, userDAO);
-        String response = untrackCommand.execute(message);
+        TelegramBotUntrackCommand untrackCommand =
+            new TelegramBotUntrackCommand(typeToInfo, scrapperClient, fatalExceptionMessage, cross);
+        String response = untrackCommand.execute(link, CHAT_ID);
 
         assertEquals(untrackCommandInfo.successfulResponse(), response);
     }
 
     @Test
     void callTrackForUnauthenticatedUser() {
-        TelegramBotUntrackCommand untrackCommand = new TelegramBotUntrackCommand(commandConfiguration, new UserDAO());
-        String response = untrackCommand.execute(message);
+        String chatIsUnauthMessage = "Chat in unauthenticated";
 
-        assertEquals(commandConfiguration.getNotAuthenticatedErrorMessage(), response);
+        ScrapperClient scrapperClient = Mockito.mock(ScrapperClient.class);
+        Mockito.when(scrapperClient.deleteLink(CHAT_ID, new RemoveLinkRequest(link)))
+            .thenThrow(new ScrapperAPIException(chatIsUnauthMessage));
+
+        TelegramBotUntrackCommand untrackCommand =
+            new TelegramBotUntrackCommand(typeToInfo, scrapperClient, fatalExceptionMessage, cross);
+        String response = untrackCommand.execute(link, CHAT_ID);
+
+        assertEquals(cross + chatIsUnauthMessage, response);
     }
 }

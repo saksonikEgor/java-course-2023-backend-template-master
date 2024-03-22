@@ -1,9 +1,9 @@
 package edu.java.commands;
 
-import com.pengrad.telegrambot.model.Message;
-import edu.java.configuration.TelegramBotCommandConfiguration;
-import edu.java.exception.UserIsUnauthenticatedException;
-import edu.java.repository.UserDAO;
+import edu.java.client.ScrapperClient;
+import edu.java.dto.request.AddLinkRequest;
+import edu.java.exception.ScrapperAPIException;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +11,20 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class TelegramBotTrackCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
-    private final UserDAO userDAO;
-    private final String notAuthenticatedErrorMessage;
+    private final ScrapperClient scrapperClient;
+    private final String fatalExceptionMessage;
+    private final String cross;
 
-    public TelegramBotTrackCommand(TelegramBotCommandConfiguration commandConfiguration, UserDAO userDAO) {
-        commandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.TRACK);
-        this.userDAO = userDAO;
-        notAuthenticatedErrorMessage = commandConfiguration.getNotAuthenticatedErrorMessage();
+    public TelegramBotTrackCommand(
+        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
+        ScrapperClient scrapperClient,
+        String fatalExceptionMessage,
+        String cross
+    ) {
+        commandInfo = typeToInfo.get(TelegramBotCommandType.TRACK);
+        this.scrapperClient = scrapperClient;
+        this.fatalExceptionMessage = fatalExceptionMessage;
+        this.cross = cross;
     }
 
     @Override
@@ -31,13 +38,14 @@ public class TelegramBotTrackCommand implements TelegramBotCommand {
     }
 
     @Override
-    public String execute(Message message) {
+    public String execute(String url, long chatId) {
         try {
-            userDAO.makeTheUserWaitForTrack(message.chat().id());
+            scrapperClient.addLink(chatId, new AddLinkRequest(url));
             return commandInfo.successfulResponse();
-        } catch (UserIsUnauthenticatedException e) {
-            log.error(e.getMessage());
-            return notAuthenticatedErrorMessage;
+        } catch (ScrapperAPIException e) {
+            return cross + e.getMessage();
+        } catch (Exception e) {
+            return cross + fatalExceptionMessage;
         }
     }
 }

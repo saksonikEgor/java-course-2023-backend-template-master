@@ -4,7 +4,11 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import edu.java.configuration.ClientConfiguration;
 import edu.java.dto.response.StackOverflowResponse;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.OffsetDateTime;
+import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -32,50 +36,11 @@ public class StackOverflowClientTest {
     }
 
     @Test
-    void gettingResponse() {
-        final long USER_ID = 70452633L;
-        String json = """
-            {
-                "items": [
-                    {
-                        "tags": [
-                            "java",
-                            "junit",
-                            "junit5",
-                            "spring-test",
-                            "junit-jupiter"
-                        ],
-                        "owner": {
-                            "account_id": 965625,
-                            "reputation": 1698,
-                            "user_id": 1103606,
-                            "user_type": "registered",
-                            "accept_rate": 51,
-                            "profile_image": "https://www.gravatar.com/avatar/0d93cc650b93939ea91066fcb5aefae0?s=256&d=identicon&r=PG",
-                            "display_name": "Peter Penzov",
-                            "link": "https://stackoverflow.com/users/1103606/peter-penzov"
-                        },
-                        "post_state": "Published",
-                        "is_answered": true,
-                        "view_count": 127543,
-                        "accepted_answer_id": 70503467,
-                        "answer_count": 24,
-                        "score": 56,
-                        "last_activity_date": 1708025706,
-                        "creation_date": 1640192711,
-                        "last_edit_date": 1640210015,
-                        "question_id": 70452633,
-                        "content_license": "CC BY-SA 4.0",
-                        "link": "https://stackoverflow.com/questions/70452633/org-junit-platform-commons-junitexception-testengine-with-id-junit-jupiter-fa",
-                        "title": "org.junit.platform.commons.JUnitException: TestEngine with ID &#39;junit-jupiter&#39; failed to discover tests"
-                    }
-                ],
-                "has_more": false,
-                "quota_max": 300,
-                "quota_remaining": 265
-            }""";
+    void gettingResponse() throws IOException {
+        final long QUESTION_ID = 70452633L;
+        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/stackoverflow-response.json")));
 
-        stubFor(get(urlEqualTo("/questions/" + USER_ID + "?site=stackoverflow"))
+        stubFor(get(urlEqualTo("/questions/" + QUESTION_ID + "/answers?site=stackoverflow"))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
                 .withBody(json)
@@ -84,14 +49,26 @@ public class StackOverflowClientTest {
         ClientConfiguration clientConfiguration = new ClientConfiguration();
         clientConfiguration.setStackOverflowBaseURL("http://localhost:8080");
 
-        StackOverflowResponse response = clientConfiguration.stackOverflowClient().getInfo(USER_ID);
+        StackOverflowResponse response = clientConfiguration.stackOverflowClient().getInfo(QUESTION_ID);
 
-        verify(getRequestedFor(urlEqualTo("/questions/" + USER_ID + "?site=stackoverflow")));
-        assertEquals(new StackOverflowResponse(
-            OffsetDateTime.parse("2021-12-22T17:05:11Z"),
-            OffsetDateTime.parse("2021-12-22T21:53:35Z"),
-            USER_ID,
-            "org.junit.platform.commons.JUnitException: TestEngine with ID &#39;junit-jupiter&#39; failed to discover tests"
-        ), response);
+        verify(getRequestedFor(urlEqualTo("/questions/" + QUESTION_ID + "/answers?site=stackoverflow")));
+
+        assertEquals(new StackOverflowResponse(List.of(
+            new StackOverflowResponse.Answer(
+                new StackOverflowResponse.Answer.Owner("Marek Podyma"),
+                OffsetDateTime.parse("2024-02-29T18:08:07Z"),
+                QUESTION_ID
+            ),
+            new StackOverflowResponse.Answer(
+                new StackOverflowResponse.Answer.Owner("Joe Caruso"),
+                OffsetDateTime.parse("2024-02-15T19:35:06Z"),
+                QUESTION_ID
+            ),
+            new StackOverflowResponse.Answer(
+                new StackOverflowResponse.Answer.Owner("Yaohui Wu"),
+                OffsetDateTime.parse("2024-02-01T03:35:16Z"),
+                QUESTION_ID
+            )
+        )), response);
     }
 }

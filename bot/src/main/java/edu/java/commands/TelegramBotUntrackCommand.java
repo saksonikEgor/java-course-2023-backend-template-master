@@ -1,9 +1,9 @@
 package edu.java.commands;
 
-import com.pengrad.telegrambot.model.Message;
-import edu.java.configuration.TelegramBotCommandConfiguration;
-import edu.java.exception.UserIsUnauthenticatedException;
-import edu.java.repository.UserDAO;
+import edu.java.client.ScrapperClient;
+import edu.java.dto.request.RemoveLinkRequest;
+import edu.java.exception.ScrapperAPIException;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +11,20 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class TelegramBotUntrackCommand implements TelegramBotCommand {
     private final TelegramBotCommandInfo commandInfo;
-    private final UserDAO userDAO;
-    private final String notAuthenticatedErrorMessage;
+    private final ScrapperClient scrapperClient;
+    private final String fatalExceptionMessage;
+    private final String cross;
 
-    public TelegramBotUntrackCommand(TelegramBotCommandConfiguration commandConfiguration, UserDAO userDAO) {
-        commandInfo = commandConfiguration.getTypeToInfo().get(TelegramBotCommandType.UNTRACK);
-        this.userDAO = userDAO;
-        notAuthenticatedErrorMessage = commandConfiguration.getNotAuthenticatedErrorMessage();
+    public TelegramBotUntrackCommand(
+        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo,
+        ScrapperClient scrapperClient,
+        String fatalExceptionMessage,
+        String cross
+    ) {
+        commandInfo = typeToInfo.get(TelegramBotCommandType.UNTRACK);
+        this.scrapperClient = scrapperClient;
+        this.cross = cross;
+        this.fatalExceptionMessage = fatalExceptionMessage;
     }
 
     @Override
@@ -31,13 +38,14 @@ public class TelegramBotUntrackCommand implements TelegramBotCommand {
     }
 
     @Override
-    public String execute(Message message) {
+    public String execute(String url, long chatId) {
         try {
-            userDAO.makeTheUserWaitForUntrack(message.chat().id());
+            scrapperClient.deleteLink(chatId, new RemoveLinkRequest(url));
             return commandInfo.successfulResponse();
-        } catch (UserIsUnauthenticatedException e) {
-            log.error(e.getMessage());
-            return notAuthenticatedErrorMessage;
+        } catch (ScrapperAPIException e) {
+            return cross + e.getMessage();
+        } catch (Exception e) {
+            return cross + fatalExceptionMessage;
         }
     }
 }

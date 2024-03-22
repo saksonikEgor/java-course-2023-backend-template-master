@@ -16,8 +16,6 @@ public class Chat {
     private long chatId;
     @NotNull(message = "createdAt should not be null")
     private OffsetDateTime createdAt = OffsetDateTime.now(ZoneOffset.UTC);
-    @NotNull(message = "state should not be null")
-    private ChatState state = ChatState.REGISTERED;
     @NotNull(message = "links should not be null")
     private List<Link> links = new ArrayList<>();
 

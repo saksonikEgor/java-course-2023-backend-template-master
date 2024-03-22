@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Link {
     private long linkId;
-    @NotBlank(message = "url should not be blank")
+    @NotBlank(message = "url should be not empty")
     private String url;
     @NotNull(message = "lastUpdate should not be null")
     private OffsetDateTime lastUpdate = OffsetDateTime.now();
@@ -47,6 +47,22 @@ public class Link {
         Map<String, String> info
     ) {
         this.url = url;
+        this.baseURL = baseURL;
+        this.info = info;
+    }
+
+    public Link(
+        long linkId,
+        String url,
+        OffsetDateTime lastUpdate,
+        OffsetDateTime lastCheck,
+        BaseURL baseURL,
+        Map<String, String> info
+    ) {
+        this.linkId = linkId;
+        this.url = url;
+        this.lastUpdate = lastUpdate;
+        this.lastCheck = lastCheck;
         this.baseURL = baseURL;
         this.info = info;
     }

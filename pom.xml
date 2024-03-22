@@ -46,11 +46,16 @@
 
         <!-- Docs -->
         <springdoc-openapi-starter-webmvc-ui.version>2.3.0</springdoc-openapi-starter-webmvc-ui.version>
+
+        <!-- JOOQ -->
+        <org.jooq.version>3.19.6</org.jooq.version>
+        <spring-boot-starter-jooq.version>3.2.3</spring-boot-starter-jooq.version>
     </properties>
 
     <modules>
         <module>bot</module>
         <module>scrapper</module>
+        <module>scrapper-jooq</module>
     </modules>
 
     <dependencyManagement>
@@ -95,6 +100,25 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+            </dependency>
+
+            <!-- JOOQ -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jooq</artifactId>
+                <version>${spring-boot-starter-jooq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>${org.jooq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-meta-extensions-liquibase</artifactId>
+                <version>${org.jooq.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

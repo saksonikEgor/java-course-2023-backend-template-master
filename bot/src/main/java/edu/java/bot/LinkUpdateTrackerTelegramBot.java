@@ -4,13 +4,16 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
+import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.model.request.Keyboard;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.commands.TelegramBotCommandInfo;
 import edu.java.commands.TelegramBotCommandType;
-import edu.java.configuration.ApplicationConfig;
-import edu.java.configuration.TelegramBotCommandConfiguration;
-import edu.java.handler.UserInputHandler;
+import edu.java.dto.request.LinkUpdateRequest;
+import edu.java.handler.ChatInputHandler;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -19,39 +22,65 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
-    private final ApplicationConfig applicationConfig;
-    private final UserInputHandler inputHandler;
+    private final String telegramBotToken;
+    private final ChatInputHandler inputHandler;
     private final Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo;
+    private final Keyboard keyboard;
     private TelegramBot telegramBot;
 
     public LinkUpdateTrackerTelegramBot(
-        ApplicationConfig applicationConfig, UserInputHandler inputHandler,
-        TelegramBotCommandConfiguration commandConfiguration
+        String telegramBotToken,
+        ChatInputHandler inputHandler,
+        Map<TelegramBotCommandType, TelegramBotCommandInfo> typeToInfo
     ) {
-        this.applicationConfig = applicationConfig;
+        this.telegramBotToken = telegramBotToken;
         this.inputHandler = inputHandler;
-        typeToInfo = commandConfiguration.getTypeToInfo();
+        this.typeToInfo = typeToInfo;
+        keyboard = createKeyboard();
+    }
+
+    private InlineKeyboardMarkup createKeyboard() {
+        return new InlineKeyboardMarkup()
+            .addRow(
+                new InlineKeyboardButton(
+                    typeToInfo.get(TelegramBotCommandType.TRACK).commandDefinition()
+                )
+                    .switchInlineQueryCurrentChat(
+                        typeToInfo.get(TelegramBotCommandType.TRACK).commandName() + " "
+                    )
+            )
+            .addRow(
+                new InlineKeyboardButton(
+                    typeToInfo.get(TelegramBotCommandType.UNTRACK).commandDefinition()
+                )
+                    .switchInlineQueryCurrentChat(
+                        typeToInfo.get(TelegramBotCommandType.UNTRACK).commandName() + " "
+                    )
+            );
     }
 
     @Override
     public void start() {
-        log.info("Starting Telegram bot with token: " + applicationConfig.telegramToken());
+        log.info("Starting Telegram bot with token: " + telegramBotToken);
 
-        telegramBot = new TelegramBot(applicationConfig.telegramToken());
+        telegramBot = new TelegramBot(telegramBotToken);
         telegramBot.execute(getAllTelegramBotCommands());
         telegramBot.setUpdatesListener(this);
     }
 
+    @Override
+    public void sendMessages(LinkUpdateRequest request) {
+        String notification = "[Обновление контента по ссылке](" + request.url() + ")"
+            + "\n----------------\n*Описание обновления:*\n" + request.description();
+
+        request.tgChatIds()
+            .stream()
+            .map(chatId -> new SendMessage(chatId, notification))
+            .forEach(this::sendMessage);
+    }
+
     private SetMyCommands getAllTelegramBotCommands() {
         return new SetMyCommands(
-            new BotCommand(
-                typeToInfo.get(TelegramBotCommandType.TRACK).commandName(),
-                typeToInfo.get(TelegramBotCommandType.TRACK).commandDefinition()
-            ),
-            new BotCommand(
-                typeToInfo.get(TelegramBotCommandType.UNTRACK).commandName(),
-                typeToInfo.get(TelegramBotCommandType.UNTRACK).commandDefinition()
-            ),
             new BotCommand(
                 typeToInfo.get(TelegramBotCommandType.LIST).commandName(),
                 typeToInfo.get(TelegramBotCommandType.LIST).commandDefinition()
@@ -67,14 +96,18 @@ public class LinkUpdateTrackerTelegramBot implements TelegramBotWrapper {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             log.info("Process update: {}", update);
-            sendMessage(inputHandler.handle(update));
+            try {
+                sendMessage(inputHandler.handle(update));
+            } catch (NullPointerException e) {
+                log.error(e.getMessage());
+            }
         });
 
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
     private void sendMessage(SendMessage message) {
-        telegramBot.execute(message);
+        telegramBot.execute(message.parseMode(ParseMode.Markdown).replyMarkup(keyboard));
     }
 
     @Override

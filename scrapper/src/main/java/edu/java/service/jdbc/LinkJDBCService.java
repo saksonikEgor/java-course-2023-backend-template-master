@@ -80,4 +80,13 @@ public class LinkJDBCService implements LinkService {
 
         return checkedLinks;
     }
+
+    @Override
+    public void resetLastUpdate(List<Link> updatedLinks) {
+        linkRepository.resetLastUpdate(
+            updatedLinks.stream()
+                .map(Link::getLinkId)
+                .toList()
+        );
+    }
 }
