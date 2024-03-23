@@ -3,13 +3,13 @@ package edu.java.respository.jdbc;
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.util.parser.Map2JsonConverter;
+import jakarta.validation.Valid;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -22,10 +22,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 @RequiredArgsConstructor
 @Component
 @Transactional(readOnly = true)
+@Validated
 public class LinkJDBCRepository {
     private final JdbcTemplate jdbcTemplate;
     @SuppressWarnings("MagicNumber")
@@ -40,7 +42,7 @@ public class LinkJDBCRepository {
 
     @SuppressWarnings("MagicNumber")
     @Transactional
-    public long add(Link link) {
+    public long add(@Valid Link link) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(c -> {
@@ -65,11 +67,11 @@ public class LinkJDBCRepository {
         jdbcTemplate.update("DELETE FROM links WHERE url = ?", url);
     }
 
-    public List<Link> findAll() {
+    public List<@Valid Link> findAll() {
         return jdbcTemplate.query("SELECT * FROM links", rowMapper);
     }
 
-    public Optional<Link> getLinkByURL(String url) {
+    public Optional<@Valid Link> getLinkByURL(String url) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                 "SELECT * FROM links WHERE url = ?",
@@ -99,7 +101,7 @@ public class LinkJDBCRepository {
         );
     }
 
-    public List<Link> getAllLinksForChat(long chatId) {
+    public List<@Valid Link> getAllLinksForChat(long chatId) {
         return jdbcTemplate.query(
             "SELECT * FROM links l JOIN links_chats lc ON l.link_id = lc.link_id WHERE lc.chat_id = ?",
             rowMapper,
@@ -107,7 +109,7 @@ public class LinkJDBCRepository {
         );
     }
 
-    public List<Link> getAllLinksWithLastCheckBeforeDuration(Duration duration) {
+    public List<@Valid Link> getAllLinksWithLastCheckBeforeDuration(Duration duration) {
         return jdbcTemplate.query(
             "SELECT * FROM links WHERE last_check < ?",
             rowMapper,

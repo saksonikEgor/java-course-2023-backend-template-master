@@ -9,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,45 +27,50 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.validator.constraints.URL;
-import org.jetbrains.annotations.NotNull;
 
-@Getter @Setter @ToString @RequiredArgsConstructor @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @ToString @NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "links")
 public class Link {
+    @NotNull(message = "linkId should not be null")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "link_id", nullable = false)
     private Long linkId;
 
+    @NotBlank(message = "url should be not empty")
     @Column(name = "url", nullable = false, unique = true)
     @URL
     private String url;
 
+    @NotNull(message = "lastUpdate should not be null")
     @Column(name = "last_update", nullable = false)
     private OffsetDateTime lastUpdate = OffsetDateTime.now();
 
+    @NotNull(message = "lastCheck should not be null")
     @Column(name = "last_check", nullable = false)
     private OffsetDateTime lastCheck = OffsetDateTime.now();
 
+    @NotNull(message = "baseURL should not be null")
     @Column(name = "base_url", nullable = false)
     @Enumerated(EnumType.STRING)
     private BaseURL baseURL;
 
+    @NotNull(message = "info should not be null")
     @Column(name = "info", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> info = new HashMap<>();
 
-    @NotNull
+    @NotNull(message = "links should not be null")
     @ToString.Exclude
     @ManyToMany(mappedBy = "links")
     private List<Chat> chats = new ArrayList<>();
 
     public Link(
         String url,
-        @NotNull OffsetDateTime lastUpdate,
-        @NotNull OffsetDateTime lastCheck,
-        @NotNull BaseURL baseURL
+        OffsetDateTime lastUpdate,
+        OffsetDateTime lastCheck,
+        BaseURL baseURL
     ) {
         this.url = url;
         this.lastUpdate = lastUpdate;
@@ -73,8 +80,8 @@ public class Link {
 
     public Link(
         String url,
-        @NotNull BaseURL baseURL,
-        @NotNull Map<String, String> info
+        BaseURL baseURL,
+        Map<String, String> info
     ) {
         this.url = url;
         this.baseURL = baseURL;
@@ -84,10 +91,10 @@ public class Link {
     public Link(
         long linkId,
         String url,
-        @NotNull OffsetDateTime lastUpdate,
-        @NotNull OffsetDateTime lastCheck,
-        @NotNull BaseURL baseURL,
-        @NotNull Map<String, String> info
+        OffsetDateTime lastUpdate,
+        OffsetDateTime lastCheck,
+        BaseURL baseURL,
+        Map<String, String> info
     ) {
         this.linkId = linkId;
         this.url = url;
