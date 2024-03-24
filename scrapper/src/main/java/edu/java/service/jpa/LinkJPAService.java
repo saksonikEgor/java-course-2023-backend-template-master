@@ -23,6 +23,7 @@ public class LinkJPAService implements LinkService {
     private final LinkJPARepository linkRepository;
     private final ChatJPARepository chatRepository;
 
+    @SuppressWarnings("MultipleStringLiterals")
     @Override
     @Transactional
     public void addLinkToChat(long chatId, Link link) throws ChatIsNotExistException, LinkIsAlreadyTrackedException {

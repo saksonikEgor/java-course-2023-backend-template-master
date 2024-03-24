@@ -1,23 +1,24 @@
 package edu.java.integration.jpa;
 
+import edu.java.configuration.DataAccess.JPAAccessConfiguration;
 import edu.java.dto.model.Chat;
 import edu.java.integration.IntegrationTest;
+import edu.java.integration.configuration.DBTestAccessConfiguration;
+import edu.java.integration.configuration.JPATestConfiguration;
 import edu.java.repository.jpa.ChatJPARepository;
 import edu.java.service.jpa.ChatJPAService;
+import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(properties = "app.database-access-type=jpa")
+@ContextConfiguration(classes = {JPATestConfiguration.class, JPAAccessConfiguration.class})
 public class ChatJPAServiceTest extends IntegrationTest {
     @Autowired
     private ChatJPARepository chatRepository;

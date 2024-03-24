@@ -4,7 +4,7 @@ import edu.java.configuration.DataAccess.JOOQAccessConfiguration;
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.integration.IntegrationTest;
-import edu.java.integration.configuration.DBAccessConfiguration;
+import edu.java.integration.configuration.DBTestAccessConfiguration;
 import edu.java.repository.jooq.LinkJOOQRepository;
 import edu.java.service.jooq.ChatJOOQService;
 import edu.java.service.jooq.LinkJOOQService;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(classes = JOOQAccessConfiguration.class, properties = {
     "app.database-access-type=jooq"
 })
-@ContextConfiguration(classes = DBAccessConfiguration.class)
+@ContextConfiguration(classes = DBTestAccessConfiguration.class)
 public class LinkJOOQServiceTest extends IntegrationTest {
     @Autowired
     private LinkJOOQService linkService;

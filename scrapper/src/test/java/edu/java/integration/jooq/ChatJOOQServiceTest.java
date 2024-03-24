@@ -3,7 +3,7 @@ package edu.java.integration.jooq;
 import edu.java.configuration.DataAccess.JOOQAccessConfiguration;
 import edu.java.dto.model.Chat;
 import edu.java.integration.IntegrationTest;
-import edu.java.integration.configuration.DBAccessConfiguration;
+import edu.java.integration.configuration.DBTestAccessConfiguration;
 import edu.java.repository.jooq.ChatJOOQRepository;
 import edu.java.service.jooq.ChatJOOQService;
 import java.util.List;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(classes = JOOQAccessConfiguration.class, properties = {
     "app.database-access-type=jooq"
 })
-@ContextConfiguration(classes = DBAccessConfiguration.class)
+@ContextConfiguration(classes = DBTestAccessConfiguration.class)
 public class ChatJOOQServiceTest extends IntegrationTest {
     @Autowired
     private ChatJOOQRepository chatRepository;

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatJPAService implements ChatService {
     private final ChatJPARepository chatRepository;
 
+    @SuppressWarnings("MultipleStringLiterals")
     @Override
     @Transactional
     public void register(long chatId) throws ChatIsAlreadyRegisteredException {

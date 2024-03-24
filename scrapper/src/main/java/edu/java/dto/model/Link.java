@@ -20,7 +20,6 @@ import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -32,7 +31,6 @@ import org.hibernate.validator.constraints.URL;
 @Entity
 @Table(name = "links")
 public class Link {
-    @NotNull(message = "linkId should not be null")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "link_id", nullable = false)

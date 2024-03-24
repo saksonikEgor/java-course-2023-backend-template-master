@@ -4,7 +4,7 @@ import edu.java.configuration.DataAccess.JDBCAccessConfiguration;
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.integration.IntegrationTest;
-import edu.java.integration.configuration.DBAccessConfiguration;
+import edu.java.integration.configuration.DBTestAccessConfiguration;
 import edu.java.repository.jdbc.LinkJDBCRepository;
 import edu.java.service.jdbc.ChatJDBCService;
 import edu.java.service.jdbc.LinkJDBCService;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(classes = JDBCAccessConfiguration.class, properties = {
     "app.database-access-type=jdbc"
 })
-@ContextConfiguration(classes = DBAccessConfiguration.class)
+@ContextConfiguration(classes = DBTestAccessConfiguration.class)
 public class LinkJDBCServiceTest extends IntegrationTest {
     @Autowired
     private LinkJDBCService linkService;

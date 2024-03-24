@@ -1,8 +1,11 @@
 package edu.java.integration.jpa;
 
+import edu.java.configuration.DataAccess.JPAAccessConfiguration;
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.integration.IntegrationTest;
+import edu.java.integration.configuration.DBTestAccessConfiguration;
+import edu.java.integration.configuration.JPATestConfiguration;
 import edu.java.repository.jpa.ChatJPARepository;
 import edu.java.repository.jpa.LinkJPARepository;
 import edu.java.service.jpa.ChatJPAService;
@@ -15,21 +18,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(properties = "app.database-access-type=jpa")
+@ContextConfiguration(classes = {JPATestConfiguration.class, JPAAccessConfiguration.class})
 public class LinkJPAServiceTest extends IntegrationTest {
     @Autowired
-    private LinkJPAService linkJPAService;
+    private LinkJPAService linkService;
     @Autowired
-    private ChatJPAService chatJPAService;
+    private ChatJPAService chatService;
     @Autowired
-    private LinkJPARepository linkJPARepository;
+    private LinkJPARepository linkRepository;
     @Autowired
-    private ChatJPARepository chatJPARepository;
+    private ChatJPARepository chatRepository;
     private static final long CHAT_ID = 579324L;
 
     @Test
@@ -43,10 +48,10 @@ public class LinkJPAServiceTest extends IntegrationTest {
             BaseURL.GITHUB
         );
 
-        chatJPAService.register(CHAT_ID);
-        linkJPAService.addLinkToChat(CHAT_ID, link);
+        chatService.register(CHAT_ID);
+        linkService.addLinkToChat(CHAT_ID, link);
 
-        List<Link> links = chatJPARepository.findById(CHAT_ID).get().getLinks();
+        List<Link> links = chatRepository.findById(CHAT_ID).get().getLinks();
 
         assertEquals(1, links.size());
         assertEquals(link.getUrl(), links.getFirst().getUrl());
@@ -63,11 +68,11 @@ public class LinkJPAServiceTest extends IntegrationTest {
             BaseURL.GITHUB
         );
 
-        chatJPAService.register(CHAT_ID);
-        linkJPAService.addLinkToChat(CHAT_ID, link);
-        linkJPAService.removeLinkFromChat(CHAT_ID, link.getUrl());
+        chatService.register(CHAT_ID);
+        linkService.addLinkToChat(CHAT_ID, link);
+        linkService.removeLinkFromChat(CHAT_ID, link.getUrl());
 
-        assertTrue(linkJPARepository.findAll().isEmpty());
+        assertTrue(linkRepository.findAll().isEmpty());
     }
 
     @Test
@@ -81,12 +86,12 @@ public class LinkJPAServiceTest extends IntegrationTest {
             BaseURL.GITHUB
         );
 
-        chatJPAService.register(CHAT_ID);
-        linkJPAService.addLinkToChat(CHAT_ID, link);
+        chatService.register(CHAT_ID);
+        linkService.addLinkToChat(CHAT_ID, link);
 
         assertEquals(
-            chatJPARepository.findById(CHAT_ID).get().getLinks(),
-            linkJPAService.listAll(CHAT_ID)
+            chatRepository.findById(CHAT_ID).get().getLinks(),
+            linkService.listAll(CHAT_ID)
         );
     }
 
@@ -101,10 +106,10 @@ public class LinkJPAServiceTest extends IntegrationTest {
             BaseURL.GITHUB
         );
 
-        chatJPAService.register(CHAT_ID);
-        linkJPAService.addLinkToChat(CHAT_ID, link);
+        chatService.register(CHAT_ID);
+        linkService.addLinkToChat(CHAT_ID, link);
 
-        assertEquals(linkJPARepository.findAll(), linkJPAService.listAll());
+        assertEquals(linkRepository.findAll(), linkService.listAll());
     }
 
     @Test
@@ -125,15 +130,15 @@ public class LinkJPAServiceTest extends IntegrationTest {
             BaseURL.GITHUB
         );
 
-        chatJPAService.register(CHAT_ID);
-        linkJPAService.addLinkToChat(CHAT_ID, link1);
-        linkJPAService.addLinkToChat(CHAT_ID, link2);
+        chatService.register(CHAT_ID);
+        linkService.addLinkToChat(CHAT_ID, link1);
+        linkService.addLinkToChat(CHAT_ID, link2);
 
         assertEquals(
             Stream.of(link1)
                 .map(Link::getUrl)
                 .toList(),
-            linkJPAService.listAllOldCheckLinks(Duration.ofDays(1))
+            linkService.listAllOldCheckLinks(Duration.ofDays(1))
                 .stream()
                 .map(Link::getUrl)
                 .toList()
@@ -144,32 +149,34 @@ public class LinkJPAServiceTest extends IntegrationTest {
     @Transactional
     @Rollback
     void resetLastUpdate() {
+        OffsetDateTime dateBefore1 = OffsetDateTime.parse("2024-02-05T18:38:39Z");
         Link link1 = new Link(
             "https://github.com/saksonikEgor/Checkers",
-            OffsetDateTime.parse("2024-02-05T18:38:39Z"),
-            OffsetDateTime.parse("2024-02-05T18:38:39Z"),
+            dateBefore1,
+            dateBefore1,
             BaseURL.GITHUB
         );
 
+        OffsetDateTime dateBefore2 = OffsetDateTime.parse("2023-02-05T18:38:39Z");
         Link link2 = new Link(
             "https://github.com/saksonikEgor/Checkers2",
-            OffsetDateTime.parse("2023-02-05T18:38:39Z"),
-            OffsetDateTime.parse("2023-02-05T18:38:39Z"),
+            dateBefore2,
+            dateBefore2,
             BaseURL.GITHUB
         );
 
-        chatJPAService.register(CHAT_ID);
-        linkJPAService.addLinkToChat(CHAT_ID, link1);
-        linkJPAService.addLinkToChat(CHAT_ID, link2);
+        chatService.register(CHAT_ID);
+        linkService.addLinkToChat(CHAT_ID, link1);
+        linkService.addLinkToChat(CHAT_ID, link2);
 
-        linkJPAService.resetLastUpdate(
-            linkJPARepository.findAll()
+        linkService.resetLastUpdate(
+            linkRepository.findAll()
                 .stream()
                 .filter(l -> l.getUrl().equals(link2.getUrl()))
                 .toList()
         );
 
-        List<Link> links = linkJPARepository.findAll();
+        List<Link> links = linkRepository.findAll();
 
         assertEquals(2, links.size());
         assertFalse(links.stream()
@@ -177,14 +184,14 @@ public class LinkJPAServiceTest extends IntegrationTest {
             .findFirst()
             .get()
             .getLastUpdate()
-            .isAfter(link1.getLastUpdate())
+            .isAfter(dateBefore1)
         );
         assertTrue(links.stream()
             .filter(l -> l.getUrl().equals(link2.getUrl()))
             .findFirst()
             .get()
             .getLastUpdate()
-            .isAfter(link2.getLastUpdate())
+            .isAfter(dateBefore2)
         );
     }
 }
