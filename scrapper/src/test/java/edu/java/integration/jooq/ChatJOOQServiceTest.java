@@ -4,7 +4,7 @@ import edu.java.configuration.DataAccess.JOOQAccessConfiguration;
 import edu.java.dto.model.Chat;
 import edu.java.integration.IntegrationTest;
 import edu.java.integration.configuration.DBAccessConfiguration;
-import edu.java.respository.jooq.ChatJOOQRepository;
+import edu.java.repository.jooq.ChatJOOQRepository;
 import edu.java.service.jooq.ChatJOOQService;
 import java.util.List;
 import org.junit.jupiter.api.Test;

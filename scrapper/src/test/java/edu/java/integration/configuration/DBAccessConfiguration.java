@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -36,6 +37,19 @@ public class DBAccessConfiguration {
 
         return dataSource;
     }
+
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+//        LocalContainerEntityManagerFactoryBean em
+//            = new LocalContainerEntityManagerFactoryBean();
+//        em.setDataSource(containerDataSource());
+//        em.setPackagesToScan("edu/java/dto/model");
+//
+//        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+//        em.setJpaVendorAdapter(vendorAdapter);
+//
+//        return em;
+//    }
 
     @Bean
     public DataSourceConnectionProvider connectionProvider() {

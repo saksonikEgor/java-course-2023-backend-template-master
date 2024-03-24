@@ -3,7 +3,7 @@ package edu.java.service.jpa;
 import edu.java.dto.model.Chat;
 import edu.java.exception.chat.ChatIsAlreadyRegisteredException;
 import edu.java.exception.chat.ChatIsNotExistException;
-import edu.java.respository.jpa.ChatJPARepository;
+import edu.java.repository.jpa.ChatJPARepository;
 import edu.java.service.ChatService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

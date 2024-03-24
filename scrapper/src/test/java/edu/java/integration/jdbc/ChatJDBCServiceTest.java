@@ -4,7 +4,7 @@ import edu.java.configuration.DataAccess.JDBCAccessConfiguration;
 import edu.java.dto.model.Chat;
 import edu.java.integration.IntegrationTest;
 import edu.java.integration.configuration.DBAccessConfiguration;
-import edu.java.respository.jdbc.ChatJDBCRepository;
+import edu.java.repository.jdbc.ChatJDBCRepository;
 import edu.java.service.jdbc.ChatJDBCService;
 import java.util.List;
 import org.junit.jupiter.api.Test;

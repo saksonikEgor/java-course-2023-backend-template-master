@@ -5,7 +5,7 @@ import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.integration.IntegrationTest;
 import edu.java.integration.configuration.DBAccessConfiguration;
-import edu.java.respository.jooq.LinkJOOQRepository;
+import edu.java.repository.jooq.LinkJOOQRepository;
 import edu.java.service.jooq.ChatJOOQService;
 import edu.java.service.jooq.LinkJOOQService;
 import java.time.Duration;

@@ -1,7 +1,7 @@
 package edu.java.configuration.DataAccess;
 
-import edu.java.respository.jooq.ChatJOOQRepository;
-import edu.java.respository.jooq.LinkJOOQRepository;
+import edu.java.repository.jooq.ChatJOOQRepository;
+import edu.java.repository.jooq.LinkJOOQRepository;
 import edu.java.service.ChatService;
 import edu.java.service.LinkService;
 import edu.java.service.jooq.ChatJOOQService;

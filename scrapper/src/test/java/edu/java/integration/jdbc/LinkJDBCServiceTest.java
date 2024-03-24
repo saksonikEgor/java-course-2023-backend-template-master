@@ -5,7 +5,7 @@ import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.integration.IntegrationTest;
 import edu.java.integration.configuration.DBAccessConfiguration;
-import edu.java.respository.jdbc.LinkJDBCRepository;
+import edu.java.repository.jdbc.LinkJDBCRepository;
 import edu.java.service.jdbc.ChatJDBCService;
 import edu.java.service.jdbc.LinkJDBCService;
 import java.time.Duration;
