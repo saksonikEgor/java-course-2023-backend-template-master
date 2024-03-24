@@ -1,19 +1,26 @@
 app:
   scheduler:
     enable: true
-    interval: 10s
-    link-check-interval: 10s
+    interval: 300s
+    link-check-interval: 300s
     force-check-delay: 10s
+  database-access-type: jpa
 
 datasource:
-    driver: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/scrapper
-    username: postgres
-    password: postgres
+  driver: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/scrapper
+  username: postgres
+  password: postgres
 
 spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
   application:
     name: scrapper
+  liquibase:
+    enabled: false
 
 server:
   port: 8080

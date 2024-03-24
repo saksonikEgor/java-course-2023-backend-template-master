@@ -1,10 +1,11 @@
 package edu.java.integration.jdbc;
 
+import edu.java.configuration.DataAccess.JDBCAccessConfiguration;
 import edu.java.dto.model.Chat;
 import edu.java.integration.IntegrationTest;
-import edu.java.integration.configuration.JDBCConfiguration;
-import edu.java.respository.jdbc.ChatJDBCRepository;
-import java.time.OffsetDateTime;
+import edu.java.integration.configuration.DBTestAccessConfiguration;
+import edu.java.repository.jdbc.ChatJDBCRepository;
+import edu.java.service.jdbc.ChatJDBCService;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,37 +16,35 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
-@ContextConfiguration(classes = JDBCConfiguration.class)
-public class ChatJDBCRepositoryTest extends IntegrationTest {
+@SpringBootTest(classes = JDBCAccessConfiguration.class, properties = {
+    "app.database-access-type=jdbc"
+})
+@ContextConfiguration(classes = DBTestAccessConfiguration.class)
+public class ChatJDBCServiceTest extends IntegrationTest {
+    @Autowired
+    private ChatJDBCService chatService;
     @Autowired
     private ChatJDBCRepository chatRepository;
+    private static final long CHAT_ID = 579324L;
 
     @Test
     @Transactional
     @Rollback
-    void addChat() {
-        Chat chat = new Chat();
-        chat.setChatId(579324L);
-        chat.setCreatedAt(OffsetDateTime.parse("2023-02-05T18:38:39Z"));
+    void register() {
+        chatService.register(CHAT_ID);
 
-        chatRepository.add(chat);
         List<Chat> chats = chatRepository.findAll();
 
         assertEquals(1, chats.size());
-        assertEquals(chat, chats.getFirst());
+        assertEquals(CHAT_ID, chats.getFirst().getChatId());
     }
 
     @Test
     @Transactional
     @Rollback
-    void removeChat() {
-        Chat chat = new Chat();
-        chat.setChatId(579324L);
-        chat.setCreatedAt(OffsetDateTime.parse("2023-02-05T18:38:39Z"));
-
-        chatRepository.add(chat);
-        chatRepository.remove(chat.getChatId());
+    void unregister() {
+        chatService.register(CHAT_ID);
+        chatService.unregister(CHAT_ID);
 
         assertTrue(chatRepository.findAll().isEmpty());
     }

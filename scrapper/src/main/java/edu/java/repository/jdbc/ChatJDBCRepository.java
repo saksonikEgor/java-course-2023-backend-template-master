@@ -1,4 +1,4 @@
-package edu.java.respository.jdbc;
+package edu.java.repository.jdbc;
 
 import edu.java.dto.model.Chat;
 import jakarta.validation.Valid;
