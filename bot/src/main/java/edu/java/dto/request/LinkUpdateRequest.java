@@ -1,11 +1,22 @@
 package edu.java.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record LinkUpdateRequest(
-    long id,
+    @NotNull
+    Long id,
+
+    @NotBlank
     String url,
+
+    @NotBlank
     String description,
-    List<Long> tgChatIds
+
+    @NotNull
+    @NotEmpty
+    List<@NotNull Long> tgChatIds
 ) {
 }

@@ -5,6 +5,10 @@ app:
   kafka:
     topic:
       name: "notifications"
+#    dead-letter-topic:
+#      name: "notifications_dlq"
+#      partitions: 1
+#      replicas: 1
 
 
 spring:
@@ -16,14 +20,20 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:29091
+
     consumer:
       group-id: consumer-group-1
       key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "edu.java.dto.request"
+      auto-offset-reset: latest
     listener:
       concurrency: 1
+
+    producer: #for dlq
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 
 server:

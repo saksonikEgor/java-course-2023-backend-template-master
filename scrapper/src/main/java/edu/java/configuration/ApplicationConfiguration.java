@@ -1,7 +1,6 @@
 package edu.java.configuration;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(
+public record ApplicationConfiguration(
     @NotNull
     Scheduler scheduler,
     @NotNull
@@ -53,7 +52,7 @@ public record ApplicationConfig(
 
     public record KafkaProperties(
         @NotNull
-        ApplicationConfig.KafkaProperties.KafkaTopicProperties topic
+        ApplicationConfiguration.KafkaProperties.KafkaTopicProperties topic
     ) {
         public record KafkaTopicProperties(
             @NotBlank
