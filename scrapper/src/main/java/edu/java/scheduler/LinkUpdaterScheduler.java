@@ -1,8 +1,8 @@
 package edu.java.scheduler;
 
-import edu.java.communication.BotMessageSender;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
+import edu.java.communication.BotMessageSender;
 import edu.java.dto.model.Chat;
 import edu.java.dto.model.Link;
 import edu.java.dto.request.LinkUpdateRequest;

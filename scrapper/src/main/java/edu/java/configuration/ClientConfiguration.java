@@ -1,9 +1,9 @@
 package edu.java.configuration;
 
-import edu.java.communication.httpClient.BotClient;
 import edu.java.client.GitHubClient;
 import edu.java.client.SiteAPIClient;
 import edu.java.client.StackOverflowClient;
+import edu.java.communication.httpClient.BotClient;
 import edu.java.dto.model.BaseURL;
 import java.util.Map;
 import java.util.function.Function;
