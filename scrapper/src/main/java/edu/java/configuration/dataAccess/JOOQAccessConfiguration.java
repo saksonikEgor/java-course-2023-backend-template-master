@@ -1,4 +1,4 @@
-package edu.java.configuration.DataAccess;
+package edu.java.configuration.dataAccess;
 
 import edu.java.repository.jooq.ChatJOOQRepository;
 import edu.java.repository.jooq.LinkJOOQRepository;

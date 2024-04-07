@@ -1,4 +1,4 @@
-package edu.java.configuration.DataAccess;
+package edu.java.configuration.dataAccess;
 
 import edu.java.repository.jpa.ChatJPARepository;
 import edu.java.repository.jpa.LinkJPARepository;

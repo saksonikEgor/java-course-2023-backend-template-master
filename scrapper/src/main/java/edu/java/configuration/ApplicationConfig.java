@@ -1,5 +1,7 @@
 package edu.java.configuration;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,7 +14,10 @@ public record ApplicationConfig(
     @NotNull
     Scheduler scheduler,
     @NotNull
-    AccessType databaseAccessType
+    AccessType databaseAccessType,
+    @NotNull
+    Boolean userQueue,
+    KafkaProperties kafka
 ) {
     @Bean
     public Duration schedulerInterval() {
@@ -22,6 +27,10 @@ public record ApplicationConfig(
     @Bean
     public Duration linkCheckInterval() {
         return scheduler.linkCheckInterval();
+    }
+
+    @Bean KafkaProperties.KafkaTopicProperties kafkaTopicProperties() {
+        return kafka.topic;
     }
 
     public record Scheduler(
@@ -34,5 +43,21 @@ public record ApplicationConfig(
 
     public enum AccessType {
         JDBC, JPA, JOOQ
+    }
+
+    public record KafkaProperties(
+        @NotNull
+        @NotEmpty
+        ApplicationConfig.KafkaProperties.KafkaTopicProperties topic
+    ) {
+        public record KafkaTopicProperties(
+            @NotBlank
+            String name,
+            @NotNull
+            Integer partitions,
+            @NotNull
+            Short replicas
+        ) {
+        }
     }
 }

@@ -1,6 +1,6 @@
 package edu.java.integration.jdbc;
 
-import edu.java.configuration.DataAccess.JDBCAccessConfiguration;
+import edu.java.configuration.dataAccess.JDBCAccessConfiguration;
 import edu.java.dto.model.BaseURL;
 import edu.java.dto.model.Link;
 import edu.java.integration.IntegrationTest;

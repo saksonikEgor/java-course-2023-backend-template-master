@@ -1,6 +1,6 @@
 package edu.java.integration.jooq;
 
-import edu.java.configuration.DataAccess.JOOQAccessConfiguration;
+import edu.java.configuration.dataAccess.JOOQAccessConfiguration;
 import edu.java.dto.model.Chat;
 import edu.java.integration.IntegrationTest;
 import edu.java.integration.configuration.DBTestAccessConfiguration;

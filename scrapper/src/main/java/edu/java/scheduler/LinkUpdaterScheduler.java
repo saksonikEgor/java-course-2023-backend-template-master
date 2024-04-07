@@ -1,6 +1,6 @@
 package edu.java.scheduler;
 
-import edu.java.client.BotClient;
+import edu.java.communication.httpClient.BotClient;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
 import edu.java.dto.model.Chat;
@@ -49,7 +49,7 @@ public class LinkUpdaterScheduler {
             Link link = update.link();
             List<Chat> trackingChats = chatService.getTrackingChatsForLink(link.getLinkId());
 
-            botClient.updateLink(new LinkUpdateRequest(
+            botClient.sendUpdate(new LinkUpdateRequest(
                 link.getLinkId(),
                 link.getUrl(),
                 update.response().getDescriptionOfUpdatesWhichAfter(link.getLastUpdate()),

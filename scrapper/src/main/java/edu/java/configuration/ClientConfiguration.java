@@ -1,6 +1,6 @@
 package edu.java.configuration;
 
-import edu.java.client.BotClient;
+import edu.java.communication.httpClient.BotClient;
 import edu.java.client.GitHubClient;
 import edu.java.client.SiteAPIClient;
 import edu.java.client.StackOverflowClient;

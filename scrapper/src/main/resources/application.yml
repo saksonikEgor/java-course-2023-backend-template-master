@@ -4,13 +4,22 @@ app:
     interval: 300s
     link-check-interval: 300s
     force-check-delay: 10s
+
   database-access-type: jpa
+
+  kafka:
+    topic:
+      name: "notifications"
+      partitions: 2
+      replicas: 2
+
 
 datasource:
   driver: org.postgresql.Driver
   url: jdbc:postgresql://localhost:5432/scrapper
   username: postgres
   password: postgres
+
 
 spring:
   jpa:
@@ -19,23 +28,37 @@ spring:
       ddl-auto: none
   application:
     name: scrapper
+
   liquibase:
     enabled: false
+
+  kafka:
+    bootstrap-servers: localhost:29091
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: 1
+
 
 server:
   port: 8080
 
+
 logging:
   config: classpath:log4j2-plain.xml
+
 
 bot:
   base-url: http://localhost:8090
 
+
 github:
   base-url: https://api.github.com
 
+
 stackoverflow:
   base-url: https://api.stackexchange.com
+
 
 springdoc:
   swagger-ui:

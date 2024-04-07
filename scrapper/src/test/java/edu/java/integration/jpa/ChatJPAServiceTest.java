@@ -1,9 +1,8 @@
 package edu.java.integration.jpa;
 
-import edu.java.configuration.DataAccess.JPAAccessConfiguration;
+import edu.java.configuration.dataAccess.JPAAccessConfiguration;
 import edu.java.dto.model.Chat;
 import edu.java.integration.IntegrationTest;
-import edu.java.integration.configuration.DBTestAccessConfiguration;
 import edu.java.integration.configuration.JPATestConfiguration;
 import edu.java.repository.jpa.ChatJPARepository;
 import edu.java.service.jpa.ChatJPAService;
