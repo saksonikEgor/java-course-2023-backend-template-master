@@ -6,13 +6,13 @@ app:
     force-check-delay: 10s
 
   database-access-type: jpa
+  use-queue: true
 
   kafka:
     topic:
       name: "notifications"
       partitions: 2
       replicas: 1
-  use-queue: true
 
 
 datasource:

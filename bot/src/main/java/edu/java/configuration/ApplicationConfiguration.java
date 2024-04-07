@@ -13,8 +13,7 @@ public record ApplicationConfiguration(
     @NotEmpty
     String telegramBotToken,
     @NotEmpty
-    String telegramBotName,
-    KafkaProperties kafka
+    String telegramBotName
 ) {
     @Bean
     public String telegramBotToken() {
@@ -26,19 +25,19 @@ public record ApplicationConfiguration(
         return telegramBotName;
     }
 
-    @Bean
-    public String topicName() {
-        return kafka.topic.name;
-    }
-
-    public record KafkaProperties(
-        @NotNull
-        ApplicationConfiguration.KafkaProperties.KafkaTopicProperties topic
-    ) {
-        public record KafkaTopicProperties(
-            @NotBlank
-            String name
-        ) {
-        }
-    }
+//    @Bean
+//    public String topicName() {
+//        return kafka.topic.name;
+//    }
+//
+//    public record KafkaProperties(
+//        @NotNull
+//        ApplicationConfiguration.KafkaProperties.KafkaTopicProperties topic
+//    ) {
+//        public record KafkaTopicProperties(
+//            @NotBlank
+//            String name
+//        ) {
+//        }
+//    }
 }
