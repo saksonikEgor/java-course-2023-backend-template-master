@@ -1,6 +1,6 @@
 package edu.java.scheduler;
 
-import edu.java.communication.httpClient.BotClient;
+import edu.java.communication.BotMessageSender;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
 import edu.java.dto.model.Chat;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 public class LinkUpdaterScheduler {
     private final ChatService chatService;
     private final LinkService linkService;
-    private final BotClient botClient;
+    private final BotMessageSender botMessageSender;
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final Duration linkCheckInterval;
@@ -49,7 +49,7 @@ public class LinkUpdaterScheduler {
             Link link = update.link();
             List<Chat> trackingChats = chatService.getTrackingChatsForLink(link.getLinkId());
 
-            botClient.sendUpdate(new LinkUpdateRequest(
+            botMessageSender.sendUpdate(new LinkUpdateRequest(
                 link.getLinkId(),
                 link.getUrl(),
                 update.response().getDescriptionOfUpdatesWhichAfter(link.getLastUpdate()),

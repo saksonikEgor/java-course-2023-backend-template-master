@@ -16,7 +16,7 @@ public record ApplicationConfig(
     @NotNull
     AccessType databaseAccessType,
     @NotNull
-    Boolean userQueue,
+    Boolean useQueue,
     KafkaProperties kafka
 ) {
     @Bean
@@ -29,8 +29,14 @@ public record ApplicationConfig(
         return scheduler.linkCheckInterval();
     }
 
-    @Bean KafkaProperties.KafkaTopicProperties kafkaTopicProperties() {
+    @Bean
+    public KafkaProperties.KafkaTopicProperties kafkaTopicProperties() {
         return kafka.topic;
+    }
+
+    @Bean
+    public Boolean useQueue() {
+        return useQueue;
     }
 
     public record Scheduler(
