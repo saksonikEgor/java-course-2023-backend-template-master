@@ -53,7 +53,6 @@ public record ApplicationConfig(
 
     public record KafkaProperties(
         @NotNull
-        @NotEmpty
         ApplicationConfig.KafkaProperties.KafkaTopicProperties topic
     ) {
         public record KafkaTopicProperties(

@@ -15,7 +15,7 @@ public class ScrapperQueueConsumer {
 
     @KafkaListener(topics = "${app.kafka.topic.name}",
                    groupId = "${spring.kafka.consumer.group-id}",
-                   concurrency = "${spring.kafka.listener.concurrency:2}")
+                   concurrency = "${spring.kafka.listener.concurrency:1}")
     public void listen(LinkUpdateRequest request) {
         log.info("Received link update: {}", request);
         telegramBotWrapper.sendMessages(request);

@@ -1,8 +1,8 @@
 app:
   scheduler:
     enable: true
-    interval: 300s
-    link-check-interval: 300s
+    interval: 10s
+    link-check-interval: 10s
     force-check-delay: 10s
 
   database-access-type: jpa
@@ -11,7 +11,8 @@ app:
     topic:
       name: "notifications"
       partitions: 2
-      replicas: 2
+      replicas: 1
+  use-queue: true
 
 
 datasource:
