@@ -21,6 +21,8 @@ public class ScrapperQueueProducer implements BotMessageSender {
 
     @Override
     public void sendUpdate(LinkUpdateRequest request) {
+        log.info("Sending link update request to topic: {}", topic);
+
         CompletableFuture<SendResult<Long, LinkUpdateRequest>> future = kafkaTemplate.send(
             topic.name(),
             request.id(),
