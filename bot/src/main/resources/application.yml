@@ -2,11 +2,29 @@ app:
   telegram-bot-token: ${TELEGRAM_TOKEN}
   telegram-bot-name: LinkUpdateTrackerBot
 
+  kafka:
+    topic:
+      name: "notifications"
+
+
 spring:
   application:
     name: bot
+
   jackson:
     time-zone: UTC
+
+  kafka:
+    bootstrap-servers: localhost:29091
+    consumer:
+      group-id: consumer-group-1
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    listener:
+      concurrency: 2
+
+
 
 server:
   port: 8090
