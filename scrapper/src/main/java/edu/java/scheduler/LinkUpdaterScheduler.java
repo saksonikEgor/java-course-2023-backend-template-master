@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,9 +25,7 @@ import org.springframework.stereotype.Component;
 @ConditionalOnProperty(value = "app.scheduler.enable", havingValue = "true", matchIfMissing = true)
 @RequiredArgsConstructor
 public class LinkUpdaterScheduler {
-    @Qualifier("chatJOOQService")
     private final ChatService chatService;
-    @Qualifier("linkJOOQService")
     private final LinkService linkService;
     private final BotClient botClient;
     private final GitHubClient gitHubClient;
@@ -48,12 +45,6 @@ public class LinkUpdaterScheduler {
                 .forEach(link -> log.info(String.valueOf(link)));
         }
 
-        linkService.resetLastUpdate(
-            updatedLinks.stream()
-                .map(Update::link)
-                .toList()
-        );
-
         for (Update update : updatedLinks) {
             Link link = update.link();
             List<Chat> trackingChats = chatService.getTrackingChatsForLink(link.getLinkId());
@@ -65,6 +56,12 @@ public class LinkUpdaterScheduler {
                 trackingChats.stream().map(Chat::getChatId).toList()
             ));
         }
+
+        linkService.resetLastUpdate(
+            updatedLinks.stream()
+                .map(Update::link)
+                .toList()
+        );
     }
 
     private List<Update> getUpdates() {

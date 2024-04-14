@@ -1,4 +1,4 @@
-package edu.java.respository.jooq;
+package edu.java.repository.jooq;
 
 import edu.java.domain.jooq.enums.BaseUrlType;
 import edu.java.domain.jooq.tables.records.LinksRecord;
