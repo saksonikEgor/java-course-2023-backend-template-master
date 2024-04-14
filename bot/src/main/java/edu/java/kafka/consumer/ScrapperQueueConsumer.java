@@ -4,6 +4,7 @@ import edu.java.bot.TelegramBotWrapper;
 import edu.java.dto.request.LinkUpdateRequest;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.validation.Valid;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.DltHandler;
@@ -12,7 +13,6 @@ import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.kafka.retrytopic.DltStrategy;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
