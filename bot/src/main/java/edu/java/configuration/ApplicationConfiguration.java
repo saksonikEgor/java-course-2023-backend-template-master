@@ -1,6 +1,8 @@
 package edu.java.configuration;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.validation.annotation.Validated;
@@ -11,7 +13,9 @@ public record ApplicationConfiguration(
     @NotEmpty
     String telegramBotToken,
     @NotEmpty
-    String telegramBotName
+    String telegramBotName,
+    @NotNull
+    KafkaProperties kafka
 ) {
     @Bean
     public String telegramBotToken() {
@@ -21,5 +25,21 @@ public record ApplicationConfiguration(
     @Bean
     public String telegramBotName() {
         return telegramBotName;
+    }
+
+    @Bean
+    public String dltTopicName() {
+        return kafka.topic.name + "_dlq";
+    }
+
+    public record KafkaProperties(
+        @NotNull
+        ApplicationConfiguration.KafkaProperties.KafkaTopicProperties topic
+    ) {
+        public record KafkaTopicProperties(
+            @NotBlank
+            String name
+        ) {
+        }
     }
 }

@@ -1,6 +1,6 @@
 package edu.java.integration.jdbc;
 
-import edu.java.configuration.DataAccess.JDBCAccessConfiguration;
+import edu.java.configuration.dataAccess.JDBCAccessConfiguration;
 import edu.java.dto.model.Chat;
 import edu.java.integration.IntegrationTest;
 import edu.java.integration.configuration.DBTestAccessConfiguration;
