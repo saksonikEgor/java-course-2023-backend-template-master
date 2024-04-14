@@ -8,12 +8,14 @@ import edu.java.dto.response.LinkResponse;
 import edu.java.dto.response.ListLinksResponse;
 import edu.java.service.LinkService;
 import edu.java.util.LinkFactory;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LinkController {
     private final LinkService linkService;
     private final LinkFactory linkFactory;
+    private final MeterRegistry meterRegistry;
 
     @SuppressWarnings("MultipleStringLiterals")
     @GetMapping
@@ -53,6 +56,8 @@ public class LinkController {
 
         List<Link> links = linkService.listAll(chatId);
 
+        meterRegistry.counter("proceeded_request_count", Collections.emptyList())
+            .increment();
         return ResponseEntity.ok(new ListLinksResponse(
             links.stream()
                 .map(l -> new LinkResponse(l.getLinkId(), l.getUrl()))
@@ -87,6 +92,8 @@ public class LinkController {
         String url = request.link();
         linkService.addLinkToChat(chatId, linkFactory.createLink(url));
 
+        meterRegistry.counter("proceeded_request_count", Collections.emptyList())
+            .increment();
         return ResponseEntity.ok(new LinkResponse(chatId, url));
     }
 
@@ -115,6 +122,8 @@ public class LinkController {
         String url = request.link();
         linkService.removeLinkFromChat(chatId, url);
 
+        meterRegistry.counter("proceeded_request_count", Collections.emptyList())
+            .increment();
         return ResponseEntity.ok(new LinkResponse(chatId, url));
     }
 }

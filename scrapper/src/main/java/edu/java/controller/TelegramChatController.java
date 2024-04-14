@@ -2,6 +2,7 @@ package edu.java.controller;
 
 import edu.java.dto.response.APIErrorResponse;
 import edu.java.service.ChatService;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Collections;
 
 @RestController
 @Log4j2
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TelegramChatController {
     private final ChatService chatService;
+    private final MeterRegistry meterRegistry;
 
     @PostMapping("/{id}")
     @Operation(summary = "Зарегестрировать чат")
@@ -40,6 +43,8 @@ public class TelegramChatController {
 
         chatService.register(chatId);
 
+        meterRegistry.counter("proceeded_request_count", Collections.emptyList())
+            .increment();
         return ResponseEntity.ok().build();
     }
 
@@ -60,6 +65,8 @@ public class TelegramChatController {
 
         chatService.unregister(chatId);
 
+        meterRegistry.counter("proceeded_request_count", Collections.emptyList())
+            .increment();
         return ResponseEntity.ok().build();
     }
 }
