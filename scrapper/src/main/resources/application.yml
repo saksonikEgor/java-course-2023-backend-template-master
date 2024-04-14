@@ -45,6 +45,21 @@ server:
   port: 8080
 
 
+management:
+  server.port: 8180
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      exposure.include: info,health,prometheus
+      path-mapping.prometheus: /metrics
+  endpoint:
+    info.enabled: true
+    health.enabled: true
+    prometheus.enabled: true
+  metrics.tags.application: ${spring.application.name}
+
+
 logging:
   config: classpath:log4j2-plain.xml
 
