@@ -2,11 +2,13 @@ package edu.java.controller;
 
 import edu.java.dto.response.APIErrorResponse;
 import edu.java.service.ChatService;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TelegramChatController {
     private final ChatService chatService;
+    private final MeterRegistry meterRegistry;
 
+    @SuppressWarnings("MultipleStringLiterals")
     @PostMapping("/{id}")
     @Operation(summary = "Зарегестрировать чат")
     @ApiResponses(value = {
@@ -40,6 +44,8 @@ public class TelegramChatController {
 
         chatService.register(chatId);
 
+        meterRegistry.counter("proceeded_request_count", Collections.emptyList())
+            .increment();
         return ResponseEntity.ok().build();
     }
 
@@ -60,6 +66,8 @@ public class TelegramChatController {
 
         chatService.unregister(chatId);
 
+        meterRegistry.counter("proceeded_request_count", Collections.emptyList())
+            .increment();
         return ResponseEntity.ok().build();
     }
 }

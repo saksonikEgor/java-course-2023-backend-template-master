@@ -1,8 +1,8 @@
 app:
   scheduler:
     enable: true
-    interval: 10s
-    link-check-interval: 10s
+    interval: 300s
+    link-check-interval: 300s
     force-check-delay: 10s
 
   database-access-type: jpa
@@ -43,6 +43,21 @@ spring:
 
 server:
   port: 8080
+
+
+management:
+  server.port: 8180
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      exposure.include: info,health,prometheus
+      path-mapping.prometheus: /metrics
+  endpoint:
+    info.enabled: true
+    health.enabled: true
+    prometheus.enabled: true
+  metrics.tags.application: ${spring.application.name}
 
 
 logging:

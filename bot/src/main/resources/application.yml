@@ -5,10 +5,6 @@ app:
   kafka:
     topic:
       name: "notifications"
-#    dead-letter-topic:
-#      name: "notifications_dlq"
-#      partitions: 1
-#      replicas: 1
 
 
 spring:
@@ -38,6 +34,22 @@ spring:
 
 server:
   port: 8090
+
+
+management:
+  server.port: 8190
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      exposure.include: info,health,prometheus
+      path-mapping.prometheus: /metrics
+  endpoint:
+    info.enabled: true
+    health.enabled: true
+    prometheus.enabled: true
+  metrics.tags.application: ${spring.application.name}
+
 
 scrapper:
   base-url: http://localhost:8080

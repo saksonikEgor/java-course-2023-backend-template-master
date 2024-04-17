@@ -49,7 +49,10 @@
 
         <!-- JOOQ -->
         <org.jooq.version>3.19.6</org.jooq.version>
-        <spring-boot-starter-jooq.version>3.2.3</spring-boot-starter-jooq.version>
+
+        <!-- Metrics -->
+        <micrometer-registry-prometheus.version>1.12.5</micrometer-registry-prometheus.version>
+        <micrometer-tracing-bridge-brave.version>1.2.5</micrometer-tracing-bridge-brave.version>
     </properties>
 
     <modules>
@@ -106,7 +109,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-jooq</artifactId>
-                <version>${spring-boot-starter-jooq.version}</version>
+                <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
@@ -120,6 +123,26 @@
                 <artifactId>jooq-meta-extensions-liquibase</artifactId>
                 <version>${org.jooq.version}</version>
             </dependency>
+
+            <!-- Metrics -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer-registry-prometheus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-tracing-bridge-brave</artifactId>
+                <version>${micrometer-tracing-bridge-brave.version}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 

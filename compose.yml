@@ -14,6 +14,7 @@ services:
     networks:
       - backend
 
+
   liquibase-migrations:
     image: liquibase/liquibase:4.25
     depends_on:
@@ -30,6 +31,7 @@ services:
     networks:
       - backend
 
+
   zoo1:
     image: confluentinc/cp-zookeeper:7.3.2
     hostname: zoo1
@@ -38,6 +40,7 @@ services:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+
 
   kafka1:
     image: confluentinc/cp-kafka:7.3.2
@@ -51,23 +54,59 @@ services:
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9091,PLAINTEXT_HOST://0.0.0.0:29091
       KAFKA_ZOOKEEPER_CONNECT: "zoo1:2181"
       KAFKA_BROKER_ID: 1
-#      BOOTSTRAP_SERVICES: kafka1:9091,kafka2:9092,kafka3:9093
       ZOOKEEPER: "zoo1:2181"
 
+      #      When adding new brokers it makes sense to increase the value
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
 
       KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
-#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zoo1
     volumes:
       - kafka1:/var/lib/kafka/data
 
+
+
+  prometheus:
+    image: prom/prometheus:v2.51.2
+    container_name: prometheus
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    environment:
+      TZ: Europe/Moscow
+    ports:
+      - "9090:9090"
+    networks:
+      - backend
+
+
+  grafana:
+    image: grafana/grafana-oss:10.4.2
+    container_name: grafana
+    volumes:
+      - grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+
+
 volumes:
   postgresql:
   kafka1:
+  prometheus:
+  grafana:
 
 networks:
   backend:

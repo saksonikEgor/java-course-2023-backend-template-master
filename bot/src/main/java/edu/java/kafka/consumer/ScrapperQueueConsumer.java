@@ -2,7 +2,9 @@ package edu.java.kafka.consumer;
 
 import edu.java.bot.TelegramBotWrapper;
 import edu.java.dto.request.LinkUpdateRequest;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.validation.Valid;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.DltHandler;
@@ -20,6 +22,7 @@ public class ScrapperQueueConsumer {
     private final TelegramBotWrapper telegramBotWrapper;
     private final String dltTopicName;
     private static final String DLT_TOPIC_SUFFIX = "_dlq";
+    private final MeterRegistry meterRegistry;
 
     @RetryableTopic(attempts = "1",
                     kafkaTemplate = "kafkaTemplate",
@@ -31,6 +34,8 @@ public class ScrapperQueueConsumer {
     public void listen(@Valid LinkUpdateRequest request) {
         log.info("Received link update: {}", request);
         telegramBotWrapper.sendMessages(request);
+        meterRegistry.counter("proceeded_request_count", Collections.emptyList())
+            .increment();
     }
 
     @DltHandler
