@@ -15,14 +15,12 @@ app:
       replicas: 1
 
 
-datasource:
-  driver: org.postgresql.Driver
-  url: jdbc:postgresql://localhost:5432/scrapper
-  username: postgres
-  password: postgres
-
-
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     show-sql: true
     hibernate:
