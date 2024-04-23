@@ -3,6 +3,7 @@ version: '2'
 services:
   postgresql:
     image: postgres:16
+    container_name: postgresql
     ports:
       - "5432:5432"
     environment:
@@ -17,6 +18,7 @@ services:
 
   liquibase-migrations:
     image: liquibase/liquibase:4.25
+    container_name: liquibase-migrations
     depends_on:
       - postgresql
     command:
@@ -50,7 +52,7 @@ services:
       - "29091:29091"
     environment:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9091,PLAINTEXT_HOST://localhost:29091
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9091,PLAINTEXT_HOST://host.docker.internal:29091
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9091,PLAINTEXT_HOST://0.0.0.0:29091
       KAFKA_ZOOKEEPER_CONNECT: "zoo1:2181"
       KAFKA_BROKER_ID: 1
@@ -66,7 +68,6 @@ services:
       - zoo1
     volumes:
       - kafka1:/var/lib/kafka/data
-
 
 
   prometheus:
@@ -98,6 +99,52 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
     ports:
       - "3000:3000"
+    networks:
+      - backend
+
+
+  scrapper:
+    build:
+      context: /scrapper
+      dockerfile: Dockerfile
+    container_name: scrapper-app
+    depends_on:
+      postgresql:
+        condition: service_started
+      liquibase-migrations:
+        condition: service_completed_successfully
+      kafka1:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/scrapper
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: host.docker.internal:29091
+      BOT_BASE_URL: http://bot-app:8090
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
+
+  bot:
+    build:
+      context: /bot
+      dockerfile: Dockerfile
+    container_name: bot-app
+    depends_on:
+      scrapper:
+        condition: service_started
+      kafka1:
+        condition: service_started
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: host.docker.internal:29091
+      SCRAPPER_BASE_URL: http://scrapper-app:8080
+
+#      Your Telegram bot token
+      TELEGRAM_TOKEN: ${YOUR_TELEGRAM_BOT_TOKEN}
+    ports:
+      - "8090:8090"
     networks:
       - backend
 

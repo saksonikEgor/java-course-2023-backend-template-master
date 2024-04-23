@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DataSourceConfig {
-    @Value("${datasource.driver:org.postgresql.Driver}")
+    @Value("${spring.datasource.driver-class-name:org.postgresql.Driver}")
     private String driver;
-    @Value("${datasource.url:jdbc:postgresql://localhost:5432/scrapper}")
+    @Value("${spring.datasource.url}")
     private String url;
-    @Value("${datasource.username:postgres}")
+    @Value("${spring.datasource.username:postgres}")
     private String username;
-    @Value("${datasource.password:postgres}")
+    @Value("${spring.datasource.password:postgres}")
     private String password;
 
     @Bean
